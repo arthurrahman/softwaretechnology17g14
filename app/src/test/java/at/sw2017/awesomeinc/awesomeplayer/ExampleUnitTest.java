@@ -22,4 +22,56 @@ public class ExampleUnitTest {
         assertEquals("TitleTitle", s.getTitle());
     }
 
+    @Test
+    public void test_Song_Album() throws Exception {
+        Song s = new Song("testAlbum");
+        s.setAlbum("albumTitle");
+        assertEquals("albumTitle", s.getAlbum());
+    }
+
+    @Test
+    public void test_Song_URI() throws Exception {
+        Song s = new Song("testURI");
+        s.setURI("URITitle");
+        assertEquals("URITitle", s.getURI());
+    }
+
+    @Test
+    public void test_Song_Artist() throws Exception {
+        Song s = new Song("testURI");
+        s.setURI("URITitle");
+        assertEquals("URITitle", s.getURI());
+    }
+
+    @Test
+    public void test_Song_Id() throws Exception {
+        Song s = new Song("testId");
+        s.setId("IdTitle");
+        assertEquals("IdTitle", s.getId());
+    }
+
+    @Test
+    public void test_Song_Display_name() throws Exception {
+        Song s = new Song("testDisplay_name");
+        s.setDisplay_name("Display_nameTitle");
+        assertEquals("Display_nameTitle", s.getDisplay_name());
+    }
+
+    @Test
+    public void test_Song_Duration() throws Exception {
+        Song s = new Song("testDuration");
+        s.setDuration("DurationTitle");
+        assertEquals("DurationTitle", s.getDuration());
+    }
+
+    @Test
+    public void test_Song_Playable() throws Exception {
+        Song s = new Song("testPlayable");
+        s.setPlayable(false);
+        assertEquals(false, s.isPlayable());
+        s.setPlayable(true);
+        assertEquals(true, s.isPlayable());
+    }
+
+
 }
