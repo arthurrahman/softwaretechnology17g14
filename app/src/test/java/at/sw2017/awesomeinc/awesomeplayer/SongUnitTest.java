@@ -39,8 +39,8 @@ public class SongUnitTest {
     @Test
     public void test_Song_Artist() throws Exception {
         Song s = new Song("testURI");
-        s.setURI("URITitle");
-        assertEquals("URITitle", s.getURI());
+        s.setArtist("URITitle");
+        assertEquals("URITitle", s.getArtist());
     }
 
     @Test
