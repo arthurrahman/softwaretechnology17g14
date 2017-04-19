@@ -1,5 +1,9 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
+import android.database.Cursor;
+import android.provider.MediaStore;
+import android.view.View;
+
 /**
  * Created by julian on 19.04.17.
  */
@@ -20,7 +24,34 @@ public class Song {
         this.isPlayable = false;
         this.title = trackName;
         this.display_name = trackName;
+        this.duration = "over 9000"; //TODO: Change me
+
     }
+
+    public Song(Cursor cur) {
+        int id_Id, id_Artist, id_Title, id_Data, id_Display_Name, id_Duration, id_Album;
+
+        id_Id = cur.getColumnIndex(MediaStore.Audio.Media._ID);
+        id_Artist = cur.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+        id_Title = cur.getColumnIndex(MediaStore.Audio.Media.TITLE);
+        id_Data = cur.getColumnIndex(MediaStore.Audio.Media.DATA);
+        id_Display_Name = cur.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME);
+        id_Duration = cur.getColumnIndex(MediaStore.Audio.Media.DURATION);
+        id_Album = cur.getColumnIndex(MediaStore.Audio.Media.ALBUM);
+
+        this.id = cur.getString(id_Id);
+        this.title = cur.getString(id_Title);
+        this.artist = cur.getString(id_Artist);
+        this.display_name = cur.getString(id_Display_Name);
+        this.duration = cur.getString(id_Duration);
+        this.uri = cur.getString(id_Data);
+        this.album = cur.getString(id_Album);
+
+
+        this.isPlayable = true;
+        //this.pointer = cur;
+    }
+
 
     public boolean isPlayable() {
         return isPlayable;

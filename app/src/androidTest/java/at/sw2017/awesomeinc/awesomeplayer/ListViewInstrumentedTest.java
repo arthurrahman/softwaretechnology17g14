@@ -2,23 +2,23 @@ package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.action.ViewActions;
+import android.support.test.espresso.assertion.ViewAssertions;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v7.widget.RecyclerView;
-import android.widget.ListView;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
-import java.io.Console;
-
-import static org.junit.Assert.*;
-import static android.support.test.espresso.Espresso.*;
-import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static android.support.test.espresso.assertion.ViewAssertions.*;
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -43,4 +43,17 @@ public class ListViewInstrumentedTest {
     public void test_ListViewExists() throws Exception {
         assertNotEquals(null, onView(withId(R.id.lst_tracklist)) );
     }
+
+    @Test
+    public void test_ListViewScroll() throws Exception {
+        onView(withId(R.id.lst_tracklist)).perform(ViewActions.scrollTo()).check(ViewAssertions.matches(isDisplayed()));
+
+    }
+
+    @Test
+    public void test_ListViewSongNameClick() throws Exception {
+        onView(withId(R.id.lst_tracklist)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+    }
+
 }

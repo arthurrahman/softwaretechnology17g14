@@ -12,12 +12,15 @@
     tools:layout_editor_absoluteX="8dp"
     tools:context="at.sw2017.awesomeinc.awesomeplayer.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/lst_tracklist"
-        android:layout_weight="1">
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lst_tracklist"
+            android:layout_weight="1">
 
-    </android.support.v7.widget.RecyclerView>
-
+        </android.support.v7.widget.RecyclerView>
+    </ScrollView>
 </LinearLayout>
