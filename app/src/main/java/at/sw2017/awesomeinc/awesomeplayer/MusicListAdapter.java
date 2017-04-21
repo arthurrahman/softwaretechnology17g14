@@ -47,16 +47,21 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
 
     @Override
     public MusicListAdapter.MusicItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.musiclist_item, null);
+        //View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.musiclist_item, null);
+        //return new MusicItemViewHolder(v);
+
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, null);
         return new MusicItemViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(MusicItemViewHolder musicItemViewHolder, final int i) {
         final Song selectedSong = trackList.get(i);
-        musicItemViewHolder.txt_songname.setText(selectedSong.getTitle());
+        musicItemViewHolder.txt_title.setText(selectedSong.getTitle());
+        musicItemViewHolder.txt_artist.setText(selectedSong.getArtist());
+        musicItemViewHolder.txt_duration.setText(selectedSong.getDuration());
 
-        musicItemViewHolder.txt_songname.setOnClickListener(new View.OnClickListener() {
+        musicItemViewHolder.txt_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), selectedSong.getDuration(), Toast.LENGTH_SHORT).show();
@@ -71,11 +76,14 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
 
 
     class MusicItemViewHolder extends RecyclerView.ViewHolder {
-        protected TextView txt_songname;
-
+        protected TextView txt_artist;
+        protected TextView txt_title;
+        protected TextView txt_duration;
         public MusicItemViewHolder(View v){
             super(v);
-            this.txt_songname = (TextView) v.findViewById(R.id.txt_songname);
+            this.txt_artist = (TextView) v.findViewById(R.id.artist);
+            this.txt_title = (TextView) v.findViewById(R.id.title);
+            this.txt_duration = (TextView) v.findViewById(R.id.duration);
         }
     }
 }
