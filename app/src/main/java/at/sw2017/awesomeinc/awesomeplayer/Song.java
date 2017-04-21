@@ -82,7 +82,24 @@ public class Song {
     }
 
     public String getDuration() {
-        return duration;
+
+        if(duration == null) {
+            return "0:00";
+        }
+
+        Long time = Long.valueOf(duration);
+
+        long seconds = time/1000;
+        long minutes = seconds/60;
+        seconds = seconds % 60;
+        String format_duration = String.valueOf(minutes)+":"+ String.valueOf(seconds);
+
+        if(seconds <10) {
+            format_duration = String.valueOf(minutes)+":0"+ String.valueOf(seconds);
+        }
+
+        return format_duration;
+
     }
 
     public void setPlayable(boolean playable) {
