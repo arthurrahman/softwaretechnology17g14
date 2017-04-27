@@ -34,16 +34,26 @@ public class Songs extends Fragment {
         lst_tracklist.setNestedScrollingEnabled(false);
         lst_tracklist.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        // get Media Data --------------------------------------------------------------------------
-        ContentResolver cr = getActivity().getContentResolver();
-        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " + MediaStore.Audio.Media.DURATION + "> 1000";
-        String sortOrder = MediaStore.Audio.Media.ARTIST + " ASC" ; //+ MediaStore.Audio.Media.ALBUM + " ASC, " + MediaStore.Audio.Media.TRACK + " ASC";
-        Cursor cur = cr.query(uri, null, selection, null, null);
-        // -----------------------------------------------------------------------------------------
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // get Media Data --------------------------------------------------------------------------
+                ContentResolver cr = getActivity().getContentResolver();
+                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                String selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " + MediaStore.Audio.Media.DURATION + "> 1000";
+                String sortOrder = MediaStore.Audio.Media.ARTIST + " ASC" ; //+ MediaStore.Audio.Media.ALBUM + " ASC, " + MediaStore.Audio.Media.TRACK + " ASC";
+                final Cursor cur = cr.query(uri, null, selection, null, null);
+                // -----------------------------------------------------------------------------------------
+                final MusicListAdapter da = new MusicListAdapter(cur);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        lst_tracklist.setAdapter(da);
+                    }
+                });
 
-        MusicListAdapter da = new MusicListAdapter(cur);
-        lst_tracklist.setAdapter(da);
+            }
+        }).start();
 
         getActivity().setTitle("Songs");
     }
