@@ -23,6 +23,13 @@ public class SongUnitTest {
     }
 
     @Test
+    public void test_Song_Title_Card_View() throws Exception {
+        Song s = new Song("testTitle");
+        s.setTitle("ThisIsALooongTitleForCardView");
+        assertEquals("ThisIsALooongTitleForCard..", s.getTitleForCardView());
+    }
+
+    @Test
     public void test_Song_Album() throws Exception {
         Song s = new Song("testAlbum");
         s.setAlbum("albumTitle");

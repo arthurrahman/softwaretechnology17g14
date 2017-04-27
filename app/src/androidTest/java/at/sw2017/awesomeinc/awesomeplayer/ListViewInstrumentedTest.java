@@ -1,6 +1,7 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.PerformException;
 import android.support.test.espresso.UiController;
@@ -104,7 +105,7 @@ public class ListViewInstrumentedTest {
     @Test
     public void test_MenuBackButton() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
-
+        
         onView(withId(R.id.content_main)).perform(pressBack());
     }
     /*

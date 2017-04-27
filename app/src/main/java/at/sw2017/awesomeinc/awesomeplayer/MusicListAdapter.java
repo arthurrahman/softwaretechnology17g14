@@ -57,7 +57,8 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
     @Override
     public void onBindViewHolder(MusicItemViewHolder musicItemViewHolder, final int i) {
         final Song selectedSong = trackList.get(i);
-        musicItemViewHolder.txt_title.setText(selectedSong.getTitle());
+        // get title for cardView presentation
+        musicItemViewHolder.txt_title.setText(selectedSong.getTitleForCardView());
         musicItemViewHolder.txt_artist.setText(selectedSong.getArtist());
         musicItemViewHolder.txt_duration.setText(selectedSong.getDuration());
 

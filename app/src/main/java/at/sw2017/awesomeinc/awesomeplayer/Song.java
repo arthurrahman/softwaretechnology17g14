@@ -73,6 +73,12 @@ public class Song {
         return title;
     }
 
+    public String getTitleForCardView() {
+        if (title.length() > 25)
+            return title.substring(0,25) + "..";
+        return title;
+    }
+
     public String getArtist() {
         return artist;
     }
