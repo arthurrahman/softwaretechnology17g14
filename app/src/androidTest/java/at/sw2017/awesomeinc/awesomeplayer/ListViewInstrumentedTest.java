@@ -63,7 +63,7 @@ public class ListViewInstrumentedTest {
 
     @Test
     public void test_ListViewScroll() throws Exception {
-        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT, Press.FINGER));
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
         onView(withText("Songs")).perform(click());
         onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
         onView(withId(R.id.content_main)).perform(swipeUp());
@@ -72,14 +72,14 @@ public class ListViewInstrumentedTest {
 
     @Test
     public void test_MenuSongs() throws Exception {
-        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT, Press.FINGER));
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
         onView(withText("Songs")).perform(click());
         onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
     }
 
     @Test
     public void test_MenuPlaylist() throws Exception {
-        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT, Press.FINGER));
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
         onView(withText("Playlists")).perform(click());
 
 
@@ -87,7 +87,7 @@ public class ListViewInstrumentedTest {
 
     @Test
     public void test_ListViewSongNameClick() throws Exception {
-        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT, Press.FINGER));
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
         onView(withText("Songs")).perform(click());
 
         onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
@@ -104,8 +104,15 @@ public class ListViewInstrumentedTest {
 
     @Test
     public void test_MenuBackButton() throws Exception {
-        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT, Press.FINGER));
-        
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+
+        onView(withId(R.id.content_main)).perform(pressBack());
+    }
+
+    @Test
+    public void test_MenuBackButtonFromSong() throws Exception {
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        onView(withText("Songs")).perform(click());
         onView(withId(R.id.content_main)).perform(pressBack());
     }
     /*
