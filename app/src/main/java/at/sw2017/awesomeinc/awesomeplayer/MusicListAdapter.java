@@ -4,7 +4,10 @@ package at.sw2017.awesomeinc.awesomeplayer;
  * Created by julian on 19.04.17.
  */
 
-
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +69,9 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
         musicItemViewHolder.txt_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), selectedSong.getDuration(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(v.getContext(), selectedSong.getDuration(), Toast.LENGTH_SHORT).show();
+                Context context = v.getContext();
+                context.startActivity(new Intent(context,Player.class).putExtra("pos",i).putExtra("songlist", (Serializable) trackList));
             }
         });
     }
@@ -75,6 +81,9 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
         return this.trackList.size();
     }
 
+    public List<Song> getTrackList(){
+        return this.trackList;
+    }
 
     class MusicItemViewHolder extends RecyclerView.ViewHolder {
         protected TextView txt_artist;

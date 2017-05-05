@@ -54,6 +54,7 @@ public class Songs extends Fragment {
                     @Override
                     public void run() {
                         lst_tracklist.setAdapter(da);
+                        lst_tracklist.setId(R.id.lst_tracklist);
                     }
                 });
 

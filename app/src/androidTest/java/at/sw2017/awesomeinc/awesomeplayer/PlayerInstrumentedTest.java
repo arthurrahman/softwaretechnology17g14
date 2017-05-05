@@ -62,7 +62,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(1, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
         Thread.sleep(3000);
         Assert.assertTrue(Player.is_playing());
     }
@@ -74,7 +74,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(1, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
 
         onView(withId(R.id.bt_next)).perform(click());
     }
@@ -86,7 +86,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(1, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
 
         onView(withId(R.id.bt_fast_fw)).perform(click());
     }
@@ -98,7 +98,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(1, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
 
         onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER, Press.FINGER));
 
@@ -112,7 +112,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(1, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
         onView(withId(R.id.bt_play)).perform(click());
     }
 
@@ -123,7 +123,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(1, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
         onView(withId(R.id.bt_prev)).perform(click());
     }
 
@@ -134,7 +134,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(1, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
         onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER, Press.FINGER));
     }
 
@@ -145,11 +145,11 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(1, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
 
         onView(withId(R.id.player)).perform(pressBack());
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(2, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
     }
 
 

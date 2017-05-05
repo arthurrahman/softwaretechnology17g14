@@ -55,7 +55,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
 
         seekbar = (SeekBar) findViewById(R.id.seekBar);
 
-        if(media_player!=null){
+        /*if(media_player!=null){
             media_player.stop();
             media_player.release();
             updateSeekBar.interrupt();
@@ -64,7 +64,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
         Intent i = getIntent();
         Bundle b = i.getExtras();
@@ -85,6 +85,14 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         int id = v.getId();
         switch (id){
             case R.id.bt_play:
+                if(media_player.isPlaying()){
+                    bt_play.setBackgroundResource(android.R.drawable.ic_media_play);
+                    media_player.pause();
+                }
+                else {
+                    bt_play.setBackgroundResource(android.R.drawable.ic_media_pause);
+                    media_player.start();
+                }
                 break;
             case R.id.bt_fast_fw:
                 break;
