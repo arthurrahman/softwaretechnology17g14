@@ -35,6 +35,7 @@ public class Songs extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         lst_tracklist = (RecyclerView) view.findViewById(R.id.lst_tracklist);
         lst_tracklist.setNestedScrollingEnabled(false);
         lst_tracklist.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -62,6 +63,5 @@ public class Songs extends Fragment {
         }).start();
 
         getActivity().setTitle("Songs");
-
     }
 }

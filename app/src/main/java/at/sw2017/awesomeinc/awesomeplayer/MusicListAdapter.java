@@ -85,6 +85,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
         return this.trackList;
     }
 
+
     class MusicItemViewHolder extends RecyclerView.ViewHolder {
         protected TextView txt_artist;
         protected TextView txt_title;

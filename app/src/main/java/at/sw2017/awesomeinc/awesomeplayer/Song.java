@@ -4,11 +4,13 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 import android.view.View;
 
+import java.io.Serializable;
+
 /**
  * Created by julian on 19.04.17.
  */
 
-public class Song {
+public class Song implements Serializable{
     private String id;
     private String title;
     private String artist;

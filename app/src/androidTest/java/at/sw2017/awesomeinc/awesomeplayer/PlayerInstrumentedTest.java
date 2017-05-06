@@ -63,7 +63,8 @@ public class PlayerInstrumentedTest {
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
         onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
-        Thread.sleep(3000);
+
+        Thread.sleep(1000);
         Assert.assertTrue(Player.is_playing());
     }
 
@@ -77,6 +78,9 @@ public class PlayerInstrumentedTest {
         onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
 
         onView(withId(R.id.bt_next)).perform(click());
+
+        Thread.sleep(1000);
+        Assert.assertTrue(Player.is_playing());
     }
 
     @Test
@@ -88,7 +92,15 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
 
+        Thread.sleep(1000);
+        int startPosition = Player.getCurrentPosition();
+
         onView(withId(R.id.bt_fast_fw)).perform(click());
+
+        Thread.sleep(1000);
+        int endPosition = Player.getCurrentPosition();
+
+        Assert.assertTrue(endPosition-startPosition>4800);
     }
 
     @Test
@@ -99,10 +111,16 @@ public class PlayerInstrumentedTest {
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
         onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
-
+        Thread.sleep(1000);
         onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER, Press.FINGER));
+        //Thread.sleep(1000);
+        int startPosition = Player.getCurrentPosition();
 
         onView(withId(R.id.bt_rew)).perform(click());
+
+        int endPosition = Player.getCurrentPosition();
+
+        Assert.assertTrue((startPosition-endPosition > 4800) || (endPosition < 1000));
     }
 
     @Test
@@ -114,6 +132,9 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
         onView(withId(R.id.bt_play)).perform(click());
+
+        Thread.sleep(1000);
+        Assert.assertFalse(Player.is_playing());
     }
 
     @Test
@@ -125,6 +146,9 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
         onView(withId(R.id.bt_prev)).perform(click());
+
+        Thread.sleep(1000);
+        Assert.assertTrue(Player.is_playing());
     }
 
     @Test
@@ -136,6 +160,9 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
         onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER, Press.FINGER));
+
+        Thread.sleep(1000);
+        Assert.assertTrue(Player.is_playing());
     }
 
     @Test
@@ -148,8 +175,11 @@ public class PlayerInstrumentedTest {
         onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
 
         onView(withId(R.id.player)).perform(pressBack());
-
+        Thread.sleep(1000);
         onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
+
+        Thread.sleep(1000);
+        Assert.assertTrue(Player.is_playing());
     }
 
 

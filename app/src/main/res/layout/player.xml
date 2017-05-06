@@ -6,7 +6,7 @@
     android:id="@+id/player">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/img_view"
         android:layout_width="match_parent"
         android:layout_height="401dp"
         app:srcCompat="@drawable/music_icon2" />
@@ -18,7 +18,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
@@ -57,4 +57,12 @@
             android:layout_weight="1"
             android:background="@android:drawable/ic_media_next" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_songname"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Songame"
+        android:textSize="20sp" />
+
 </LinearLayout>
