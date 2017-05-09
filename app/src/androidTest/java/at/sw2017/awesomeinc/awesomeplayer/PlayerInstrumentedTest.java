@@ -100,7 +100,7 @@ public class PlayerInstrumentedTest {
         Thread.sleep(1000);
         int endPosition = Player.getCurrentPosition();
 
-        Assert.assertTrue(endPosition-startPosition>4800);
+        Assert.assertTrue(endPosition-startPosition>2500);
     }
 
     @Test
@@ -120,7 +120,7 @@ public class PlayerInstrumentedTest {
 
         int endPosition = Player.getCurrentPosition();
 
-        Assert.assertTrue((startPosition-endPosition > 4800) || (endPosition < 1000));
+        Assert.assertTrue((startPosition-endPosition > 2500) || (endPosition < 1000));
     }
 
     @Test
