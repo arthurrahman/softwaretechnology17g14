@@ -149,8 +149,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
                 position = (position+1)%song_list.size();
                 uri = Uri.parse(song_list.get(position).getURI());
                 media_player = MediaPlayer.create(getApplicationContext(),uri);
-                media_player.start();
+                txt_songname.setText(song_list.get(position).getTitle());
                 seekbar.setMax(media_player.getDuration());
+                media_player.start();
                 break;
             case R.id.bt_prev:
                 media_player.stop();
@@ -158,8 +159,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
                 position = (position-1<0)? song_list.size()-1: position-1;
                 uri = Uri.parse(song_list.get(position).getURI());
                 media_player = MediaPlayer.create(getApplicationContext(),uri);
-                media_player.start();
+                txt_songname.setText(song_list.get(position).getTitle());
                 seekbar.setMax(media_player.getDuration());
+                media_player.start();
                 break;
         }
     }
