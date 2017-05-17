@@ -146,6 +146,20 @@ public class ListViewInstrumentedTest {
         onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!!!"));
         onView(withText("Test!!!")).check(matches(isDisplayed()));
     }
+
+    @Test
+    public void test_OpenSongThenSearch() throws Exception {
+
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        onView(withText("Songs")).perform(click());
+
+        onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
+
+        onView(withId(R.id.action_search)).perform(click());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!"));
+        onView(withText("Test!")).check(matches(isDisplayed()));
+    }
+
     /*
         @Test
         public void test_BesideSettingsButton() throws Exception {

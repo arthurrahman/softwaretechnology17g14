@@ -25,6 +25,8 @@ import java.util.List;
 
 public class Songs extends Fragment {
     private RecyclerView lst_tracklist;
+    private String search_text = null;
+
 
     @Nullable
     @Override
@@ -39,16 +41,28 @@ public class Songs extends Fragment {
         lst_tracklist = (RecyclerView) view.findViewById(R.id.lst_tracklist);
         lst_tracklist.setNestedScrollingEnabled(false);
         lst_tracklist.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
+        search_text = this.getArguments().getString("search_item");
         new Thread(new Runnable() {
             @Override
             public void run() {
                 // get Media Data --------------------------------------------------------------------------
                 ContentResolver cr = getActivity().getContentResolver();
                 Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                String selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " + MediaStore.Audio.Media.DURATION + "> 1000";
                 String sortOrder = MediaStore.Audio.Media.ARTIST + " ASC" ; //+ MediaStore.Audio.Media.ALBUM + " ASC, " + MediaStore.Audio.Media.TRACK + " ASC";
-                final Cursor cur = cr.query(uri, null, selection, null, null);
+                Cursor cur;
+                String selection = null;
+                String [] selection_args = null;
+                if (search_text != null)
+                {
+                    selection = MediaStore.Audio.Media.ARTIST + "=?";
+                    selection_args = new String[]{search_text};
+
+                }
+                else {
+                    selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " + MediaStore.Audio.Media.DURATION + "> 1000";
+
+                }
+                cur = cr.query(uri, null, selection, selection_args, sortOrder);
                 // -----------------------------------------------------------------------------------------
                 final MusicListAdapter da = new MusicListAdapter(cur);
                 getActivity().runOnUiThread(new Runnable() {

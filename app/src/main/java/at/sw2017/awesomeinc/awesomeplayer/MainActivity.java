@@ -1,6 +1,7 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -25,10 +26,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
 
     Fragment init_fragment = null;
+    String search_query = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +71,32 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setQueryHint("Search for awesome music...");
-        //searchView.setOnQueryTextListener(this);
+        searchView.setQueryHint("Search for awesome artists...");
+        searchView.setOnQueryTextListener(this);
         return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        search_query = query;
+
+        init_fragment = new Songs();
+        Bundle bundl = new Bundle();
+        bundl.putString("search_item", search_query);
+        init_fragment.setArguments(bundl);
+
+        if(init_fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_main, init_fragment);
+            ft.commit();
+        }
+        return false;
     }
 
     @Override
@@ -91,6 +118,9 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_songs:
                 init_fragment = new Songs();
+                Bundle bundl = new Bundle();
+                bundl.putString("search_item", search_query);
+                init_fragment.setArguments(bundl);
                 break;
             case R.id.nav_playlists:
                 break;
