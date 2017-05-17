@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void displaySelectedScreen(int id) {
+        search_query = null;
         switch (id) {
             case R.id.nav_songs:
                 init_fragment = new Songs();

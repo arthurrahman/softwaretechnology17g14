@@ -54,8 +54,8 @@ public class Songs extends Fragment {
                 String [] selection_args = null;
                 if (search_text != null)
                 {
-                    selection = MediaStore.Audio.Media.ARTIST + "=?";
-                    selection_args = new String[]{search_text};
+                    selection = MediaStore.Audio.Media.ARTIST + " LIKE ?";
+                    selection_args = new String[]{"%" + search_text + "%"};
 
                 }
                 else {
