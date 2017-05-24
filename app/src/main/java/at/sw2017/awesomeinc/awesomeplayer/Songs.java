@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 
 /**
@@ -26,6 +27,8 @@ import java.util.List;
 public class Songs extends Fragment {
     private RecyclerView lst_tracklist;
     private String search_text = null;
+    public MusicListAdapter da;
+
 
 
     @Nullable
@@ -64,7 +67,7 @@ public class Songs extends Fragment {
                 }
                 cur = cr.query(uri, null, selection, selection_args, sortOrder);
                 // -----------------------------------------------------------------------------------------
-                final MusicListAdapter da = new MusicListAdapter(cur);
+                da = new MusicListAdapter(cur);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -78,4 +81,7 @@ public class Songs extends Fragment {
 
         getActivity().setTitle("Songs");
     }
+
+    public RecyclerView getRecyclerView(){return this.lst_tracklist;}
+
 }

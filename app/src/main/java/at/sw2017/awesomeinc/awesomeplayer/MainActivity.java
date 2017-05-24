@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
 
     Fragment init_fragment = null;
+    Fragment song_fragment = null;
     String search_query = null;
 
     @Override
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        song_fragment = new Songs();
     }
 
     @Override
@@ -78,13 +81,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextChange(String query) {
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-
-        search_query = query;
+        /*search_query = query;
 
         init_fragment = new Songs();
         Bundle bundl = new Bundle();
@@ -95,7 +92,36 @@ public class MainActivity extends AppCompatActivity
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, init_fragment);
             ft.commit();
+        }*/
+        if(init_fragment == null)
+        {
+            displaySelectedScreen(R.id.nav_songs);
         }
+        else if(init_fragment != null)
+        {
+            RecyclerView view = ((Songs)init_fragment).getRecyclerView();
+            MusicListAdapter test = (MusicListAdapter) view.getAdapter();
+            test.filterSongsAllAttributes(query);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        /*search_query = query;
+
+        init_fragment = new Songs();
+        Bundle bundl = new Bundle();
+        bundl.putString("search_item", search_query);
+        init_fragment.setArguments(bundl);
+
+        if(init_fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.content_main, init_fragment);
+            ft.commit();
+        }*/
         return false;
     }
 
@@ -116,9 +142,15 @@ public class MainActivity extends AppCompatActivity
 
     private void displaySelectedScreen(int id) {
         search_query = null;
+        Boolean flag = true;
         switch (id) {
             case R.id.nav_songs:
-                init_fragment = new Songs();
+                if(init_fragment == song_fragment)
+                {
+                    flag = false;
+                    break;
+                }
+                init_fragment = song_fragment;
                 Bundle bundl = new Bundle();
                 bundl.putString("search_item", search_query);
                 init_fragment.setArguments(bundl);
@@ -127,13 +159,14 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        if(init_fragment != null) {
+        if(init_fragment != null && flag == true) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, init_fragment);
             ft.commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        if(drawer.isDrawerOpen(GravityCompat.START))
+            drawer.closeDrawer(GravityCompat.START);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
