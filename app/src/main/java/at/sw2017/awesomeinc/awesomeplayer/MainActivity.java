@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity
                 init_fragment = new Songs();
                 break;
             case R.id.nav_playlists:
+                init_fragment = new Playlists();
                 break;
         }
 

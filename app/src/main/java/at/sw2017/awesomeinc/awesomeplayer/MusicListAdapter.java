@@ -35,11 +35,10 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
         for (String track : tracks) {
             this.trackList.add(new Song(track));
         }
-
     }
 
     public MusicListAdapter(Cursor queryCursor) {
-        this.trackList = new ArrayList<>() ;
+        this.trackList = new ArrayList<>();
 
         if(queryCursor != null && queryCursor.moveToFirst())
         {

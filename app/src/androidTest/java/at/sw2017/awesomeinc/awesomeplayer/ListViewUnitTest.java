@@ -35,10 +35,33 @@ public class ListViewUnitTest {
     }
 
     @Test
+    public void test_createPlaylistDataAdapter() throws Exception {
+        List<String> lst = new ArrayList<>();
+        lst.add("asdf1");
+        lst.add("asdf2");
+        PlaylistAdapter da = new PlaylistAdapter(lst);
+
+        assertNotEqual(null, da);
+        assertEquals(2, da.getItemCount() );
+
+    }
+
+    @Test
     public void test_invalidDataAdapter() throws Exception {
         Cursor cur = null;
 
         MusicListAdapter da = new MusicListAdapter(cur);
+
+        assertNotEqual(null, da);
+        assertEquals(0, da.getItemCount() );
+
+    }
+
+    @Test
+    public void test_invalidPlaylistDataAdapter() throws Exception {
+        List<String> testList = null;
+
+        PlaylistAdapter da = new PlaylistAdapter(testList);
 
         assertNotEqual(null, da);
         assertEquals(0, da.getItemCount() );

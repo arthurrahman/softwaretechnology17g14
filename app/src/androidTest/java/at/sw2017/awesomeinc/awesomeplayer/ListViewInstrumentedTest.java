@@ -81,8 +81,6 @@ public class ListViewInstrumentedTest {
     public void test_MenuPlaylist() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
         onView(withText("Playlists")).perform(click());
-
-
     }
 
     @Test
@@ -105,7 +103,6 @@ public class ListViewInstrumentedTest {
     @Test
     public void test_MenuBackButton() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
-
         onView(withId(R.id.content_main)).perform(pressBack());
     }
 
