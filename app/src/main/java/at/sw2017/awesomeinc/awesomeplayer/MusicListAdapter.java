@@ -45,6 +45,10 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
 
     }
 
+    public MusicListAdapter(ArrayList<Song> songList) {
+        this.trackList = songList;
+    }
+
     @Override
     public MusicListAdapter.MusicItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         //View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.musiclist_item, null);
