@@ -24,17 +24,19 @@ public class XmlInstrumentedTest {
     @Rule
     public ActivityTestRule<MainActivity> mainActivityActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
-    Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
-    Activity activity = mainActivityActivityTestRule.getActivity();
 
     @Test
     public void test_addition_isCorrect() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        Activity activity = mainActivityActivityTestRule.getActivity();
         assertEquals(4, 2 + 2);
 
     }
 
     @Test
     public void test_write_one_song() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        Activity activity = mainActivityActivityTestRule.getActivity();
         XmlSongList xml = new XmlSongList("Test_read_write", context);
         ArrayList<Song> al = new ArrayList<>();
         Song s = new Song("testsong");
@@ -51,6 +53,8 @@ public class XmlInstrumentedTest {
 
     @Test
     public void test_read_one_song() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        Activity activity = mainActivityActivityTestRule.getActivity();
         test_write_one_song();
 
         XmlSongList xml = new XmlSongList("Test_read_write", context);
@@ -61,6 +65,8 @@ public class XmlInstrumentedTest {
 
     @Test
     public void test_instantiate_without_context() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        Activity activity = mainActivityActivityTestRule.getActivity();
 
         XmlSongList xml = new XmlSongList("Test_read_write", null);
         assertEquals(null, xml.getContext());
@@ -71,6 +77,8 @@ public class XmlInstrumentedTest {
 
     @Test
     public void test_write_empty_list() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        Activity activity = mainActivityActivityTestRule.getActivity();
 
         XmlSongList xml = new XmlSongList("test_write_empty", null);
         xml.setContext(context);
@@ -85,6 +93,8 @@ public class XmlInstrumentedTest {
 
     @Test
     public void test_read_non_existing_file() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        Activity activity = mainActivityActivityTestRule.getActivity();
 
         String name = "test_non_existend";
         File f = new File(context.getExternalFilesDir(null), name.concat(".xml"));
