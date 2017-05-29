@@ -39,6 +39,13 @@ public abstract class XmlHandler {
         this.context = context;
     }
 
+    public Context getContext() {
+        return this.context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
     /***
      * Initializes the file and starts the file with its necessary header
      */
@@ -52,6 +59,8 @@ public abstract class XmlHandler {
         if(xmlWriter != null)
             xmlWriter = null;
 
+        if(context == null)
+            return;
 
         xmlWriter = Xml.newSerializer();
         xmlOutFile = new OutputStreamWriter(new FileOutputStream(new File(context.getExternalFilesDir(null), this.filename), false));
@@ -112,6 +121,8 @@ public abstract class XmlHandler {
      * Ends the file with closing tags of the header and destroys the XmlSerializer
      */
     protected void writeEnd() throws IOException {
+        if(xmlWriter == null)
+            writeStart();
 
         xmlWriter.endTag(null, name);
         xmlWriter.endDocument();
@@ -135,7 +146,18 @@ public abstract class XmlHandler {
         if(xmlReader != null)
             xmlReader = null;
 
-        xmlInFile = new InputStreamReader(new FileInputStream(new File(context.getExternalFilesDir(null), this.filename)));
+        if(context == null)
+            return;
+
+
+        File inFile = new File(context.getExternalFilesDir(null), this.filename);
+
+        if(!inFile.exists()) {
+            writeStart();
+            writeEnd();
+        }
+
+        xmlInFile = new InputStreamReader(new FileInputStream(inFile));
         xmlReader = Xml.newPullParser();
         xmlReader.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
         xmlReader.setInput(xmlInFile);
@@ -169,6 +191,8 @@ public abstract class XmlHandler {
                     temp2 = f;
                     if(f.getType().getName().toLowerCase().equals("boolean"))
                         f.set(returnObject, Boolean.valueOf(readTag()));
+                    else if (f.getType().getName().toLowerCase().equals("long"))
+                        f.set(returnObject, Long.valueOf(readTag()));
                     else
                         f.set(returnObject, f.getType().cast(readTag()));
                 } catch (IllegalAccessException e) {
@@ -196,6 +220,8 @@ public abstract class XmlHandler {
 
 
     protected void readEnd() throws IOException, XmlPullParserException {
+        if(xmlReader == null)
+            readStart();
 
         while (xmlReader.next() != XmlPullParser.END_DOCUMENT);
         xmlReader = null;

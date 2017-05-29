@@ -1,5 +1,6 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -7,16 +8,15 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 
 /**
@@ -25,6 +25,13 @@ import java.util.List;
 
 public class Songs extends Fragment {
     private RecyclerView lst_tracklist;
+    private final XmlSongList xmlSongs;
+    private ArrayList<Song> songs;
+    private Activity activity;
+    public Songs() {
+        songs = new ArrayList<Song>();
+        xmlSongs = new XmlSongList("Songs", null);
+    }
 
     @Nullable
     @Override
@@ -36,6 +43,8 @@ public class Songs extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        this.xmlSongs.setContext(view.getContext());
+
         lst_tracklist = (RecyclerView) view.findViewById(R.id.lst_tracklist);
         lst_tracklist.setNestedScrollingEnabled(false);
         lst_tracklist.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -43,6 +52,19 @@ public class Songs extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
+
+                try {
+                    songs = xmlSongs.getAllSongs();
+                } catch (Exception e) {
+                    Log.e("Songs", "CRITICAL ERROR: " + e.getMessage());
+                    return;
+                }
+
+                HashSet<String> uris = new HashSet<String>();
+                for(Song song : songs) {
+                    uris.add(song.getURI());
+                }
+
                 // get Media Data --------------------------------------------------------------------------
                 ContentResolver cr = getActivity().getContentResolver();
                 Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -50,7 +72,36 @@ public class Songs extends Fragment {
                 String sortOrder = MediaStore.Audio.Media.ARTIST + " ASC" ; //+ MediaStore.Audio.Media.ALBUM + " ASC, " + MediaStore.Audio.Media.TRACK + " ASC";
                 final Cursor cur = cr.query(uri, null, selection, null, null);
                 // -----------------------------------------------------------------------------------------
-                final MusicListAdapter da = new MusicListAdapter(cur);
+
+                //check for new and removed songs
+                songs.ensureCapacity(cur.getCount());
+                while (cur.moveToNext()) {
+                    int id_Data = cur.getColumnIndex(MediaStore.Audio.Media.DATA);
+                    String u = cur.getString(id_Data);
+                    if (uris.contains(u))
+                        uris.remove(u);
+                    else
+                        songs.add(new Song(cur));
+                }
+
+                //at this point, all known uris got deleted, or unknown uris got created. All uris
+                //which are still present are entries of removed files
+                for(int i = 0; i < songs.size() && uris.size() > 0; i++) {
+                    Song song = songs.get(i);
+                    if (uris.contains(song.getURI())) {
+                        songs.remove(i);
+                        uris.remove(song.getURI());
+                    }
+                }
+
+                try {
+                    xmlSongs.SaveAllSongs(songs);
+                } catch(Exception e){
+                    Log.e("Songs", "CRITICAL ERROR: " + e.getMessage());
+                    return;
+                }
+
+                final MusicListAdapter da = new MusicListAdapter(songs);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

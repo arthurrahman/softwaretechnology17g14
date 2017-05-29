@@ -45,5 +45,15 @@ public class ListViewUnitTest {
 
     }
 
+    @Test
+    public void test_createDataAdapterWithList() throws Exception {
+        ArrayList<String> lst = new ArrayList<>();
+        lst.add("asdf1");
+        lst.add("asdf2");
+        MusicListAdapter da = new MusicListAdapter(lst);
+
+        assertNotEqual(null, da);
+        assertEquals(2, da.getItemCount() );
+    }
 
 }
