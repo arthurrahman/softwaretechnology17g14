@@ -1,6 +1,7 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -17,6 +18,32 @@ public class XmlPlaylists extends XmlHandler {
 
     public XmlPlaylists(String name, Context context) {
         super(name, context);
+    }
+
+
+
+    public Playlist newPlaylist(String title) throws IOException, XmlPullParserException {
+        if(names == null)
+            getAllPlaylistNames();
+
+        if(names.contains(title))
+            return getPlaylist(title);
+
+        ArrayList<Playlist> playlists = new ArrayList<>();
+        for(String t: names) {
+            try {
+                playlists.add(getPlaylist(t));
+            } catch (Exception e) {
+                Log.e("Playlists", "Critical internal error happened: " + e.getMessage());
+                return null;
+            }
+        }
+
+        Playlist p = new Playlist(title);
+        playlists.add(p);
+
+        saveAllPlaylists(playlists);
+        return p;
     }
 
 

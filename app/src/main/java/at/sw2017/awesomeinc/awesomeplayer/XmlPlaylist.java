@@ -1,6 +1,7 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -40,7 +41,7 @@ public class XmlPlaylist extends XmlHandler {
 
         writeStart();
         for (Song s: songs) {
-            //writeOneObject("Song", s);
+            writeOneObject("Song", s);
         }
         writeEnd();
 

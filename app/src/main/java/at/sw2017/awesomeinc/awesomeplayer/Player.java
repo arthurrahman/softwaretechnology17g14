@@ -1,5 +1,6 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -7,11 +8,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -36,6 +43,71 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
 
     public static int getCurrentPosition(){
         return media_player.getCurrentPosition();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 1:
+                createPlaylist();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void createPlaylist() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.new_playlist_dialog);
+        dialog.show();
+
+        Button saveButton = (Button) dialog.findViewById(R.id.savePlaylist);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText plName = (EditText) dialog.findViewById(R.id.newPlaylistName);
+                XmlPlaylists xmlPlaylist = new XmlPlaylists("Playlists", view.getContext());
+                if(plName.getText() != null) {
+                    try {
+                        xmlPlaylist.newPlaylist(plName.getText().toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (XmlPullParserException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        menu.add(0, 1, 0, R.string.action_addToPlaylist);
+        XmlPlaylists xmlPlaylists = new XmlPlaylists("Playlists", this);
+        ArrayList<String> playLists = null;
+        try {
+            playLists = xmlPlaylists.getAllPlaylistNames();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for(String s : playLists) {
+            menu.add(1, 1, 0, s);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.song_item_menu, menu);
+        return true;
     }
 
     @Override

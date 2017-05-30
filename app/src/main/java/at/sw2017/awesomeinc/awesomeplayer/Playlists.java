@@ -1,5 +1,6 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,9 +8,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +51,63 @@ public class Playlists extends Fragment {
         return p;
     }
 
+    public ArrayList<String> getPlaylistNames() {
+        try {
+            return xmlPlaylists.getAllPlaylistNames();
+        } catch (Exception e) {
+            Log.e("Playlists", "Critical internal error happened: " + e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 1:
+                createPlaylist();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void createPlaylist() {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.new_playlist_dialog);
+        dialog.show();
+
+        Button saveButton = (Button) dialog.findViewById(R.id.savePlaylist);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText plName = (EditText) dialog.findViewById(R.id.newPlaylistName);
+
+                if(plName.getText() != null) {
+                    newPlaylist(plName.getText().toString());
+                }
+
+                dialog.dismiss();
+            }
+        });
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.playlist, container, false);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
+        menu.add(0, 1, 0, R.string.action_addToPlaylist);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.song_item_menu, menu);
     }
 
     @Override
