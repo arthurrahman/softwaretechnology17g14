@@ -35,18 +35,6 @@ public class ListViewUnitTest {
     }
 
     @Test
-    public void test_createPlaylistDataAdapter() throws Exception {
-        List<String> lst = new ArrayList<>();
-        lst.add("asdf1");
-        lst.add("asdf2");
-        PlaylistAdapter da = new PlaylistAdapter(lst);
-
-        assertNotEqual(null, da);
-        assertEquals(2, da.getItemCount() );
-
-    }
-
-    @Test
     public void test_invalidDataAdapter() throws Exception {
         Cursor cur = null;
 
@@ -58,6 +46,30 @@ public class ListViewUnitTest {
     }
 
     @Test
+    public void test_createDataAdapterWithList() throws Exception {
+        ArrayList<String> lst = new ArrayList<>();
+        lst.add("asdf1");
+        lst.add("asdf2");
+        MusicListAdapter da = new MusicListAdapter(lst);
+
+        assertNotEqual(null, da);
+        assertEquals(2, da.getItemCount() );
+    }
+
+ @Test
+    public void test_createPlaylistDataAdapter() throws Exception {
+        List<String> lst = new ArrayList<>();
+        lst.add("asdf1");
+        lst.add("asdf2");
+        PlaylistAdapter da = new PlaylistAdapter(lst);
+
+        assertNotEqual(null, da);
+        assertEquals(2, da.getItemCount() );
+
+    }
+
+
+ @Test
     public void test_invalidPlaylistDataAdapter() throws Exception {
         List<String> testList = null;
 
@@ -67,6 +79,4 @@ public class ListViewUnitTest {
         assertEquals(0, da.getItemCount() );
 
     }
-
-
 }
