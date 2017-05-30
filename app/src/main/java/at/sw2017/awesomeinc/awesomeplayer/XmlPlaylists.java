@@ -17,6 +17,7 @@ public class XmlPlaylists extends XmlHandler {
 
     public XmlPlaylists(String name, Context context) {
         super(name, context);
+        playlists = new HashMap<>();
         if(context != null)
             rebuildMap();
     }
@@ -87,5 +88,10 @@ public class XmlPlaylists extends XmlHandler {
             return playlists.get(title);
         else
             return null;
+    }
+
+    public void deleteAllPlaylists(){
+        playlists = new HashMap<>();
+        saveAllPlaylists();
     }
 }

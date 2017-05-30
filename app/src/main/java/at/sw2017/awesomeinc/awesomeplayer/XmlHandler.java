@@ -36,8 +36,8 @@ public abstract class XmlHandler {
     public final String filenamePrefix = "moaIS17_";
 
     public XmlHandler(String name, Context context) {
-        this.filename = filenamePrefix + name.concat(".xml");
-        this.name = name;
+        this.filename = filenamePrefix + name.concat(".xml").replaceAll("[^A-Za-z0-9.]", "");
+        this.name = name.replaceAll("[^A-Za-z0-9]", "");
         this.context = context;
     }
 

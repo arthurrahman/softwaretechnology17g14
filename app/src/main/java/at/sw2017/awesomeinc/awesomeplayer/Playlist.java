@@ -23,6 +23,7 @@ public class Playlist implements Serializable{
     }
 
     private void recalcDuration() {
+        this.duration = 0;
         for(Song s : songs) {
             this.duration += s.getDurationValue();
         }
@@ -75,6 +76,10 @@ public class Playlist implements Serializable{
     public void removeSong(Song song) {
         songs.remove(song);
         recalcDuration();
+    }
+
+    public ArrayList<Song> getSongs() {
+        return songs;
     }
 
     public void loadPlaylist(Context context) {

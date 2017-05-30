@@ -6,7 +6,6 @@ package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,17 +30,6 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
         for (String track : tracks) {
             this.trackList.add(new Song(track));
         }
-    }
-
-    public MusicListAdapter(Cursor queryCursor) {
-        this.trackList = new ArrayList<>();
-
-        if(queryCursor != null && queryCursor.moveToFirst())
-        {
-            while(queryCursor.moveToNext())
-                this.trackList.add(new Song(queryCursor));
-        }
-
     }
 
     public MusicListAdapter(ArrayList<Song> songList) {
@@ -74,10 +62,6 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
     @Override
     public int getItemCount() {
         return this.trackList.size();
-    }
-
-    public List<Song> getTrackList(){
-        return this.trackList;
     }
 
 
