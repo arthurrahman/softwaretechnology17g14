@@ -4,86 +4,88 @@ import android.content.Context;
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by julian on 30.05.17.
  */
 
 public class XmlPlaylists extends XmlHandler {
-    private ArrayList<String> names = null;
+    private HashMap<String, Playlist> playlists = null;
 
     public XmlPlaylists(String name, Context context) {
         super(name, context);
+        if(context != null)
+            rebuildMap();
     }
 
+    @Override
+    public void setContext(Context context) {
+        super.setContext(context);
+        rebuildMap();
+    }
 
-
-    public Playlist newPlaylist(String title) throws IOException, XmlPullParserException {
-        if(names == null)
-            getAllPlaylistNames();
-
-        if(names.contains(title))
-            return getPlaylist(title);
-
-        ArrayList<Playlist> playlists = new ArrayList<>();
-        for(String t: names) {
-            try {
-                playlists.add(getPlaylist(t));
-            } catch (Exception e) {
-                Log.e("Playlists", "Critical internal error happened: " + e.getMessage());
-                return null;
+    private void rebuildMap() {
+        playlists = new HashMap<>();
+        try {
+            readStart();
+            while (xmlReader.next() != XmlPullParser.END_DOCUMENT) {
+                if (xmlReader.getEventType() != XmlPullParser.START_TAG)
+                    continue;
+                String title = readTag();
+                Playlist p = new Playlist(title);
+                p.loadPlaylist(context);
+                playlists.put(title, p);
             }
+            readEnd();
+        } catch (Exception e) {
+            Log.e("XmlPlaylists", "Critical error during rebuildMap: " + e.getMessage());
         }
 
-        Playlist p = new Playlist(title);
-        playlists.add(p);
+    }
 
-        saveAllPlaylists(playlists);
+    public Playlist newPlaylist(String title) {
+        Playlist p = getPlaylist(title);
+
+        if(p != null)
+            return p;
+
+        p = new Playlist(title);
+        playlists.put(title, p);
+
+        saveAllPlaylists();
         return p;
     }
 
 
-    public void saveAllPlaylists(ArrayList<Playlist> playlists) throws IOException {
-
-        writeStart();
-        for (Playlist p: playlists) {
-            writeTag("Title", p.getTitle());
-            p.savePlaylist(context);
+    public void saveAllPlaylists() {
+        try {
+            writeStart();
+            for (Playlist p: playlists.values()) {
+                writeTag("Title", p.getTitle());
+                p.savePlaylist(context);
+            }
+            writeEnd();
+        } catch (Exception e) {
+            Log.e("XmlPlaylists", "Critical error during newPlaylist: " + e.getMessage());
+            return;
         }
-        writeEnd();
     }
 
-    public ArrayList<String> getAllPlaylistNames()  throws XmlPullParserException, IOException {
-        if(names != null)
-            return names;
-
-        names = new ArrayList<>();
-
-        readStart();
-        while (xmlReader.next() != XmlPullParser.END_DOCUMENT) {
-            if (xmlReader.getEventType() != XmlPullParser.START_TAG)
-                continue;
-
-            names.add(readTag());
-        }
-        readEnd();
-
-        return names;
-
+    public ArrayList<String> getAllPlaylistNames()  {
+        return new ArrayList<>(playlists.keySet());
     }
 
+    public ArrayList<Playlist> getAllPlaylists()  {
+        return new ArrayList<>(playlists.values());
+    }
 
-    public Playlist getPlaylist(String title)  throws XmlPullParserException, IOException  {
-        if(names == null)
-            getAllPlaylistNames();
-
-        Playlist p = new Playlist(title);
-        p.loadPlaylist(context);
-
-        return p;
+    public Playlist getPlaylist(String title)   {
+        if(playlists.containsKey(title))
+            return playlists.get(title);
+        else
+            return null;
     }
 }

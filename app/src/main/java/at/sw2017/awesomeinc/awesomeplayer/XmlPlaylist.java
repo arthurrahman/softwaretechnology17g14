@@ -4,9 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -18,32 +16,38 @@ public class XmlPlaylist extends XmlHandler {
         super(name, context);
     }
 
-    public ArrayList<Song>  getAllSongs()  throws XmlPullParserException, IOException {
+    public ArrayList<Song>  getAllSongs()  {
         ArrayList<Song> songList = new ArrayList<>();
+        try {
+            readStart();
+            while (xmlReader.next() != XmlPullParser.END_DOCUMENT) {
+                if (xmlReader.getEventType() != XmlPullParser.START_TAG)
+                    continue;
 
-        readStart();
-        while (xmlReader.next() != XmlPullParser.END_DOCUMENT) {
-            if (xmlReader.getEventType() != XmlPullParser.START_TAG)
-                continue;
+                Song s = new Song();
+                readOneObject("Song", s);
 
-            Song s = new Song();
-            readOneObject("Song", s);
-
-            songList.add(s);
+                songList.add(s);
+            }
+            readEnd();
+        } catch (Exception e) {
+            Log.d("XmlPlaylist", "Critical error during getAllSongs: " + e.getMessage());
         }
-        readEnd();
-
         return songList;
 
     }
 
-    public void saveAllSongs(ArrayList<Song> songs) throws IOException {
+    public void saveAllSongs(ArrayList<Song> songs)  {
 
-        writeStart();
-        for (Song s: songs) {
-            writeOneObject("Song", s);
+        try {
+            writeStart();
+            for (Song s: songs) {
+                writeOneObject("Song", s);
+            }
+            writeEnd();
+        } catch (Exception e) {
+            Log.d("XmlPlaylist", "Critical error during saveAllSongs: " + e.getMessage());
         }
-        writeEnd();
 
     }
 }

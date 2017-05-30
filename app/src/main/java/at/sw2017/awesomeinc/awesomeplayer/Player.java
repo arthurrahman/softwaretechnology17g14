@@ -16,9 +16,6 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -68,13 +65,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
                 EditText plName = (EditText) dialog.findViewById(R.id.newPlaylistName);
                 XmlPlaylists xmlPlaylist = new XmlPlaylists("Playlists", view.getContext());
                 if(plName.getText() != null) {
-                    try {
-                        xmlPlaylist.newPlaylist(plName.getText().toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (XmlPullParserException e) {
-                        e.printStackTrace();
-                    }
+                    xmlPlaylist.newPlaylist(plName.getText().toString());
                 }
 
                 dialog.dismiss();
@@ -89,13 +80,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         menu.add(0, 1, 0, R.string.action_addToPlaylist);
         XmlPlaylists xmlPlaylists = new XmlPlaylists("Playlists", this);
         ArrayList<String> playLists = null;
-        try {
-            playLists = xmlPlaylists.getAllPlaylistNames();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        playLists = xmlPlaylists.getAllPlaylistNames();
 
         for(String s : playLists) {
             menu.add(1, 1, 0, s);

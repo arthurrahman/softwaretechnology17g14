@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,13 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -38,27 +32,6 @@ public class Playlists extends Fragment {
         playlists = new ArrayList<>();
     }
 
-    public Playlist newPlaylist(String title) {
-        Playlist p = new Playlist(title);
-        playlists.add(p);
-        try {
-            xmlPlaylists.saveAllPlaylists(playlists);
-        } catch (Exception e) {
-            Log.e("Playlists", "Critical internal error happened: " + e.getMessage());
-            return null;
-        }
-
-        return p;
-    }
-
-    public ArrayList<String> getPlaylistNames() {
-        try {
-            return xmlPlaylists.getAllPlaylistNames();
-        } catch (Exception e) {
-            Log.e("Playlists", "Critical internal error happened: " + e.getMessage());
-            return null;
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -83,7 +56,7 @@ public class Playlists extends Fragment {
                 EditText plName = (EditText) dialog.findViewById(R.id.newPlaylistName);
 
                 if(plName.getText() != null) {
-                    newPlaylist(plName.getText().toString());
+                    xmlPlaylists.newPlaylist(plName.getText().toString());
                 }
 
                 dialog.dismiss();
@@ -124,23 +97,7 @@ public class Playlists extends Fragment {
             public void run() {
                 // ------------------------------------------------------
                 // Load XML
-                List<String> playlistNames = new ArrayList<String>();
-                try {
-                    playlistNames = xmlPlaylists.getAllPlaylistNames();
-                } catch (Exception e) {
-                    Log.e("Playlists", "Critical internal error happened: " + e.getMessage());
-                    return;
-                }
-
-                for(String title: playlistNames) {
-                    try {
-                        playlists.add(xmlPlaylists.getPlaylist(title));
-                    } catch (Exception e) {
-                        Log.e("Playlists", "Critical internal error happened: " + e.getMessage());
-                        return;
-                    }
-                }
-
+                playlists.addAll(xmlPlaylists.getAllPlaylists());
                 // ------------------------------------------------------
 
                 final PlaylistAdapter pl = new PlaylistAdapter(playlists);

@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,12 +52,7 @@ public class Songs extends Fragment {
             @Override
             public void run() {
 
-                try {
-                    songs = xmlSongs.getAllSongs();
-                } catch (Exception e) {
-                    Log.e("Songs", "CRITICAL ERROR: " + e.getMessage());
-                    return;
-                }
+                songs = xmlSongs.getAllSongs();
 
                 HashSet<String> uris = new HashSet<String>();
                 for(Song song : songs) {
@@ -94,12 +88,7 @@ public class Songs extends Fragment {
                     }
                 }
 
-                try {
-                    xmlSongs.SaveAllSongs(songs);
-                } catch(Exception e){
-                    Log.e("Songs", "CRITICAL ERROR: " + e.getMessage());
-                    return;
-                }
+                xmlSongs.SaveAllSongs(songs);
 
                 final MusicListAdapter da = new MusicListAdapter(songs);
                 getActivity().runOnUiThread(new Runnable() {

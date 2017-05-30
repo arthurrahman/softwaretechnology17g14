@@ -1,7 +1,6 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -82,22 +81,15 @@ public class Playlist implements Serializable{
         if(context != null)
             xmlPlaylist.setContext(context);
 
-        try {
-            songs = xmlPlaylist.getAllSongs();
-        } catch (Exception e) {
-            Log.e("Playlist", "Critical internal error happened: " + e.getMessage());
-        }
+        songs = xmlPlaylist.getAllSongs();
+        recalcDuration();
     }
 
     public void savePlaylist(Context context) {
         if (context != null)
             xmlPlaylist.setContext(context);
 
-        try {
-            xmlPlaylist.saveAllSongs(songs);
-        } catch (Exception e) {
-            Log.e("Playlist", "Critical internal error happened: " + e.getMessage());
-        }
+        xmlPlaylist.saveAllSongs(songs);
     }
 }
 
