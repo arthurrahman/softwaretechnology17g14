@@ -4,8 +4,6 @@ package at.sw2017.awesomeinc.awesomeplayer;
  * Created by julian on 19.04.17.
  */
 
-import android.database.Cursor;
-
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -36,9 +34,7 @@ public class ListViewUnitTest {
 
     @Test
     public void test_invalidDataAdapter() throws Exception {
-        Cursor cur = null;
-
-        MusicListAdapter da = new MusicListAdapter(cur);
+        MusicListAdapter da = new MusicListAdapter((ArrayList<Song>)null);
 
         assertNotEqual(null, da);
         assertEquals(0, da.getItemCount() );
@@ -58,9 +54,9 @@ public class ListViewUnitTest {
 
  @Test
     public void test_createPlaylistDataAdapter() throws Exception {
-        List<String> lst = new ArrayList<>();
-        lst.add("asdf1");
-        lst.add("asdf2");
+        ArrayList<Playlist> lst = new ArrayList<>();
+        lst.add(new Playlist("asdf1"));
+        lst.add(new Playlist("asdf2"));
         PlaylistAdapter da = new PlaylistAdapter(lst);
 
         assertNotEqual(null, da);
@@ -71,9 +67,7 @@ public class ListViewUnitTest {
 
  @Test
     public void test_invalidPlaylistDataAdapter() throws Exception {
-        List<String> testList = null;
-
-        PlaylistAdapter da = new PlaylistAdapter(testList);
+        PlaylistAdapter da = new PlaylistAdapter(null);
 
         assertNotEqual(null, da);
         assertEquals(0, da.getItemCount() );

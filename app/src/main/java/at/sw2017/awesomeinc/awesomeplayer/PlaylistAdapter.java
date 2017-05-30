@@ -16,14 +16,11 @@ import java.util.List;
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistItemViewHolder> {
     private List<Playlist> playlist;
 
-    public PlaylistAdapter(List<String> pLists) {
-        this.playlist = new ArrayList<Playlist>();
+    public PlaylistAdapter(ArrayList<Playlist> playLists) {
+        if(playLists == null)
+            playLists = new ArrayList<>();
 
-        if(pLists != null) {
-            for (int i = 0; i < pLists.size(); i++) {
-                this.playlist.add(new Playlist(pLists.get(i), i));
-            }
-        }
+        this.playlist = playLists;
     }
 
     @Override

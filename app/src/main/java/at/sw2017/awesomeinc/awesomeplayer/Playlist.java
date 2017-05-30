@@ -1,57 +1,32 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
-import android.database.Cursor;
-import android.provider.MediaStore;
+import android.content.Context;
+import android.util.Log;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created on 26.05.17.
  */
 
 public class Playlist implements Serializable{
-    private int id;
     private String title;
-    private int duration;
-    // TODO: Find suitable songs link
+    private long duration;
+    private final XmlPlaylist xmlPlaylist;
+    private ArrayList<Song> songs;
 
-    public Playlist(String title, int id) {
-        this.id = id;
+    public Playlist(String title) {
         this.title = title;
+        xmlPlaylist = new XmlPlaylist(this.title, null);
+        songs = new ArrayList<>();
         recalcDuration();
     }
 
-    /*public Playlist(Cursor cur) {
-        int id_Id, id_Artist, id_Title, id_Data, id_Display_Name, id_Duration, id_Album;
-
-        id_Id = cur.getColumnIndex(MediaStore.Audio.Media._ID);
-        id_Artist = cur.getColumnIndex(MediaStore.Audio.Media.ARTIST);
-        id_Title = cur.getColumnIndex(MediaStore.Audio.Media.TITLE);
-        id_Data = cur.getColumnIndex(MediaStore.Audio.Media.DATA);
-        id_Display_Name = cur.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME);
-        id_Duration = cur.getColumnIndex(MediaStore.Audio.Media.DURATION);
-        id_Album = cur.getColumnIndex(MediaStore.Audio.Media.ALBUM);
-
-        this.id = cur.getString(id_Id);
-        this.title = cur.getString(id_Title);
-        this.artist = cur.getString(id_Artist);
-        this.display_name = cur.getString(id_Display_Name);
-        this.duration = cur.getString(id_Duration);
-        this.uri = cur.getString(id_Data);
-        this.album = cur.getString(id_Album);
-
-
-        this.isPlayable = true;
-        //this.pointer = cur;
-    }*/
-
     private void recalcDuration() {
-        // TODO: calculate whole duration on list changes
-        this.duration = 0;
-    }
-
-    public int getId() {
-        return id;
+        for(Song s : songs) {
+            this.duration += s.getDurationValue();
+        }
     }
 
     public String getTitle() {
@@ -70,7 +45,7 @@ public class Playlist implements Serializable{
             return "0:00";
         }
 
-        Long time = Long.valueOf(duration);
+        Long time = duration;
 
         long seconds = time/1000;
         long minutes = seconds/60;
@@ -85,8 +60,8 @@ public class Playlist implements Serializable{
 
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Long getDurationValue() {
+        return this.duration;
     }
 
     public void setTitle(String title) {
@@ -94,19 +69,35 @@ public class Playlist implements Serializable{
     }
 
     public void addSong(Song song) {
-        // TODO: add song
+        songs.add(song);
+        recalcDuration();
     }
 
-    public void removeSong(String id) {
-        // TODO: remove song with id
+    public void removeSong(Song song) {
+        songs.remove(song);
+        recalcDuration();
     }
 
-    public void loadPlaylist() {
-        // TODO: load Playlist from XML file
+    public void loadPlaylist(Context context) {
+        if(context != null)
+            xmlPlaylist.setContext(context);
+
+        try {
+            songs = xmlPlaylist.getAllSongs();
+        } catch (Exception e) {
+            Log.e("Playlist", "Critical internal error happened: " + e.getMessage());
+        }
     }
 
-    public void savePlaylist() {
-        // TODO: Save playlist to XML file
+    public void savePlaylist(Context context) {
+        if (context != null)
+            xmlPlaylist.setContext(context);
+
+        try {
+            xmlPlaylist.saveAllSongs(songs);
+        } catch (Exception e) {
+            Log.e("Playlist", "Critical internal error happened: " + e.getMessage());
+        }
     }
 }
 

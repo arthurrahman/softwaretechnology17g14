@@ -1,14 +1,11 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
-import android.content.ContentResolver;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +19,27 @@ import java.util.List;
  */
 
 public class Playlists extends Fragment {
-    private RecyclerView playlist;
+    private RecyclerView vw_playlist;
+    private final XmlPlaylists xmlPlaylists;
+    private final ArrayList<Playlist> playlists;
+
+    public Playlists() {
+        xmlPlaylists = new XmlPlaylists("Playlists", null);
+        playlists = new ArrayList<>();
+    }
+
+    public Playlist newPlaylist(String title) {
+        Playlist p = new Playlist(title);
+        playlists.add(p);
+        try {
+            xmlPlaylists.saveAllPlaylists(playlists);
+        } catch (Exception e) {
+            Log.e("Playlists", "Critical internal error happened: " + e.getMessage());
+            return null;
+        }
+
+        return p;
+    }
 
     @Nullable
     @Override
@@ -33,30 +50,42 @@ public class Playlists extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        xmlPlaylists.setContext(view.getContext());
 
-        playlist = (RecyclerView) view.findViewById(R.id.playlist);
-        playlist.setNestedScrollingEnabled(false);
-        playlist.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        vw_playlist = (RecyclerView) view.findViewById(R.id.playlist);
+        vw_playlist.setNestedScrollingEnabled(false);
+        vw_playlist.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                // TODO: Load playlists from file ...
                 // ------------------------------------------------------
-                // Just for testing, need to be replaced by XML File
-                List<String> pLists = new ArrayList<String>();
-                pLists.add("Taylor Swift Best Of");
-                pLists.add("Hip Hop");
-                pLists.add("Charts");
-                pLists.add("Party Tracks");
+                // Load XML
+                List<String> playlistNames = new ArrayList<String>();
+                try {
+                    playlistNames = xmlPlaylists.getAllPlaylistNames();
+                } catch (Exception e) {
+                    Log.e("Playlists", "Critical internal error happened: " + e.getMessage());
+                    return;
+                }
+
+                for(String title: playlistNames) {
+                    try {
+                        playlists.add(xmlPlaylists.getPlaylist(title));
+                    } catch (Exception e) {
+                        Log.e("Playlists", "Critical internal error happened: " + e.getMessage());
+                        return;
+                    }
+                }
+
                 // ------------------------------------------------------
 
-                final PlaylistAdapter pl = new PlaylistAdapter(pLists);
+                final PlaylistAdapter pl = new PlaylistAdapter(playlists);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        playlist.setAdapter(pl);
-                        playlist.setId(R.id.playlist);
+                        vw_playlist.setAdapter(pl);
+                        vw_playlist.setId(R.id.playlist);
                     }
                 });
             }

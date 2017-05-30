@@ -45,6 +45,9 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
     }
 
     public MusicListAdapter(ArrayList<Song> songList) {
+        if(songList == null)
+            songList = new ArrayList<>();
+
         this.trackList = songList;
     }
 

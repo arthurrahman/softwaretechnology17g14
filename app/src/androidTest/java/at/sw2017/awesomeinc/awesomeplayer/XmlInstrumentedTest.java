@@ -46,7 +46,7 @@ public class XmlInstrumentedTest {
 
         xml.SaveAllSongs(al);
 
-        File f = new File(activity.getExternalFilesDir(null), "Songs.xml");
+        File f = new File(activity.getExternalFilesDir(null), xml.getFilename());
 
         assertEquals(true, f.exists());
     }
@@ -84,7 +84,7 @@ public class XmlInstrumentedTest {
         xml.setContext(context);
         xml.SaveAllSongs(new ArrayList<Song>());
 
-        File f = new File(activity.getExternalFilesDir(null), "test_write_empty.xml");
+        File f = new File(activity.getExternalFilesDir(null), xml.getFilename());
         assertEquals(true, f.exists());
 
         ArrayList<Song> list = xml.getAllSongs();
@@ -97,17 +97,18 @@ public class XmlInstrumentedTest {
         Activity activity = mainActivityActivityTestRule.getActivity();
 
         String name = "test_non_existend";
-        File f = new File(context.getExternalFilesDir(null), name.concat(".xml"));
+        XmlSongList xml = new XmlSongList(name, context);
+
+        File f = new File(context.getExternalFilesDir(null), xml.getFilename());
 
         if(f.exists())
             f.delete();
 
         assertEquals(false, f.exists());
 
-        XmlSongList xml = new XmlSongList(name, context);
 
         ArrayList<Song> list = xml.getAllSongs();
-        f = new File(context.getExternalFilesDir(null), name.concat(".xml"));
+        f = new File(context.getExternalFilesDir(null), xml.getFilename());
         assertEquals(true, f.exists());
         assertEquals(0, list.size());
     }

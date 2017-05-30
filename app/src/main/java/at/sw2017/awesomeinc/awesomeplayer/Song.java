@@ -15,7 +15,7 @@ public class Song implements Serializable{
     private String artist;
     private String album;
     private String display_name;
-    private String duration;
+    private long duration;
     private String uri;
     private boolean isPlayable;
 
@@ -25,14 +25,14 @@ public class Song implements Serializable{
         this.isPlayable = false;
         this.title = trackName;
         this.display_name = trackName;
-        this.duration = "0:00";
+        this.duration = 0;
 
     }
 
     public Song() {
         this.id = "1";
         this.isPlayable = false;
-        this.duration = "0:00";
+        this.duration = 0;
     }
 
     public Song(Cursor cur) {
@@ -50,7 +50,7 @@ public class Song implements Serializable{
         this.title = cur.getString(id_Title);
         this.artist = cur.getString(id_Artist);
         this.display_name = cur.getString(id_Display_Name);
-        this.duration = cur.getString(id_Duration);
+        this.duration = Long.valueOf(cur.getString(id_Duration));
         this.uri = cur.getString(id_Data);
         this.album = cur.getString(id_Album);
 
@@ -96,11 +96,11 @@ public class Song implements Serializable{
 
     public String getDuration() {
 
-        if(duration == null) {
+        if(duration == 0) {
             return "0:00";
         }
 
-        Long time = Long.valueOf(duration);
+        Long time = duration;
 
         long seconds = time/1000;
         long minutes = seconds/60;
@@ -113,6 +113,10 @@ public class Song implements Serializable{
 
         return format_duration;
 
+    }
+
+    public Long getDurationValue() {
+        return this.duration;
     }
 
     public void setPlayable(boolean playable) {
@@ -135,7 +139,7 @@ public class Song implements Serializable{
         this.display_name = display_name;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 

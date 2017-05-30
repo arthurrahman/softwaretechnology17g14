@@ -67,14 +67,14 @@ public class SongUnitTest {
     @Test
     public void test_Song_Duration() throws Exception {
         Song s = new Song("testDuration");
-        s.setDuration("149568");
+        s.setDuration(149568L);
         assertEquals("2:29", s.getDuration());
     }
 
     @Test
     public void test_Song_DurationEmpty() throws Exception {
         Song s = new Song("testDuration");
-        s.setDuration(null);
+        s.setDuration(0);
         assertEquals("0:00", s.getDuration());
     }
 
