@@ -12,6 +12,7 @@ import android.support.test.espresso.action.GeneralSwipeAction;
 import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Swipe;
 import android.support.test.espresso.action.Tap;
+import android.support.test.espresso.action.Tapper;
 import android.support.test.espresso.util.HumanReadables;
 import android.support.test.espresso.util.TreeIterables;
 import android.support.test.rule.ActivityTestRule;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 
 import org.hamcrest.Matcher;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -37,6 +40,7 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.action.ViewActions.typeTextIntoFocusedView;
 
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -158,6 +162,38 @@ public class ListViewInstrumentedTest {
         onView(withId(R.id.action_search)).perform(click());
         onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!"));
         onView(withText("Test!")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void test_searchSelectionMenu() throws Exception {
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        onView(withText("Songs")).perform(click());
+
+        Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals("A"));
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        Thread.sleep(100);
+        onView(withText("Search by title")).perform(click());
+        Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals(""));
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        Thread.sleep(100);
+        onView(withText("Search by title")).perform(click());
+        Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals("A"));
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        Thread.sleep(100);
+        onView(withText("Search by album")).perform(click());
+        Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals("AB"));
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        Thread.sleep(100);
+        onView(withText("Search by album")).perform(click());
+        Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals("A"));
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        Thread.sleep(100);
+        onView(withText("Search by artist")).perform(click());
+        Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals("AC"));
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        Thread.sleep(100);
+        onView(withText("Search by artist")).perform(click());
+        Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals("A"));
     }
 
     /*
