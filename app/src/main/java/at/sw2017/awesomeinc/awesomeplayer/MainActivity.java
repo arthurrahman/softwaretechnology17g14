@@ -1,32 +1,22 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
-import android.content.ContentResolver;
-import android.content.Context;
+
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.constraint.ConstraintLayout;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
@@ -81,18 +71,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextChange(String query) {
-        /*search_query = query;
-
-        init_fragment = new Songs();
-        Bundle bundl = new Bundle();
-        bundl.putString("search_item", search_query);
-        init_fragment.setArguments(bundl);
-
-        if(init_fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_main, init_fragment);
-            ft.commit();
-        }*/
         if(init_fragment == null)
         {
             displaySelectedScreen(R.id.nav_songs);
@@ -109,19 +87,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-
-        /*search_query = query;
-
-        init_fragment = new Songs();
-        Bundle bundl = new Bundle();
-        bundl.putString("search_item", search_query);
-        init_fragment.setArguments(bundl);
-
-        if(init_fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_main, init_fragment);
-            ft.commit();
-        }*/
         return false;
     }
 
