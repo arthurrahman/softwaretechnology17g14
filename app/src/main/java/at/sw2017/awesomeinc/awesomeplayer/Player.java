@@ -5,10 +5,12 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 
 public class Player extends AppCompatActivity implements View.OnClickListener{
     static MediaPlayer media_player;
+    static Song current_song;
     ArrayList<Song> song_list;
     int position;
     Uri uri;
@@ -27,6 +30,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     SeekBar seekbar;
     Button bt_play, bt_fast_fw, bt_rew, bt_next, bt_prev;
     TextView txt_songname;
+    RatingBar rab_stars;
 
     protected static boolean is_playing(){
         if(media_player==null)
@@ -48,12 +52,14 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         bt_rew = (Button) findViewById(R.id.bt_rew);
         bt_next = (Button) findViewById(R.id.bt_next);
         bt_prev = (Button) findViewById(R.id.bt_prev);
+        rab_stars = (RatingBar) findViewById(R.id.rating);
 
         bt_play.setOnClickListener(this);
         bt_fast_fw.setOnClickListener(this);
         bt_rew.setOnClickListener(this);
         bt_next.setOnClickListener(this);
         bt_prev.setOnClickListener(this);
+
 
         seekbar = (SeekBar) findViewById(R.id.seekBar);
 
@@ -103,6 +109,34 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
 
         txt_songname = (TextView) findViewById(R.id.txt_songname);
         txt_songname.setText(song_list.get(position).getTitle());
+        current_song = song_list.get(position);
+
+        if (song_list.get(position).getRating() != 0)
+        {
+            float rat = song_list.get(position).getRating();
+            rab_stars.setRating((float)song_list.get(position).getRating());
+        }
+
+        // Listener for Rating Bar
+        rab_stars.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                int rat = (int)rating;
+
+                if (song_list.get(position).getRating() != rat) {
+
+                    // TODO
+                    // Set rating to original tracklist
+                    Intent i = new Intent("com.yourcompany.testIntent");
+                    i.putExtra("rating", song_list.get(position).getRating());
+                    i.putExtra("pos", position);
+                    //startActivityForResult(i, 0);
+                    sendBroadcast(i);
+                    current_song.setRating(rat);
+                }
+            }
+        });
+
     }
 
     public void handleSeekbar(){
@@ -194,6 +228,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         uri = Uri.parse(song_list.get(position).getURI());
         media_player = MediaPlayer.create(getApplicationContext(),uri);
         txt_songname.setText(song_list.get(position).getTitle());
+        current_song = song_list.get(position);
         seekbar.setMax(media_player.getDuration());
         handleSeekbar();
         //media_player.start();
@@ -207,6 +242,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         uri = Uri.parse(song_list.get(position).getURI());
         media_player = MediaPlayer.create(getApplicationContext(),uri);
         txt_songname.setText(song_list.get(position).getTitle());
+        current_song = song_list.get(position);
         seekbar.setMax(media_player.getDuration());
         // handleSeekbar();
         //media_player.start();

@@ -87,5 +87,20 @@ public class SongUnitTest {
         assertEquals(true, s.isPlayable());
     }
 
+    @Test
+    public void test_Rating() throws  Exception {
+        Song s = new Song("testRating");
+        s.setRating(0);
+        assertEquals(0, s.getRating());
+        s.setRating(5);
+        assertEquals(5, s.getRating());
+    }
+
+    @Test
+    public void test_Rating_Empty() throws Exception {
+        Song s = new Song("testRatingEmpty");
+        assertEquals(0, s.getRating());
+    }
+
 
 }

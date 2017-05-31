@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     android:id="@+id/player">
 
+    <android.widget.RatingBar
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:isIndicator="false"
+        android:layout_gravity="center"
+        android:stepSize="1"
+        android:numStars="5" />
+
     <ImageView
         android:id="@+id/img_view"
         android:layout_width="match_parent"
@@ -21,6 +30,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
+
 
         <Button
             android:id="@+id/bt_prev"

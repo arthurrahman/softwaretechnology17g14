@@ -4,18 +4,27 @@ package at.sw2017.awesomeinc.awesomeplayer;
  * Created by julian on 19.04.17.
  */
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.PendingIntent.getActivity;
+import static android.support.test.InstrumentationRegistry.getArguments;
 
 /**
  * Created by root on 08.03.17.
@@ -24,6 +33,16 @@ import java.util.List;
 public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.MusicItemViewHolder> {
 
     private List<Song> trackList;
+    public IntentFilter filter = new IntentFilter("com.yourcompany.testIntent");
+    public BroadcastReceiver receiver =  new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            float rating = intent.getExtras().getFloat("rating");
+            Toast.makeText(context, String.valueOf(rating), Toast.LENGTH_LONG).show();
+        }
+    };
+
 
     public MusicListAdapter(List<String> tracks) {
         this.trackList = new ArrayList<Song>() ;
@@ -63,7 +82,12 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
         musicItemViewHolder.txt_duration.setText(selectedSong.getDuration());
 
         musicItemViewHolder.bind(i);
+
+        receiver.goAsync();
+
     }
+
+
 
     @Override
     public int getItemCount() {
