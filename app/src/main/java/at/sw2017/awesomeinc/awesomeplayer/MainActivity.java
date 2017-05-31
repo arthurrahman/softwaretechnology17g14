@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity
     Fragment init_fragment = null;
     Fragment song_fragment = null;
     String search_query = null;
+    String search_selection = "A";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,9 @@ public class MainActivity extends AppCompatActivity
             ft.replace(R.id.content_main, init_fragment);
             ft.commit();
         }*/
+
+        // TODO: check if playlist view is selected and react accordingly
+
         if(init_fragment == null)
         {
             displaySelectedScreen(R.id.nav_songs);
@@ -101,7 +105,7 @@ public class MainActivity extends AppCompatActivity
         {
             RecyclerView view = ((Songs)init_fragment).getRecyclerView();
             MusicListAdapter test = (MusicListAdapter) view.getAdapter();
-            test.filterSongsAllAttributes(query);
+            test.filterSongsByAttributes(query, search_selection);
         }
 
         return true;
@@ -135,9 +139,37 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.select_search_title) {
+            if (item.isChecked()) {
+                item.setChecked(false);
+                search_selection = search_selection.replace("A", "");
+            } else {
+                item.setChecked(true);
+                search_selection = search_selection + "A";
+            }
+        } else if (id == R.id.select_search_album) {
+            if (item.isChecked()) {
+                item.setChecked(false);
+                search_selection = search_selection.replace("B", "");
+            } else {
+                item.setChecked(true);
+                search_selection = search_selection + "B";
+            }
+        } else if (id == R.id.select_search_artist) {
+            if (item.isChecked()) {
+                item.setChecked(false);
+                search_selection = search_selection.replace("C", "");
+            } else {
+                item.setChecked(true);
+                search_selection = search_selection + "C";
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public String getSearchSelection() {
+        return search_selection;
     }
 
     private void displaySelectedScreen(int id) {

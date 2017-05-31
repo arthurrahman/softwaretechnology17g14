@@ -2,8 +2,30 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/select_search_title"
+        android:checkable="true"
+        android:checked="true"
+        android:enabled="true"
         android:orderInCategory="100"
+        android:title="@string/search_by_title"
+        android:visible="true" />
+    <item
+        android:id="@+id/select_search_album"
+        android:checkable="true"
+        android:enabled="true"
+        android:orderInCategory="101"
+        android:title="@string/search_by_album"
+        android:visible="true" />
+    <item
+        android:id="@+id/select_search_artist"
+        android:checkable="true"
+        android:enabled="true"
+        android:orderInCategory="102"
+        android:title="@string/search_by_artist"
+        android:visible="true" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="104"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 

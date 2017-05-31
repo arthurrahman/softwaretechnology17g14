@@ -94,7 +94,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
         return this.trackList;
     }
 
-    public void filterSongsArtist(String searchstring)
+    /*public void filterSongsArtist(String searchstring)
     {
         List<Song> filtered_list = new ArrayList();
 
@@ -155,6 +155,45 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
                 filtered_list.add(song);
             }
         }
+        // update recylcerview
+        displayed_trackList.clear();
+        if(!filtered_list.isEmpty())
+            displayed_trackList.addAll(filtered_list);
+        notifyDataSetChanged();
+        return;
+    }*/
+
+    public void filterSongsByAttributes(String searchstring, String selection) {
+        List<Song> filtered_list = new ArrayList();
+
+        for(Song song : trackList)
+        {
+            if(searchstring.isEmpty() || selection.isEmpty())
+            {
+                filtered_list.add(song);
+            } else {
+                boolean added = false;
+
+                if (selection.contains("A")) {
+                    if (song.getTitle().toLowerCase().contains(searchstring.toLowerCase())) {
+                        filtered_list.add(song);
+                        added = true;
+                    }
+                }
+                if (selection.contains("B") && !(added)) {
+                    if (song.getAlbum().toLowerCase().contains(searchstring.toLowerCase())) {
+                        filtered_list.add(song);
+                        added = true;
+                    }
+                }
+                if (selection.contains("C") && !(added)) {
+                    if (song.getArtist().toLowerCase().contains(searchstring.toLowerCase())) {
+                        filtered_list.add(song);
+                    }
+                }
+            }
+        }
+
         // update recylcerview
         displayed_trackList.clear();
         if(!filtered_list.isEmpty())
