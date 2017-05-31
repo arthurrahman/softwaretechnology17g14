@@ -52,6 +52,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
                 return true;
             default:
                 // Here he have to go to the playlist view
+                setContentView(R.layout.content_main);
+                getFragmentManager().beginTransaction().replace(R.id.content_main,
+                        new Playlists()).commit();
                 return super.onOptionsItemSelected(item);
         }
     }
