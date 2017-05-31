@@ -23,30 +23,41 @@ import java.util.List;
 
 public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.MusicItemViewHolder> {
 
+    private List<Song> displayed_trackList;
     private List<Song> trackList;
+
 
     public MusicListAdapter(List<String> tracks) {
         this.trackList = new ArrayList<Song>() ;
+        this.displayed_trackList = new ArrayList<Song>() ;
 
         for (String track : tracks) {
             this.trackList.add(new Song(track));
         }
+        displayed_trackList.addAll(trackList);
+        //displayed_trackList = trackList;
 
     }
 
     public MusicListAdapter(Cursor queryCursor) {
-        this.trackList = new ArrayList<>() ;
+        this.trackList = new ArrayList<Song>() ;
+        this.displayed_trackList = new ArrayList<Song>() ;
 
         if(queryCursor != null && queryCursor.moveToFirst())
         {
-            while(queryCursor.moveToNext())
+            while(queryCursor.moveToNext()) {
                 this.trackList.add(new Song(queryCursor));
+            }
+            displayed_trackList.addAll(trackList);
+            //displayed_trackList = trackList;
         }
 
     }
 
     public MusicListAdapter(ArrayList<Song> songList) {
         this.trackList = songList;
+        this.displayed_trackList = new ArrayList<Song>() ;
+        displayed_trackList.addAll(trackList);
     }
 
     @Override
@@ -60,22 +71,124 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
 
     @Override
     public void onBindViewHolder(MusicItemViewHolder musicItemViewHolder, final int i) {
-        final Song selectedSong = trackList.get(i);
+        final Song selectedSong = displayed_trackList.get(i);
         // get title for cardView presentation
         musicItemViewHolder.txt_title.setText(selectedSong.getTitleForCardView());
         musicItemViewHolder.txt_artist.setText(selectedSong.getArtist());
         musicItemViewHolder.txt_duration.setText(selectedSong.getDuration());
+
 
         musicItemViewHolder.bind(i);
     }
 
     @Override
     public int getItemCount() {
-        return this.trackList.size();
+        return this.displayed_trackList.size();
     }
 
     public List<Song> getTrackList(){
         return this.trackList;
+    }
+
+    public void filterSongsArtist(String searchstring)
+    {
+        List<Song> filtered_list = new ArrayList();
+
+        for(Song song : trackList)
+        {
+            if(searchstring.isEmpty())
+            {
+                filtered_list.add(song);
+            }
+            else if(song.getArtist().toLowerCase().contains(searchstring.toLowerCase()))
+            {
+                filtered_list.add(song);
+            }
+        }
+        // update recylcerview
+        displayed_trackList.clear();
+        if(!filtered_list.isEmpty())
+            displayed_trackList.addAll(filtered_list);
+        notifyDataSetChanged();
+        return;
+    }
+
+    public void filterSongsTitle(String searchstring)
+    {
+        List<Song> filtered_list = new ArrayList();
+
+        for(Song song : trackList)
+        {
+            if(searchstring.isEmpty())
+            {
+                filtered_list.add(song);
+            }
+            else if(song.getTitle().toLowerCase().contains(searchstring.toLowerCase()))
+            {
+                filtered_list.add(song);
+            }
+        }
+        // update recylcerview
+        displayed_trackList.clear();
+        if(!filtered_list.isEmpty())
+            displayed_trackList.addAll(filtered_list);
+        notifyDataSetChanged();
+        return;
+    }
+
+    public void filterSongsAlbum(String searchstring)
+    {
+        List<Song> filtered_list = new ArrayList();
+
+        for(Song song : trackList)
+        {
+            if(searchstring.isEmpty())
+            {
+                filtered_list.add(song);
+            }
+            else if(song.getAlbum().toLowerCase().contains(searchstring.toLowerCase()))
+            {
+                filtered_list.add(song);
+            }
+        }
+        // update recylcerview
+        displayed_trackList.clear();
+        if(!filtered_list.isEmpty())
+            displayed_trackList.addAll(filtered_list);
+        notifyDataSetChanged();
+        return;
+    }
+
+    public void filterSongsAllAttributes(String searchstring)
+    {
+        List<Song> filtered_list = new ArrayList();
+
+        for(Song song : trackList)
+        {
+            if(searchstring.isEmpty())
+            {
+                filtered_list.add(song);
+            }
+            else if(song.getTitle().toLowerCase().contains(searchstring.toLowerCase()) ||
+                    song.getAlbum().toLowerCase().contains(searchstring.toLowerCase()) ||
+                    song.getArtist().toLowerCase().contains(searchstring.toLowerCase()))
+            {
+                filtered_list.add(song);
+            }
+        }
+        // update recylcerview
+        displayed_trackList.clear();
+        if(!filtered_list.isEmpty())
+            displayed_trackList.addAll(filtered_list);
+        notifyDataSetChanged();
+        return;
+    }
+
+    public void displayAllSongs()
+    {
+        displayed_trackList = trackList;
+        notifyDataSetChanged();
+        return;
     }
 
 
@@ -95,7 +208,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
-                    context.startActivity(new Intent(context,Player.class).putExtra("pos",position).putExtra("songlist", (Serializable) trackList));
+                    context.startActivity(new Intent(context,Player.class).putExtra("pos",position).putExtra("songlist", (Serializable) displayed_trackList));
 
                 }
             });

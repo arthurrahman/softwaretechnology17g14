@@ -17,6 +17,7 @@ import android.support.test.espresso.util.TreeIterables;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
@@ -28,11 +29,19 @@ import java.util.concurrent.TimeoutException;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
+import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.action.ViewActions.typeTextIntoFocusedView;
+
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -115,6 +124,42 @@ public class ListViewInstrumentedTest {
         onView(withText("Songs")).perform(click());
         onView(withId(R.id.content_main)).perform(pressBack());
     }
+
+    @Test
+    public void test_ClickSearchBar() throws Exception {
+        onView(withId(R.id.action_search)).perform(click());
+    }
+
+    @Test
+    public void test_SearchBarText() throws Exception {
+        onView(withId(R.id.action_search)).perform(click());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!"));
+        onView(withText("Test!")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void test_SearchBarClearText() throws Exception {
+        onView(withId(R.id.action_search)).perform(click());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!"));
+        onView(withText("Test!")).check(matches(isDisplayed()));
+        onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!!!"));
+        onView(withText("Test!!!")).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void test_OpenSongThenSearch() throws Exception {
+
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        onView(withText("Songs")).perform(click());
+
+        onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
+
+        onView(withId(R.id.action_search)).perform(click());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!"));
+        onView(withText("Test!")).check(matches(isDisplayed()));
+    }
+
     /*
         @Test
         public void test_BesideSettingsButton() throws Exception {

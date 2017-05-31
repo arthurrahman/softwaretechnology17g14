@@ -1,22 +1,29 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
 
     Fragment init_fragment = null;
+    Fragment song_fragment = null;
+    String search_query = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        song_fragment = new Songs();
     }
 
     @Override
@@ -53,7 +62,32 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setQueryHint("Search for awesome artists...");
+        searchView.setOnQueryTextListener(this);
         return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String query) {
+        if(init_fragment == null)
+        {
+            displaySelectedScreen(R.id.nav_songs);
+        }
+        else if(init_fragment != null)
+        {
+            RecyclerView view = ((Songs)init_fragment).getRecyclerView();
+            MusicListAdapter test = (MusicListAdapter) view.getAdapter();
+            test.filterSongsAllAttributes(query);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
     }
 
     @Override
@@ -72,21 +106,32 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void displaySelectedScreen(int id) {
+        search_query = null;
+        Boolean flag = true;
         switch (id) {
             case R.id.nav_songs:
-                init_fragment = new Songs();
+                if(init_fragment == song_fragment)
+                {
+                    flag = false;
+                    break;
+                }
+                init_fragment = song_fragment;
+                Bundle bundl = new Bundle();
+                bundl.putString("search_item", search_query);
+                init_fragment.setArguments(bundl);
                 break;
             case R.id.nav_playlists:
                 break;
         }
 
-        if(init_fragment != null) {
+        if(init_fragment != null && flag == true) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, init_fragment);
             ft.commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        if(drawer.isDrawerOpen(GravityCompat.START))
+            drawer.closeDrawer(GravityCompat.START);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
