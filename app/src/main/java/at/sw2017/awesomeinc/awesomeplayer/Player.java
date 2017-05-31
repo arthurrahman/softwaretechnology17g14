@@ -1,6 +1,7 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -49,6 +51,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
                 createPlaylist();
                 return true;
             default:
+                // Here he have to go to the playlist view
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -64,8 +67,35 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
             public void onClick(View view) {
                 EditText plName = (EditText) dialog.findViewById(R.id.newPlaylistName);
                 XmlPlaylists xmlPlaylist = new XmlPlaylists("Playlists", view.getContext());
-                if(plName.getText() != null) {
-                    xmlPlaylist.newPlaylist(plName.getText().toString());
+                if(!plName.getText().toString().matches("")) {
+                    boolean exists = false;
+                    for(Playlist list : xmlPlaylist.getAllPlaylists())
+                    {
+                        if(list.getTitle().toString().matches(plName.getText().toString()))
+                        {
+                            exists = true;
+                        }
+                    }
+                    if(!exists)
+                        xmlPlaylist.newPlaylist(plName.getText().toString());
+                    else
+                    {
+                        Context context = getApplicationContext();
+                        CharSequence text = "Playlist already exists!";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                    }
+                }
+                else
+                {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Invalid Playlist Name!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 }
 
                 dialog.dismiss();
@@ -82,9 +112,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         ArrayList<String> playLists = null;
 
         playLists = xmlPlaylists.getAllPlaylistNames();
-
+        int playlistindex = 2;
         for(String s : playLists) {
-            menu.add(1, 1, 0, s);
+            menu.add(1, playlistindex++, 0, s);
         }
 
         return super.onPrepareOptionsMenu(menu);

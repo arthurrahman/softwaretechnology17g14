@@ -1,9 +1,10 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -55,8 +57,35 @@ public class Playlists extends Fragment {
             public void onClick(View view) {
                 EditText plName = (EditText) dialog.findViewById(R.id.newPlaylistName);
 
-                if(plName.getText() != null) {
-                    xmlPlaylists.newPlaylist(plName.getText().toString());
+                if(!plName.getText().toString().matches("")) {
+                    boolean exists = false;
+                    for(Playlist list : xmlPlaylists.getAllPlaylists())
+                    {
+                        if(list.getTitle().toString().matches(plName.getText().toString()))
+                        {
+                            exists = true;
+                        }
+                    }
+                    if(!exists)
+                        xmlPlaylists.newPlaylist(plName.getText().toString());
+                    else
+                    {
+                        // Toast that playlist exists already
+                        CharSequence text = "Playlist already exists!";
+                        int duration = Toast.LENGTH_SHORT;
+
+                        Toast toast = Toast.makeText(getActivity(), text, duration);
+                        toast.show();
+                    }
+                }
+                else
+                {
+                    // toast that playlist name is invalid
+                    CharSequence text = "Invalid Playlist Name!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(getActivity(), text, duration);
+                    toast.show();
                 }
 
                 dialog.dismiss();
