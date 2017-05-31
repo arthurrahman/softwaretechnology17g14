@@ -1,8 +1,6 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
-import android.app.Activity;
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.action.GeneralClickAction;
 import android.support.test.espresso.action.GeneralLocation;
@@ -10,10 +8,8 @@ import android.support.test.espresso.action.GeneralSwipeAction;
 import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Swipe;
 import android.support.test.espresso.action.Tap;
-import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -21,19 +17,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.swipeUp;
+import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by ramiro on 04.05.17.
@@ -62,7 +53,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
 
         Thread.sleep(1000);
         Assert.assertTrue(Player.is_playing());
@@ -75,7 +66,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
 
         onView(withId(R.id.bt_next)).perform(click());
 
@@ -90,7 +81,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
 
         Thread.sleep(1000);
         int startPosition = Player.getCurrentPosition();
@@ -110,7 +101,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
         Thread.sleep(1000);
         onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER, Press.FINGER));
         //Thread.sleep(1000);
@@ -130,7 +121,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
         onView(withId(R.id.bt_play)).perform(click());
 
         Thread.sleep(1000);
@@ -144,7 +135,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
         onView(withId(R.id.bt_prev)).perform(click());
 
         Thread.sleep(1000);
@@ -158,7 +149,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
         onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER, Press.FINGER));
 
         Thread.sleep(1000);
@@ -172,11 +163,11 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
 
         onView(withId(R.id.player)).perform(pressBack());
         Thread.sleep(1000);
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0, HelperFunction.clickChildViewWithId(R.id.title)));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
 
         Thread.sleep(1000);
         Assert.assertTrue(Player.is_playing());

@@ -1,16 +1,17 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +23,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     ArrayList<Song> song_list;
     int position;
     Uri uri;
-    Thread updateSeekBar;
 
     SeekBar seekbar;
     Button bt_play, bt_fast_fw, bt_rew, bt_next, bt_prev;
@@ -56,33 +56,11 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         bt_prev.setOnClickListener(this);
 
         seekbar = (SeekBar) findViewById(R.id.seekBar);
-        updateSeekBar = new Thread(){
-            @Override
-            public void run() {
-                int totalDuration = media_player.getDuration();
-                int currentPosition = 0;
-                while (currentPosition < totalDuration){
-                    try {
-                        sleep(500);
-                        currentPosition = media_player.getCurrentPosition();
-                        seekbar.setProgress(currentPosition);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                //super.run();
-            }
-        };
+
 
         if(media_player!=null){
             media_player.stop();
             media_player.release();
-            updateSeekBar.interrupt();
-            try {
-                updateSeekBar.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
 
         Intent i = getIntent();
@@ -90,19 +68,44 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         song_list = (ArrayList) b.getParcelableArrayList("songlist");
         position = b.getInt("pos",0);
 
-
-        //  u = Uri.parse(mySongs.get(position).toString());
         uri = Uri.parse(song_list.get(position).getURI());
         media_player = MediaPlayer.create(getApplicationContext(),uri);
-        media_player.start();
+
+        media_player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        media_player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                media_player.start();
+                seekbar.setMax(media_player.getDuration());
+                handleSeekbar();
+            }
+        });
+        media_player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                if(position + 1 < song_list.size()){
+                    nextSong();
+                }else{
+                    media_player.stop();
+                    media_player.reset();
+                    uri = Uri.parse(song_list.get(0).getURI());
+                    media_player = MediaPlayer.create(getApplicationContext(),uri);
+                    txt_songname.setText(song_list.get(0).getTitle());
+                    seekbar.setMax(media_player.getDuration());
+                    handleSeekbar();
+                    play();
+                }
+            }
+        });
+
         bt_play.setBackgroundResource(android.R.drawable.ic_media_pause);
         seekbar.setMax(media_player.getDuration());
 
         txt_songname = (TextView) findViewById(R.id.txt_songname);
         txt_songname.setText(song_list.get(position).getTitle());
+    }
 
-        updateSeekBar.start();
-
+    public void handleSeekbar(){
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -120,49 +123,94 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
             }
         });
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    int totalDuration = media_player.getDuration();
+                    int currentPosition = 0;
+                    while (media_player != null && currentPosition < totalDuration) {
+                        currentPosition = media_player.getCurrentPosition();
+                        seekbar.setProgress(currentPosition);
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            Log.e("Seekbar-Thread", e.getMessage(), e);
+                        }
+                    }
+                }catch (Exception e){
+                    Log.e("Seekbar-Thread2", e.getMessage(), e);
+                }
+            }
+        }).start();
     }
+
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id){
             case R.id.bt_play:
-                if(media_player.isPlaying()){
-                    bt_play.setBackgroundResource(android.R.drawable.ic_media_play);
-                    media_player.pause();
-                }
-                else {
-                    bt_play.setBackgroundResource(android.R.drawable.ic_media_pause);
-                    media_player.start();
-                }
-
+                play();
                 break;
             case R.id.bt_fast_fw:
-                media_player.seekTo(media_player.getCurrentPosition()+5000);
+                fastFoward();
                 break;
             case R.id.bt_rew:
-                media_player.seekTo(media_player.getCurrentPosition()-5000);
+                rewind();
                 break;
             case R.id.bt_next:
-                media_player.stop();
-                //mp.release();
-                position = (position+1)%song_list.size();
-                uri = Uri.parse(song_list.get(position).getURI());
-                media_player = MediaPlayer.create(getApplicationContext(),uri);
-                txt_songname.setText(song_list.get(position).getTitle());
-                seekbar.setMax(media_player.getDuration());
-                media_player.start();
+                nextSong();
                 break;
             case R.id.bt_prev:
-                media_player.stop();
-                //mp.release();
-                position = (position-1<0)? song_list.size()-1: position-1;
-                uri = Uri.parse(song_list.get(position).getURI());
-                media_player = MediaPlayer.create(getApplicationContext(),uri);
-                txt_songname.setText(song_list.get(position).getTitle());
-                seekbar.setMax(media_player.getDuration());
-                media_player.start();
+                previousSong();
                 break;
         }
     }
+
+    public void play(){
+        if(media_player.isPlaying()){
+            bt_play.setBackgroundResource(android.R.drawable.ic_media_play);
+            media_player.pause();
+        }
+        else {
+            bt_play.setBackgroundResource(android.R.drawable.ic_media_pause);
+            media_player.start();
+        }
+    }
+
+    public void fastFoward(){
+        media_player.seekTo(media_player.getCurrentPosition()+5000);
+    }
+
+    public void rewind(){
+        media_player.seekTo(media_player.getCurrentPosition()-5000);
+    }
+
+    public void nextSong(){
+        media_player.stop();
+        media_player.reset();
+        position = (position+1)%song_list.size();
+        uri = Uri.parse(song_list.get(position).getURI());
+        media_player = MediaPlayer.create(getApplicationContext(),uri);
+        txt_songname.setText(song_list.get(position).getTitle());
+        seekbar.setMax(media_player.getDuration());
+        handleSeekbar();
+        //media_player.start();
+        play();
+    }
+
+    public void previousSong(){
+        media_player.stop();
+        media_player.reset();
+        position = (position-1<0)? song_list.size()-1: position-1;
+        uri = Uri.parse(song_list.get(position).getURI());
+        media_player = MediaPlayer.create(getApplicationContext(),uri);
+        txt_songname.setText(song_list.get(position).getTitle());
+        seekbar.setMax(media_player.getDuration());
+        // handleSeekbar();
+        //media_player.start();
+        play();
+    }
+
 }

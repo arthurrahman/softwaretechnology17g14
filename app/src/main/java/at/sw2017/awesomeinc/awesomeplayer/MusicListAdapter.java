@@ -6,16 +6,12 @@ package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.database.Cursor;
-import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -58,6 +54,12 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
 
     }
 
+    public MusicListAdapter(ArrayList<Song> songList) {
+        this.trackList = songList;
+        this.displayed_trackList = new ArrayList<Song>() ;
+        displayed_trackList.addAll(trackList);
+    }
+
     @Override
     public MusicListAdapter.MusicItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         //View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.musiclist_item, null);
@@ -75,14 +77,8 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
         musicItemViewHolder.txt_artist.setText(selectedSong.getArtist());
         musicItemViewHolder.txt_duration.setText(selectedSong.getDuration());
 
-        musicItemViewHolder.txt_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(v.getContext(), selectedSong.getDuration(), Toast.LENGTH_SHORT).show();
-                Context context = v.getContext();
-                context.startActivity(new Intent(context,Player.class).putExtra("pos",i).putExtra("songlist", (Serializable) displayed_trackList));
-            }
-        });
+
+        musicItemViewHolder.bind(i);
     }
 
     @Override
@@ -244,6 +240,17 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
             this.txt_artist = (TextView) v.findViewById(R.id.artist);
             this.txt_title = (TextView) v.findViewById(R.id.title);
             this.txt_duration = (TextView) v.findViewById(R.id.duration);
+        }
+
+        public void bind(final int position){
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    context.startActivity(new Intent(context,Player.class).putExtra("pos",position).putExtra("songlist", (Serializable) displayed_trackList));
+
+                }
+            });
         }
     }
 }
