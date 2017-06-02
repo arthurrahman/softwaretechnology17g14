@@ -159,8 +159,8 @@ public class Database {
             {
                 Song song = visible_songs.get(i);
                 if(! (song.getTitle().toLowerCase().contains(searchstring.toLowerCase()) ||
-                        song.getAlbum().toLowerCase().contains(searchstring.toLowerCase()) ||
-                        song.getArtist().toLowerCase().contains(searchstring.toLowerCase())))
+                      song.getAlbum().toLowerCase().contains(searchstring.toLowerCase()) ||
+                      song.getArtist().toLowerCase().contains(searchstring.toLowerCase())))
                 {
                     visible_songs.remove(i);
                     i = 0;
@@ -178,7 +178,6 @@ public class Database {
                     iter.remove();
                 }
             }
-
         }
         else // If the search string is shorter, add cases that were deleted before
         {
@@ -193,6 +192,7 @@ public class Database {
                     {
                         visible_songs.add(song);
                     }
+
                 }
             }
         }
@@ -265,11 +265,9 @@ public class Database {
                     iter.remove();
                 }
             }
-
         }
         else // If the search string is shorter, add cases that were deleted before
         {
-
             for(int i = 0; i < all_songs.size(); i++)
             {
                 Song song = all_songs.get(i);
@@ -282,9 +280,8 @@ public class Database {
 
                 }
             }
-
         }
-        currentIndex = 0;
+
         prev_searchstring = searchstring;
         return visible_songs;
     }
@@ -348,6 +345,11 @@ public class Database {
     {
         int pos = all_songs.indexOf(currentSong());
         all_songs.get(pos).setRating(currentSong().getRating());
+        saveDatabase();
+    }
+    
+    public static void saveDatabase() {
+        xmlSongs.SaveAllSongs(all_songs);
     }
 
 }

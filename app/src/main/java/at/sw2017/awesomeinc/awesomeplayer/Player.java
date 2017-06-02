@@ -2,6 +2,7 @@ package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.TimedText;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     Button bt_play, bt_fast_fw, bt_rew, bt_next, bt_prev;
     TextView txt_songname;
     RatingBar rab_stars;
+    Thread seekbar_thread;
 
     protected static boolean is_playing(){
         if(media_player==null)
@@ -51,6 +53,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         bt_rew.setOnClickListener(this);
         bt_next.setOnClickListener(this);
         bt_prev.setOnClickListener(this);
+
 
         rab_stars.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -89,6 +92,29 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
                 media_player.seekTo(seekBar.getProgress());
             }
         });
+
+
+        if(seekbar_thread == null)
+            seekbar_thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    while(true) {
+                        if(Database.isPlaying()) {
+                            seekbar.setMax((int)Database.currentSong().getDurationValue());
+                            seekbar.setProgress(media_player.getCurrentPosition());
+                        }
+
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            //don't care
+                        }
+                    }
+                }
+            });
+        if(!seekbar_thread.isAlive())
+            seekbar_thread.start();
     }
 
 
@@ -162,6 +188,13 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
             public void onCompletion(MediaPlayer mp) {
                 Log.d("Media_player", "Completed");
                 nextSong();
+            }
+        });
+
+        media_player.setOnTimedTextListener(new MediaPlayer.OnTimedTextListener() {
+            @Override
+            public void onTimedText(MediaPlayer mp, TimedText text) {
+                Log.d("media_player", "Got timed text " + text);
             }
         });
 
