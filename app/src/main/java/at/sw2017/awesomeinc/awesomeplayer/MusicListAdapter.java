@@ -4,15 +4,22 @@ package at.sw2017.awesomeinc.awesomeplayer;
  * Created by julian on 19.04.17.
  */
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
+
+import static android.app.PendingIntent.getActivity;
+import static android.support.test.InstrumentationRegistry.getArguments;
 
 /**
  * Created by root on 08.03.17.
@@ -21,8 +28,6 @@ import java.util.List;
 public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.MusicItemViewHolder> {
 
     private List<Song> displayed_trackList;
-
-
 
     public MusicListAdapter() {
         this.displayed_trackList = Database.setVisibleSongs(Database.getVisibleSongs());
@@ -47,7 +52,11 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
 
 
         musicItemViewHolder.bind(i);
+
+
     }
+
+
 
     @Override
     public int getItemCount() {

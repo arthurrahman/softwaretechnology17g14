@@ -22,6 +22,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Player"></activity>
+
+
+
     </application>
 
 </manifest>
