@@ -17,6 +17,7 @@ public class Song implements Serializable{
     private String display_name;
     private String duration;
     private String uri;
+    private int rating;
     private boolean isPlayable;
 
 
@@ -26,13 +27,14 @@ public class Song implements Serializable{
         this.title = trackName;
         this.display_name = trackName;
         this.duration = "0:00";
-
+        this.rating = 0;
     }
 
     public Song() {
         this.id = "1";
         this.isPlayable = false;
         this.duration = "0:00";
+        this.rating = 0;
     }
 
     public Song(Cursor cur) {
@@ -59,6 +61,15 @@ public class Song implements Serializable{
         //this.pointer = cur;
     }
 
+    public int getRating()
+    {
+        return this.rating;
+    }
+
+    public void setRating(int rating)
+    {
+        this.rating = rating;
+    }
 
     public boolean isPlayable() {
         return isPlayable;

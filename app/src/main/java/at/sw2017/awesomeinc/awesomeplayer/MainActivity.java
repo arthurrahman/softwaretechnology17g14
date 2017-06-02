@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onQueryTextChange(String query) {
 
         // TODO: check if playlist view is selected and react accordingly
+        search_query = query;
 
         if(init_fragment == null)
         {
@@ -140,7 +141,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void displaySelectedScreen(int id) {
-        search_query = null;
         Boolean flag = true;
         switch (id) {
             case R.id.nav_songs:

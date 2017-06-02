@@ -139,6 +139,7 @@ public class ListViewInstrumentedTest {
         onView(withId(R.id.action_search)).perform(click());
         onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!"));
         onView(withText("Test!")).check(matches(isDisplayed()));
+        onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
     }
 
     @Test
@@ -149,6 +150,7 @@ public class ListViewInstrumentedTest {
         onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
         onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!!!"));
         onView(withText("Test!!!")).check(matches(isDisplayed()));
+        onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
     }
 
     @Test
@@ -162,6 +164,7 @@ public class ListViewInstrumentedTest {
         onView(withId(R.id.action_search)).perform(click());
         onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!"));
         onView(withText("Test!")).check(matches(isDisplayed()));
+        onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
     }
 
     @Test
