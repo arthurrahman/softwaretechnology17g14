@@ -191,6 +191,8 @@ public abstract class XmlHandler {
                         f.set(returnObject, Boolean.valueOf(readTag()));
                     else if (f.getType().getName().toLowerCase().equals("long"))
                         f.set(returnObject, Long.valueOf(readTag()));
+                    else if (f.getType().getName().toLowerCase().equals("int"))
+                        f.set(returnObject, Integer.valueOf(readTag()));
                     else
                         f.set(returnObject, f.getType().cast(readTag()));
                 } catch (IllegalAccessException e) {

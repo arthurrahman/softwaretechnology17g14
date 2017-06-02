@@ -3,6 +3,7 @@ package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -150,6 +151,7 @@ public class MainActivity extends AppCompatActivity
                     break;
                 }
                 init_fragment = song_fragment;
+                Database.resetVisibleSongs();
                 break;
             case R.id.nav_playlists:
                 break;
