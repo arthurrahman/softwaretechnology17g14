@@ -2,7 +2,6 @@ package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.database.Cursor;
 import android.provider.MediaStore;
-import android.view.View;
 
 import java.io.Serializable;
 
@@ -27,7 +26,14 @@ public class Song implements Serializable{
         this.isPlayable = false;
         this.title = trackName;
         this.display_name = trackName;
-        this.duration = "over 9000"; //TODO: Change me
+        this.duration = "0:00";
+        this.rating = 0;
+    }
+
+    public Song() {
+        this.id = "1";
+        this.isPlayable = false;
+        this.duration = "0:00";
         this.rating = 0;
     }
 
@@ -118,6 +124,10 @@ public class Song implements Serializable{
 
         return format_duration;
 
+    }
+
+    public long getDurationValue() {
+        return Long.valueOf(duration);
     }
 
     public void setPlayable(boolean playable) {

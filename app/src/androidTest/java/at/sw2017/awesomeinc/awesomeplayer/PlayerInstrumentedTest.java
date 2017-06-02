@@ -136,7 +136,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
 
-        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(2,  click()));
         onView(withId(R.id.bt_prev)).perform(click());
 
         Thread.sleep(1000);
@@ -184,7 +184,7 @@ public class PlayerInstrumentedTest {
         Thread.sleep(1000);
         onView(withId(R.id.rating)).perform(click());
         Thread.sleep(1000);
-        Assert.assertEquals(3, Player.current_song.getRating());
+        Assert.assertEquals(3, Database.currentSong().getRating());
 
     }
 
