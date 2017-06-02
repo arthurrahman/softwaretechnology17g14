@@ -155,6 +155,8 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_playlists:
                 break;
+            case R.id.nav_album:
+                init_fragment = new Album();
         }
 
         if(init_fragment != null && flag == true) {
