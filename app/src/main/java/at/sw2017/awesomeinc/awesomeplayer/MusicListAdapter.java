@@ -82,7 +82,6 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
                 public void onClick(View v) {
                     Context context = v.getContext();
                     context.startActivity(new Intent(context,Player.class).putExtra("pos",position).putExtra("songlist", (Serializable) trackList));
-
                 }
             });
         }

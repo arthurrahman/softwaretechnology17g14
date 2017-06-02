@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static android.R.attr.data;
+
 /**
  * Created by ramiro on 04.05.2017.
  */
@@ -46,15 +48,20 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case 1:
-                createPlaylist();
+                //createPlaylist();
                 return true;
             default:
-                // Here he have to go to the playlist view
-                setContentView(R.layout.content_main);
-                getFragmentManager().beginTransaction().replace(R.id.content_main,
-                        new Playlists()).commit();
+                Playlist pl = new Playlist(item.getTitle().toString());
+                pl.loadPlaylist(this);
+                pl.addSong(song_list.get(position));
+                pl.savePlaylist(this);
+
+                Toast.makeText(this, song_list.get(position).getTitle()+" has been added to Playlist "+item.getTitle().toString(),
+                        Toast.LENGTH_LONG).show();
+
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -110,7 +117,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
-        menu.add(0, 1, 0, R.string.action_addToPlaylist);
+        menu.add(0, 1, 0, R.string.action_playlist);
         XmlPlaylists xmlPlaylists = new XmlPlaylists("Playlists", this);
         ArrayList<String> playLists = null;
 

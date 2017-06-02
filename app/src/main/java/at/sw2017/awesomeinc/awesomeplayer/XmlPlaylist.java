@@ -5,6 +5,7 @@ import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**

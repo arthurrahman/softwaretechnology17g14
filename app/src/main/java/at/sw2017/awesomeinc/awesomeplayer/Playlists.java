@@ -41,9 +41,16 @@ public class Playlists extends Fragment {
             case 1:
                 createPlaylist();
                 return true;
+            case 2:
+                deleteAllPlaylists();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void deleteAllPlaylists() {
+        xmlPlaylists.deleteAllPlaylists();
     }
 
     public void createPlaylist() {
@@ -105,6 +112,7 @@ public class Playlists extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         menu.clear();
         menu.add(0, 1, 0, R.string.action_addToPlaylist);
+        menu.add(0, 2, 0, R.string.action_deleteAllPlaylists);
     }
 
     @Override
@@ -128,7 +136,6 @@ public class Playlists extends Fragment {
                 // Load XML
                 playlists.addAll(xmlPlaylists.getAllPlaylists());
                 // ------------------------------------------------------
-
                 final PlaylistAdapter pl = new PlaylistAdapter(playlists);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -142,4 +149,5 @@ public class Playlists extends Fragment {
 
         getActivity().setTitle("Playlists");
     }
+
 }
