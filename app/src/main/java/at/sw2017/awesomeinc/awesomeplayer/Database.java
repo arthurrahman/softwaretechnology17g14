@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.ListIterator;
 
 /**
  * Created by julian on 01.06.17.
@@ -153,16 +154,31 @@ public class Database {
         // If the search string is longer, remove further cases
         if(searchstring.length() >= prev_searchstring.length())
         {
+            /*
             for(int i = 0; i < visible_songs.size(); i++)
             {
                 Song song = visible_songs.get(i);
                 if(! (song.getTitle().toLowerCase().contains(searchstring.toLowerCase()) ||
-                      song.getAlbum().toLowerCase().contains(searchstring.toLowerCase()) ||
-                      song.getArtist().toLowerCase().contains(searchstring.toLowerCase())))
+                        song.getAlbum().toLowerCase().contains(searchstring.toLowerCase()) ||
+                        song.getArtist().toLowerCase().contains(searchstring.toLowerCase())))
                 {
                     visible_songs.remove(i);
+                    i = 0;
+                }
+            }*/
+
+            ListIterator iter = visible_songs.listIterator();
+            while (iter.hasNext())
+            {
+                Song song = (Song)iter.next();
+                if(! (song.getTitle().toLowerCase().contains(searchstring.toLowerCase()) ||
+                        song.getAlbum().toLowerCase().contains(searchstring.toLowerCase()) ||
+                        song.getArtist().toLowerCase().contains(searchstring.toLowerCase())))
+                {
+                    iter.remove();
                 }
             }
+
         }
         else // If the search string is shorter, add cases that were deleted before
         {
@@ -177,7 +193,6 @@ public class Database {
                     {
                         visible_songs.add(song);
                     }
-
                 }
             }
         }
@@ -242,17 +257,19 @@ public class Database {
         // If the search string is longer, remove further cases
         if(searchstring.length() >= prev_searchstring.length())
         {
-            for(int i = 0; i < visible_songs.size(); i++)
+            ListIterator iter = visible_songs.listIterator();
+            while (iter.hasNext())
             {
-                Song song = visible_songs.get(i);
-                if(! songfield.apply(song).contains(searchstring))
+                if (!songfield.apply((Song)iter.next()).contains(searchstring))
                 {
-                    visible_songs.remove(i);
+                    iter.remove();
                 }
             }
+
         }
         else // If the search string is shorter, add cases that were deleted before
         {
+
             for(int i = 0; i < all_songs.size(); i++)
             {
                 Song song = all_songs.get(i);
@@ -265,8 +282,9 @@ public class Database {
 
                 }
             }
-        }
 
+        }
+        currentIndex = 0;
         prev_searchstring = searchstring;
         return visible_songs;
     }
@@ -286,7 +304,7 @@ public class Database {
      */
     public static Song nextSong() {
         currentIndex++;
-        if(currentIndex == visible_songs.size())
+        if(currentIndex >= visible_songs.size())
             currentIndex = 0;
         return visible_songs.get(currentIndex);
     }
@@ -326,6 +344,10 @@ public class Database {
         isPlaying = !isPlaying;
     }
 
-
+    public static void updateSongForRating()
+    {
+        int pos = all_songs.indexOf(currentSong());
+        all_songs.get(pos).setRating(currentSong().getRating());
+    }
 
 }

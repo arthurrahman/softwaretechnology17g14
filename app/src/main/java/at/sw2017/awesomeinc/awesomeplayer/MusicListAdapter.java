@@ -30,7 +30,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
     private List<Song> displayed_trackList;
 
     public MusicListAdapter() {
-        this.displayed_trackList = Database.setVisibleSongs(Database.getVisibleSongs());
+        this.displayed_trackList = Database.getVisibleSongs();
     }
 
     @Override
@@ -64,15 +64,13 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
     }
 
     public void filterSongsByAttributes(String searchstring, String selection) {
-        displayed_trackList.clear();
-        displayed_trackList.addAll(Database.applyFilterToVisibleSongsByAttr(searchstring, selection));
+        Database.applyFilterToVisibleSongsByAttr(searchstring, selection);
         notifyDataSetChanged();
     }
 
     public void filterSongsAllAttributes(String searchstring)
     {
-        displayed_trackList.clear();
-        displayed_trackList.addAll(Database.applyFilterToVisibleSongsAllAttr(searchstring));
+        Database.applyFilterToVisibleSongsAllAttr(searchstring);
         notifyDataSetChanged();
     }
 

@@ -34,6 +34,7 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.pressBack;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -118,7 +119,7 @@ public class ListViewInstrumentedTest {
     @Test
     public void test_MenuBackButton() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
-
+        Thread.sleep(100);
         onView(withId(R.id.content_main)).perform(pressBack());
     }
 
@@ -165,6 +166,7 @@ public class ListViewInstrumentedTest {
         onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!"));
         onView(withText("Test!")).check(matches(isDisplayed()));
         onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(closeSoftKeyboard());
     }
 
     @Test
@@ -174,7 +176,7 @@ public class ListViewInstrumentedTest {
 
         Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals("A"));
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-        Thread.sleep(100);
+        Thread.sleep(500);
         onView(withText("Search by title")).perform(click());
         Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals(""));
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
