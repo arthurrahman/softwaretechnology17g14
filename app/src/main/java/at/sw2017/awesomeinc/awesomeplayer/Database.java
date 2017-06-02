@@ -22,6 +22,7 @@ public class Database {
     private static XmlSongList xmlSongs;
     private static int currentIndex;
     private static boolean isPlaying = false;
+    private static String prev_searchstring = new String("");
 
     private static boolean initialized = false;
 
@@ -143,21 +144,46 @@ public class Database {
     public static ArrayList<Song> applyFilterToVisibleSongsAllAttr(String searchstring) {
         Log.d("Database", "Not implemented yet");
         if(searchstring.isEmpty())
-            return visible_songs;
-
-        for(int i = 0; i < visible_songs.size(); i++)
         {
-            Song song = visible_songs.get(i);
-            if(! (
-                    song.getTitle().toLowerCase().contains(searchstring.toLowerCase()) ||
-                    song.getAlbum().toLowerCase().contains(searchstring.toLowerCase()) ||
-                    song.getArtist().toLowerCase().contains(searchstring.toLowerCase())
-                )
-            ){
-                visible_songs.remove(i);
+            visible_songs.clear();
+            visible_songs.addAll(all_songs);
+            return visible_songs;
+        }
+
+        // If the search string is longer, remove further cases
+        if(searchstring.length() >= prev_searchstring.length())
+        {
+            for(int i = 0; i < visible_songs.size(); i++)
+            {
+                Song song = visible_songs.get(i);
+                if(! (song.getTitle().toLowerCase().contains(searchstring.toLowerCase()) ||
+                      song.getAlbum().toLowerCase().contains(searchstring.toLowerCase()) ||
+                      song.getArtist().toLowerCase().contains(searchstring.toLowerCase())))
+                {
+                    visible_songs.remove(i);
+                }
             }
         }
+        else // If the search string is shorter, add cases that were deleted before
+        {
+            for(int i = 0; i < all_songs.size(); i++)
+            {
+                Song song = all_songs.get(i);
+                if((song.getTitle().toLowerCase().contains(searchstring.toLowerCase()) ||
+                      song.getAlbum().toLowerCase().contains(searchstring.toLowerCase()) ||
+                      song.getArtist().toLowerCase().contains(searchstring.toLowerCase())))
+                {
+                    if(!visible_songs.contains(song))
+                    {
+                        visible_songs.add(song);
+                    }
+
+                }
+            }
+        }
+
         currentIndex = 0;
+        prev_searchstring = searchstring;
         return visible_songs;
     }
 
@@ -204,20 +230,44 @@ public class Database {
     public static ArrayList<Song> applyFilterToVisibleSongsByAttr(String searchstring, String selection) {
 
         if(searchstring.isEmpty() || selection.isEmpty())
+        {
+            visible_songs.clear();
+            visible_songs.addAll(all_songs);
             return visible_songs;
-
+        }
 
         Function<Song, String> songfield = songfieldCreator(selection);
         searchstring = searchstring.toLowerCase();
 
-        for(int i = 0; i < visible_songs.size(); i++)
+        // If the search string is longer, remove further cases
+        if(searchstring.length() >= prev_searchstring.length())
         {
-            Song song = visible_songs.get(i);
-            if (! songfield.apply(song).contains(searchstring)) {
-                visible_songs.remove(i);
+            for(int i = 0; i < visible_songs.size(); i++)
+            {
+                Song song = visible_songs.get(i);
+                if(! songfield.apply(song).contains(searchstring))
+                {
+                    visible_songs.remove(i);
+                }
+            }
+        }
+        else // If the search string is shorter, add cases that were deleted before
+        {
+            for(int i = 0; i < all_songs.size(); i++)
+            {
+                Song song = all_songs.get(i);
+                if(songfield.apply(song).contains(searchstring))
+                {
+                    if(!visible_songs.contains(song))
+                    {
+                        visible_songs.add(song);
+                    }
+
+                }
             }
         }
 
+        prev_searchstring = searchstring;
         return visible_songs;
     }
 
@@ -247,7 +297,7 @@ public class Database {
      */
     public static Song previousSong() {
         currentIndex--;
-        if(currentIndex == 0)
+        if(currentIndex <= 0)
             currentIndex = visible_songs.size() - 1;
         return visible_songs.get(currentIndex);
     }

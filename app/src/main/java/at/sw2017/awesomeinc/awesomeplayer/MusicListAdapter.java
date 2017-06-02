@@ -55,12 +55,14 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
     }
 
     public void filterSongsByAttributes(String searchstring, String selection) {
+        displayed_trackList.clear();
         displayed_trackList.addAll(Database.applyFilterToVisibleSongsByAttr(searchstring, selection));
         notifyDataSetChanged();
     }
 
     public void filterSongsAllAttributes(String searchstring)
     {
+        displayed_trackList.clear();
         displayed_trackList.addAll(Database.applyFilterToVisibleSongsAllAttr(searchstring));
         notifyDataSetChanged();
     }

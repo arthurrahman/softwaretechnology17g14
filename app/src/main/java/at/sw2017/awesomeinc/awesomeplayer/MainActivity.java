@@ -74,19 +74,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextChange(String query) {
 
-        /*search_query = query;
-
-        init_fragment = new Songs();
-        Bundle bundl = new Bundle();
-        bundl.putString("search_item", search_query);
-        init_fragment.setArguments(bundl);
-
-        if(init_fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_main, init_fragment);
-            ft.commit();
-        }*/
-
         // TODO: check if playlist view is selected and react accordingly
 
         if(init_fragment == null)
@@ -98,6 +85,7 @@ public class MainActivity extends AppCompatActivity
             RecyclerView view = ((Songs)init_fragment).getRecyclerView();
             MusicListAdapter test = (MusicListAdapter) view.getAdapter();
             test.filterSongsByAttributes(query, search_selection);
+            //test.filterSongsAllAttributes(query);
         }
 
         return true;
@@ -162,9 +150,6 @@ public class MainActivity extends AppCompatActivity
                     break;
                 }
                 init_fragment = song_fragment;
-                Bundle bundl = new Bundle();
-                bundl.putString("search_item", search_query);
-                init_fragment.setArguments(bundl);
                 break;
             case R.id.nav_playlists:
                 break;
