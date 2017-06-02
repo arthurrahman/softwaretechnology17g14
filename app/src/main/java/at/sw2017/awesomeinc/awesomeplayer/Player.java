@@ -9,9 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 /**
  * Created by ramiro on 04.05.2017.
@@ -22,6 +24,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
 
     SeekBar seekbar;
     Button bt_play, bt_fast_fw, bt_rew, bt_next, bt_prev;
+    ToggleButton bt_repeat, bt_shuffle;
+    boolean isRepeat = false;
+    boolean isShuffle = false;
     TextView txt_songname;
     RatingBar rab_stars;
     Thread seekbar_thread;
@@ -30,6 +35,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         if(media_player==null)
             return false;
         return media_player.isPlaying();
+    }
+
+    protected static boolean is_looping(){
+        if(media_player==null)
+            return false;
+        return media_player.isLooping();
     }
 
     public static int getCurrentPosition(){
@@ -47,6 +58,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         bt_next = (Button) findViewById(R.id.bt_next);
         bt_prev = (Button) findViewById(R.id.bt_prev);
         rab_stars = (RatingBar) findViewById(R.id.rating);
+        bt_repeat = (ToggleButton) findViewById(R.id.bt_repeat);
+        bt_shuffle = (ToggleButton) findViewById(R.id.bt_shuffle);
 
         bt_play.setOnClickListener(this);
         bt_fast_fw.setOnClickListener(this);
@@ -63,6 +76,21 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
             }
         });
 
+        bt_shuffle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+              //  isShuffle = isChecked;
+                Database.randomIndex(isChecked);
+            }
+        });
+
+        bt_repeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isRepeat = isChecked;
+                media_player.setLooping(isChecked);
+            }
+        });
 
         seekbar = (SeekBar) findViewById(R.id.seekBar);
         txt_songname = (TextView) findViewById(R.id.txt_songname);
@@ -187,7 +215,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
             @Override
             public void onCompletion(MediaPlayer mp) {
                 Log.d("Media_player", "Completed");
-                nextSong();
+                if(isRepeat){
+                    play();
+                } else {
+                    nextSong();
+                }
+
             }
         });
 
@@ -205,12 +238,16 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     }
 
     public void nextSong(){
+        /*if(isShuffle)
+            Database.randomIndex(isShuffle);*/
         Database.nextSong();
         reset_mediaplayer();
         play();
     }
 
     public void previousSong(){
+       /* if (isShuffle)
+            Database.randomIndex(isShuffle);*/
         Database.previousSong();
         reset_mediaplayer();
         play();

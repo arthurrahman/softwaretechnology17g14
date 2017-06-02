@@ -17,7 +17,7 @@
     <ImageView
         android:id="@+id/img_view"
         android:layout_width="match_parent"
-        android:layout_height="401dp"
+        android:layout_height="335dp"
         app:srcCompat="@drawable/music_icon2" />
 
     <SeekBar
@@ -31,6 +31,15 @@
         android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
+
+        <ToggleButton
+            android:id="@+id/bt_repeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ToggleButton"
+            android:textOff="Repeat off"
+            android:textOn="Repeat on" />
 
         <Button
             android:id="@+id/bt_prev"
@@ -66,6 +75,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:drawable/ic_media_next" />
+
+        <ToggleButton
+            android:id="@+id/bt_shuffle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ToggleButton"
+            android:textOff="Shuffle off"
+            android:textOn=" Shuffle on" />
     </LinearLayout>
 
     <TextView
