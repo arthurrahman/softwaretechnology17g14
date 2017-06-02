@@ -115,6 +115,10 @@ public class Song implements Serializable{
 
     }
 
+    public long getDurationValue() {
+        return Long.valueOf(duration);
+    }
+
     public void setPlayable(boolean playable) {
         isPlayable = playable;
     }

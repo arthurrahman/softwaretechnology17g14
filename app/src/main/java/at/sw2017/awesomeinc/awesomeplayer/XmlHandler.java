@@ -84,8 +84,6 @@ public abstract class XmlHandler {
 
         temp = obj;
 
-        Log.d("asdf", temp.toString());
-
         xmlWriter.startTag(null, tagName);
         for(Field f : obj.getClass().getDeclaredFields()){
             if(f.isSynthetic())
