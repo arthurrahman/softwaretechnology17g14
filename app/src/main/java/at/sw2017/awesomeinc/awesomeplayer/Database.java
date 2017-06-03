@@ -306,6 +306,20 @@ public class Database {
         return visible_songs.get(currentIndex);
     }
 
+    public static Song nextSongInformation() {
+        currentIndex++;
+        if(currentIndex != all_songs.size()) {
+            if(currentIndex >= visible_songs.size())
+                currentIndex = 0;
+
+            Song s = visible_songs.get(currentIndex);
+            currentIndex--;
+            return s;
+        }
+        currentIndex--;
+        return null;
+    }
+
     /***
      * Decrements the current song pointer and returns the song before the current, or if at beginning of list, the last one
      * @return the previous song before the current or the last one, if at the beginning of the list
