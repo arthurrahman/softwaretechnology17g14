@@ -6,4 +6,5 @@
     <color name="black">#99424242</color>
     <color name="lightgrey">#e0e0e0</color>
     <color name="darkgrey">#424242</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

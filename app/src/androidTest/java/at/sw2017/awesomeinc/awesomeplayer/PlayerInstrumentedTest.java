@@ -10,7 +10,6 @@ import android.support.test.espresso.action.Swipe;
 import android.support.test.espresso.action.Tap;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.widget.RatingBar;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -203,6 +202,20 @@ public class PlayerInstrumentedTest {
         onView(withId(R.id.rating)).perform(click());
         Thread.sleep(1000);
         Assert.assertEquals(3, Database.currentSong().getRating());
+
+    }
+
+    @Test
+    public void test_repeat() throws Exception{
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        onView(withText("Songs")).perform(click());
+        onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
+
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
+        Thread.sleep(1000);
+        onView(withId(R.id.bt_repeat)).perform(click());
+        Thread.sleep(1000);
+        Assert.assertTrue(Player.is_looping());
 
     }
 
