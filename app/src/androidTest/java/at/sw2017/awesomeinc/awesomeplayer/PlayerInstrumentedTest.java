@@ -213,7 +213,7 @@ public class PlayerInstrumentedTest {
 
         onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
         Thread.sleep(1000);
-        onView(withId(R.id.bt_repeat)).perform(click());
+        onView(withId(R.id.repeat)).perform(click());
         Thread.sleep(1000);
         Assert.assertTrue(Player.is_looping());
 

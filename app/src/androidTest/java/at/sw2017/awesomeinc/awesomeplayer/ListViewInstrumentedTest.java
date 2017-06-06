@@ -130,6 +130,7 @@ public class ListViewInstrumentedTest {
     @Test
     public void test_MenuBackButtonFromSong() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        Thread.sleep(100);
         onView(withText("Songs")).perform(click());
         onView(withId(R.id.content_main)).perform(pressBack());
     }
