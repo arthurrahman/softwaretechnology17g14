@@ -70,7 +70,7 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
 
     public void filterSongsAllAttributes(String searchstring)
     {
-        Database.applyFilterToVisibleSongsAllAttr(searchstring);
+        //Database.applyFilterToVisibleSongsAllAttr(searchstring);
         notifyDataSetChanged();
     }
 

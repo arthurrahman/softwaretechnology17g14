@@ -38,6 +38,17 @@ public class DatabaseInstrumentedTest {
         assertTrue("one song in database", Database.getAllSongs().size() > 0);
     }
 
+    @Test
+    public void test_rebuildDatabase() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+
+        Database.init(context);
+        // Call a second time to rebuild database
+        Database.init(context);
+
+        assertTrue("one song in database", Database.getAllSongs().size() > 0);
+    }
+
 
     @Test
     public void test_get_next_song() throws Exception {
@@ -127,18 +138,62 @@ public class DatabaseInstrumentedTest {
 
         Database.applyFilterToVisibleSongsAllAttr("A");
         int newSize = Database.getVisibleSongs().size();
-        assertTrue("Lower amount of songs now", newSize < initSize);
+        assertTrue("Lower amount of songs now", newSize <= initSize);
         initSize = newSize;
 
         Database.applyFilterToVisibleSongsAllAttr("b");
         newSize = Database.getVisibleSongs().size();
-        assertTrue("Lower amount of songs now", newSize < initSize);
+        assertTrue("Lower amount of songs now", newSize <= initSize);
         initSize = newSize;
 
         Database.applyFilterToVisibleSongsByAttr("c", "A");
         newSize = Database.getVisibleSongs().size();
-        assertTrue("Lower amount of songs now", newSize < initSize);
+        assertTrue("Lower amount of songs now", newSize <= initSize);
 
+    }
+
+    @Test
+    public void test_filteringCases() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        Database.init(context);
+
+        int initSize = Database.getVisibleSongs().size();
+
+        Database.applyFilterToVisibleSongsByAttr("A", "A");
+        int newSize = Database.getVisibleSongs().size();
+        assertTrue("Lower amount of songs now", newSize <= initSize);
+
+        Database.applyFilterToVisibleSongsByAttr("A", "B");
+        newSize = Database.getVisibleSongs().size();
+        assertTrue("Lower amount of songs now", newSize <= initSize);
+
+        Database.applyFilterToVisibleSongsByAttr("A", "C");
+        newSize = Database.getVisibleSongs().size();
+        assertTrue("Lower amount of songs now", newSize <= initSize);
+
+        Database.applyFilterToVisibleSongsByAttr("A", "D");
+        newSize = Database.getVisibleSongs().size();
+        assertTrue("Lower amount of songs now", newSize <= initSize);
+    }
+
+    @Test
+    public void test_getSongsPlaylist() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        Database.init(context);
+
+        int initSize = Database.getVisibleSongs().size();
+        int databaseSize = Database.getSongsOfPlaylist("Not implemented yet!").size();
+    }
+
+    @Test
+    public void test_filteringEmptyText() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        Database.init(context);
+
+        int initSize = Database.getVisibleSongs().size();
+
+        Database.applyFilterToVisibleSongsAllAttr("");
+        int newSize = Database.getVisibleSongs().size();
     }
 
 }

@@ -142,8 +142,10 @@ public class Database {
         return all_songs;
     }
 
+
     public static ArrayList<Song> applyFilterToVisibleSongsAllAttr(String searchstring) {
         Log.d("Database", "Not implemented yet");
+
         if(searchstring.isEmpty())
         {
             visible_songs.clear();
@@ -154,7 +156,7 @@ public class Database {
         // If the search string is longer, remove further cases
         if(searchstring.length() >= prev_searchstring.length())
         {
-            /*
+
             for(int i = 0; i < visible_songs.size(); i++)
             {
                 Song song = visible_songs.get(i);
@@ -165,7 +167,7 @@ public class Database {
                     visible_songs.remove(i);
                     i = 0;
                 }
-            }*/
+            }
 
             ListIterator iter = visible_songs.listIterator();
             while (iter.hasNext())
@@ -203,6 +205,7 @@ public class Database {
     }
 
 
+
     private static Function<Song, String> songfieldCreator(String selection) {
         switch(selection.substring(0, 1)) {
             case "A":
@@ -230,7 +233,7 @@ public class Database {
                 return new Function<Song, String>() {
                     @Override
                     public String apply( Song song) {
-                        return "";
+                        return song.getTitle().toLowerCase();
                     }
                 };
         }
@@ -244,12 +247,18 @@ public class Database {
      */
     public static ArrayList<Song> applyFilterToVisibleSongsByAttr(String searchstring, String selection) {
 
-        if(searchstring.isEmpty() || selection.isEmpty())
+        if(selection.isEmpty())
+        {
+            return applyFilterToVisibleSongsAllAttr(searchstring);
+        }
+
+        if(searchstring.isEmpty())
         {
             visible_songs.clear();
             visible_songs.addAll(all_songs);
             return visible_songs;
         }
+
 
         Function<Song, String> songfield = songfieldCreator(selection);
         searchstring = searchstring.toLowerCase();

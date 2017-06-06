@@ -82,12 +82,11 @@ public class MainActivity extends AppCompatActivity
         {
             displaySelectedScreen(R.id.nav_songs);
         }
-        else if(init_fragment != null)
+        else
         {
             RecyclerView view = ((Songs)init_fragment).getRecyclerView();
             MusicListAdapter test = (MusicListAdapter) view.getAdapter();
             test.filterSongsByAttributes(query, search_selection);
-            //test.filterSongsAllAttributes(query);
         }
 
         return true;
@@ -95,8 +94,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        return false;
+        return onQueryTextChange(query);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity
                 search_selection = search_selection + "C";
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 

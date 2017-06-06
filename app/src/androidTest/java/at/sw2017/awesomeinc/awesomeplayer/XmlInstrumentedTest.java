@@ -91,8 +91,10 @@ public class XmlInstrumentedTest {
         assertEquals(0, list.size());
     }
 
+
+
     @Test
-    public void test_read_non_existing_file() throws Exception {
+    public void test_read_end() throws Exception {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
         Activity activity = mainActivityActivityTestRule.getActivity();
 
@@ -105,6 +107,8 @@ public class XmlInstrumentedTest {
         assertEquals(false, f.exists());
 
         XmlSongList xml = new XmlSongList(name, context);
+        xml.readEnd();
+
 
         ArrayList<Song> list = xml.getAllSongs();
         f = new File(context.getExternalFilesDir(null), name.concat(".xml"));
@@ -112,7 +116,27 @@ public class XmlInstrumentedTest {
         assertEquals(0, list.size());
     }
 
+    @Test
+    public void test_read_start_twice() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        Activity activity = mainActivityActivityTestRule.getActivity();
+
+        String name = "test_non_existend";
+        File f = new File(context.getExternalFilesDir(null), name.concat(".xml"));
+
+        if(f.exists())
+            f.delete();
+
+        assertEquals(false, f.exists());
+
+        XmlSongList xml = new XmlSongList(name, context);
+        xml.readStart();
+        xml.readStart();
 
 
-
+        ArrayList<Song> list = xml.getAllSongs();
+        f = new File(context.getExternalFilesDir(null), name.concat(".xml"));
+        assertEquals(true, f.exists());
+        assertEquals(0, list.size());
+    }
 }

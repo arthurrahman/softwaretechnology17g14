@@ -76,6 +76,22 @@ public class PlayerInstrumentedTest {
     }
 
     @Test
+    public void test_player_test_boundaries_song() throws Exception {
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        onView(withText("Songs")).perform(click());
+
+        onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
+
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
+
+        onView(withId(R.id.bt_prev)).perform(click());
+        Thread.sleep(500);
+        onView(withId(R.id.bt_next)).perform(click());
+        Thread.sleep(500);
+        Assert.assertTrue(Player.is_playing());
+    }
+
+    @Test
     public void test_player_fast_fw_song() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
         onView(withText("Songs")).perform(click());
@@ -132,6 +148,7 @@ public class PlayerInstrumentedTest {
     @Test
     public void test_player_pre_song() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        Thread.sleep(500);
         onView(withText("Songs")).perform(click());
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
@@ -146,6 +163,7 @@ public class PlayerInstrumentedTest {
     @Test
     public void test_player_scratch() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        Thread.sleep(500);
         onView(withText("Songs")).perform(click());
 
         onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));

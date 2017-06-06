@@ -36,8 +36,8 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     Thread seekbar_thread;
 
     protected static boolean is_playing(){
-        if(media_player==null)
-            return false;
+        /*if(media_player==null)
+            return false;*/
         return media_player.isPlaying();
     }
 

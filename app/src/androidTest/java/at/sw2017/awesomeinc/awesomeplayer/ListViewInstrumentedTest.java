@@ -17,6 +17,7 @@ import android.support.test.espresso.util.HumanReadables;
 import android.support.test.espresso.util.TreeIterables;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 
@@ -36,6 +37,8 @@ import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.pressBack;
+import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
+import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.action.ViewActions.typeTextIntoFocusedView;
@@ -102,6 +105,7 @@ public class ListViewInstrumentedTest {
     @Test
     public void test_ListViewSongNameClick() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        Thread.sleep(100);
         onView(withText("Songs")).perform(click());
 
         onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
@@ -135,6 +139,17 @@ public class ListViewInstrumentedTest {
         onView(withId(R.id.action_search)).perform(click());
     }
 
+
+
+    @Test
+    public void test_SearchBarTextSubmit() throws Exception {
+        onView(withId(R.id.action_search)).perform(click());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!"));
+        onView(withText("Test!")).check(matches(isDisplayed()));
+        onView(withId(R.id.action_search)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
+        onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
+    }
+
     @Test
     public void test_SearchBarText() throws Exception {
         onView(withId(R.id.action_search)).perform(click());
@@ -154,10 +169,27 @@ public class ListViewInstrumentedTest {
         onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
     }
 
+    /*@Test
+    public void test_openSongThenSong() throws Exception {
+
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        Thread.sleep(100);
+        onView(withText("Songs")).perform(click());
+
+        onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
+
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        Thread.sleep(100);
+        onView(withText("Songs")).perform(click());
+
+        onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
+    }*/
+
     @Test
     public void test_OpenSongThenSearch() throws Exception {
 
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        Thread.sleep(100);
         onView(withText("Songs")).perform(click());
 
         onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
@@ -170,10 +202,79 @@ public class ListViewInstrumentedTest {
     }
 
     @Test
-    public void test_searchSelectionMenu() throws Exception {
+    public void test_OpenSongThenSearchEmptyText() throws Exception {
+
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        Thread.sleep(100);
         onView(withText("Songs")).perform(click());
 
+        onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
+
+        // clear search selection
+        Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals("A"));
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        Thread.sleep(500);
+        onView(withText("Search by title")).perform(click());
+        Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals(""));
+
+        onView(withId(R.id.action_search)).perform(click());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(typeText(""));
+
+        onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(closeSoftKeyboard());
+    }
+
+    @Test
+    public void test_OpenSongThenSearchThenDelete() throws Exception {
+
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        Thread.sleep(200);
+        onView(withText("Songs")).perform(click());
+
+        onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
+
+        onView(withId(R.id.action_search)).perform(click());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Aa"));
+        onView(withText("Aa")).check(matches(isDisplayed()));
+        onView(withId(R.id.action_search)).perform(pressKey(KeyEvent.KEYCODE_DEL));
+        onView(withText("A")).check(matches(isDisplayed()));
+
+        onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(closeSoftKeyboard());
+    }
+
+    @Test
+    public void test_OpenSongThenSearchAllThenDelete() throws Exception {
+
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        Thread.sleep(200);
+        onView(withText("Songs")).perform(click());
+
+        onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
+
+        // clear search selection
+        Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals("A"));
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        Thread.sleep(500);
+        onView(withText("Search by title")).perform(click());
+        Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals(""));
+
+        onView(withId(R.id.action_search)).perform(click());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Aa"));
+        onView(withText("Aa")).check(matches(isDisplayed()));
+        onView(withId(R.id.action_search)).perform(pressKey(KeyEvent.KEYCODE_DEL));
+        onView(withText("A")).check(matches(isDisplayed()));
+
+        onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(closeSoftKeyboard());
+    }
+
+    @Test
+    public void test_searchSelectionMenu() throws Exception {
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        Thread.sleep(500);
+        onView(withText("Songs")).perform(click());
+        Thread.sleep(500);
         Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals("A"));
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
         Thread.sleep(500);
