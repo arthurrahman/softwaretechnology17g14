@@ -14,7 +14,7 @@
         <item
             android:id="@+id/nav_album"
             android:icon="@drawable/music_icon"
-            android:title="Album" />
+            android:title="Albums" />
 
     </group>
 
