@@ -17,19 +17,24 @@
             android:layout_marginTop="130dp"
             android:paddingRight="5dp"
             android:paddingLeft="5dp">
-            <android.support.design.widget.FloatingActionButton
+
+            <ToggleButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:backgroundTint="@color/transparent"
                 android:id="@+id/shuffle"
-                android:src="@drawable/ic_shuffle_white_48dp"/>
-            <android.support.design.widget.FloatingActionButton
+                android:textOn=""
+                android:textOff=""
+                android:background="@drawable/ic_shuffle_black_24px"/>
+            <ToggleButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:backgroundTint="@color/transparent"
+                android:textOn=""
+                android:textOff=""
                 android:id="@+id/repeat"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_replay_white_48dp"/>
+                android:background="@drawable/ic_replay_black_24px"/>
+
+
         </RelativeLayout>
 
 

@@ -12,9 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import static android.support.test.InstrumentationRegistry.getContext;
 
@@ -28,6 +31,9 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     SeekBar seekbar;
     //Button bt_play, bt_fast_fw, bt_rew, bt_next, bt_prev;
     FloatingActionButton bt_play, bt_fast_fw, bt_rew, bt_next, bt_prev;
+    ToggleButton bt_repeat, bt_shuffle;
+    boolean isRepeat = false;
+    boolean isShuffle = false;
     TextView txt_songname;
     TextView txt_Artist;
     TextView txt_nSongname;
@@ -41,6 +47,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         return media_player.isPlaying();
     }
 
+    protected static boolean is_looping(){
+        if(media_player==null)
+            return false;
+        return media_player.isLooping();
+    }
+
     public static int getCurrentPosition(){
         return media_player.getCurrentPosition();
     }
@@ -49,27 +61,21 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player);
-        /*
-        bt_play = (Button) findViewById(R.id.bt_play);
-        bt_fast_fw = (Button) findViewById(R.id.bt_fast_fw);
-        bt_rew = (Button) findViewById(R.id.bt_rew);
-        bt_next = (Button) findViewById(R.id.bt_next);
-        bt_prev = (Button) findViewById(R.id.bt_prev);
-        rab_stars = (RatingBar) findViewById(R.id.rating);
-        */
+
         bt_play = (FloatingActionButton) findViewById(R.id.bt_play);
         bt_fast_fw = (FloatingActionButton) findViewById(R.id.bt_fast_fw);
         bt_rew = (FloatingActionButton) findViewById(R.id.bt_rew);
         bt_next = (FloatingActionButton) findViewById(R.id.bt_next);
         bt_prev = (FloatingActionButton) findViewById(R.id.bt_prev);
         rab_stars = (RatingBar) findViewById(R.id.rating);
+        bt_repeat = (ToggleButton) findViewById(R.id.repeat);
+        bt_shuffle = (ToggleButton) findViewById(R.id.shuffle);
 
         bt_play.setOnClickListener(this);
         bt_fast_fw.setOnClickListener(this);
         bt_rew.setOnClickListener(this);
         bt_next.setOnClickListener(this);
         bt_prev.setOnClickListener(this);
-
 
         rab_stars.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -79,6 +85,30 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
             }
         });
 
+
+        bt_shuffle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+              //  isShuffle = isChecked;
+                Database.randomIndex(isChecked);
+                if(isChecked)
+                    bt_shuffle.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_shuffle_white_24px));
+                else
+                    bt_shuffle.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_shuffle_black_24px));
+            }
+        });
+
+        bt_repeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isRepeat = isChecked;
+                media_player.setLooping(isChecked);
+                if(isChecked)
+                    bt_repeat.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_replay_white_24px));
+                else
+                    bt_repeat.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_replay_black_24px));
+            }
+        });
 
         seekbar = (SeekBar) findViewById(R.id.seekBar);
         txt_songname = (TextView) findViewById(R.id.txt_songname);
@@ -210,7 +240,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
             @Override
             public void onCompletion(MediaPlayer mp) {
                 Log.d("Media_player", "Completed");
-                nextSong();
+                if(isRepeat){
+                    play();
+                } else {
+                    nextSong();
+                }
+
             }
         });
 
@@ -244,12 +279,16 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     }
 
     public void nextSong(){
+        /*if(isShuffle)
+            Database.randomIndex(isShuffle);*/
         Database.nextSong();
         reset_mediaplayer();
         play();
     }
 
     public void previousSong(){
+       /* if (isShuffle)
+            Database.randomIndex(isShuffle);*/
         Database.previousSong();
         reset_mediaplayer();
         play();

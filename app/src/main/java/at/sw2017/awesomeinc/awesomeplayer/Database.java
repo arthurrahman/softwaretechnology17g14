@@ -9,6 +9,7 @@ import android.support.test.espresso.core.deps.guava.base.Function;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.ListIterator;
 
@@ -24,6 +25,8 @@ public class Database {
     private static int currentIndex;
     private static boolean isPlaying = false;
     private static String prev_searchstring = new String("");
+    private static ArrayList<Integer> randomList;
+    private static ArrayList<Integer> positionList;
 
     private static boolean initialized = false;
 
@@ -120,11 +123,14 @@ public class Database {
      */
     public static ArrayList<Song> resetVisibleSongs() {
         visible_songs = new ArrayList<>(all_songs);
+        positionList = new ArrayList<>();
+        for (int i = 0; i < visible_songs.size(); i++)
+            positionList.add(i);
         return visible_songs;
     }
 
     /***
-     * Cppies the given songlist to set a new instance as the new visible_songs pointer
+     * Copies the given songlist to set a new instance as the new visible_songs pointer
      * @param songs the songlist
      * @return the given song list
      */
@@ -292,7 +298,7 @@ public class Database {
      * @return the current pointed song
      */
     public static Song currentSong() {
-        return visible_songs.get(currentIndex);
+        return visible_songs.get(positionList.get(currentIndex));
     }
 
     /***
@@ -303,7 +309,7 @@ public class Database {
         currentIndex++;
         if(currentIndex >= visible_songs.size())
             currentIndex = 0;
-        return visible_songs.get(currentIndex);
+        return visible_songs.get(positionList.get(currentIndex));
     }
 
     public static Song nextSongInformation() {
@@ -328,7 +334,7 @@ public class Database {
         currentIndex--;
         if(currentIndex <= 0)
             currentIndex = visible_songs.size() - 1;
-        return visible_songs.get(currentIndex);
+        return visible_songs.get(positionList.get(currentIndex));
     }
 
     public static void setCurrentSong(Song song) {
@@ -365,5 +371,24 @@ public class Database {
     public static void saveDatabase() {
         xmlSongs.SaveAllSongs(all_songs);
     }
+
+    public static void randomIndex(boolean shuffle){
+        if (shuffle){
+            randomList = new ArrayList<>(positionList);
+            Collections.shuffle(positionList);
+      //      currentIndex = 0;
+        } else {
+            if (!randomList.isEmpty()){
+                positionList = randomList;
+        //        currentIndex = 0;
+            }
+
+        }
+
+
+       // currentIndex = Math.abs(random.nextInt() % visible_songs.size());
+    }
+
+
 
 }
