@@ -30,7 +30,7 @@ public class AlbumViewUnitTest {
         AlbumListAdapter adapter = new AlbumListAdapter(album);
         assertNotEqual(null, adapter);
         adapter.addAlbum("Hallo Welt!");
-        assertTrue(adapter.getItemCount() == 1);
+        assertTrue(adapter.getItemCount() >= 1);
     }
 
     @Test
@@ -40,6 +40,6 @@ public class AlbumViewUnitTest {
         AlbumListAdapter adapter = new AlbumListAdapter(album);
         assertNotEqual(null, adapter);
         adapter.addAlbum("Hallo Welt!");
-        assertTrue(adapter.getAlbumList().get(0).equals("Hallo Welt!"));
+        assertTrue(adapter.getAlbumList().contains("Hallo Welt!"));
     }
 }
