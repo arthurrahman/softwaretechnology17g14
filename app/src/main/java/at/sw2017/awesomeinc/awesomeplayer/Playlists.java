@@ -47,6 +47,8 @@ public class Playlists extends Fragment {
 
     private void deleteAllPlaylists() {
         xmlPlaylists.deleteAllPlaylists();
+        playlists.clear();
+        vw_playlist.setAdapter(new PlaylistAdapter(new ArrayList<Playlist>()));
     }
 
     public void createPlaylist() {
@@ -70,7 +72,7 @@ public class Playlists extends Fragment {
                         }
                     }
                     if(!exists)
-                        xmlPlaylists.newPlaylist(plName.getText().toString());
+                        playlists.add(xmlPlaylists.newPlaylist(plName.getText().toString()));
                     else
                     {
                         // Toast that playlist exists already
@@ -91,6 +93,7 @@ public class Playlists extends Fragment {
                     toast.show();
                 }
 
+                vw_playlist.setAdapter(new PlaylistAdapter(playlists));
                 dialog.dismiss();
             }
         });

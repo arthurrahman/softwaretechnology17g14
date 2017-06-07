@@ -62,6 +62,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
                     Context context = v.getContext();
                     PlaylistSongs s = new PlaylistSongs();
                     s.getPlaylist(plN);
+                    ((RecyclerView) v.getParent()).setAdapter(new PlaylistAdapter(new ArrayList<Playlist>()));
                     FragmentManager manager = ((Activity) context).getFragmentManager();
                     manager.beginTransaction().replace(R.id.content_main, s).commit();
                 }
