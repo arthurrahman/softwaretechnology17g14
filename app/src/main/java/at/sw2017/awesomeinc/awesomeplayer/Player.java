@@ -133,7 +133,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         bt_shuffle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Database.randomIndex(isChecked);
                 if(isChecked)
                     bt_shuffle.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_shuffle_white_24px));
                 else
@@ -144,7 +143,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         bt_repeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isRepeat = isChecked;
+                isRepeat = isChecked;   
                 media_player.setLooping(isChecked);
                 if(isChecked)
                     bt_repeat.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_replay_white_24px));

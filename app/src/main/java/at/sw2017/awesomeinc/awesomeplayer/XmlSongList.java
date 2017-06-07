@@ -26,7 +26,12 @@ public class XmlSongList extends XmlHandler {
                 Song s = new Song();
                 readOneObject("Song", s);
 
-                songList.add(s);
+                if(s.isPlayable()) {
+                    Song temp = Database.getSongByURI(s.getURI());
+
+                    if(temp != null)
+                        songList.add(temp);
+                }
             }
             readEnd();
         } catch (Exception e) {

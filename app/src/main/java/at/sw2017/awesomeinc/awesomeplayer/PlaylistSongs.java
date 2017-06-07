@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Created by rahman on 31.05.2017.
@@ -19,9 +18,9 @@ import java.util.HashSet;
 
 public class PlaylistSongs extends Fragment {
     private RecyclerView lst_tracklist;
-    private XmlSongList xmlSongs;
     private ArrayList<Song> songs;
     private Activity activity;
+    private String plName = "";
     public PlaylistSongs() {
         songs = new ArrayList<Song>();
     }
@@ -33,29 +32,23 @@ public class PlaylistSongs extends Fragment {
     }
 
     public void getPlaylist(String plName) {
-        xmlSongs = new XmlSongList(plName, null);
+        this.plName = plName;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        this.xmlSongs.setContext(view.getContext());
 
         lst_tracklist = (RecyclerView) view.findViewById(R.id.lst_tracklist);
         lst_tracklist.setNestedScrollingEnabled(false);
-        lst_tracklist.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        lst_tracklist.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         new Thread(new Runnable() {
             @Override
             public void run() {
 
-                songs = xmlSongs.getAllSongs();
-
-                HashSet<String> uris = new HashSet<String>();
-                for(Song song : songs) {
-                    uris.add(song.getURI());
-                }
+                songs = Database.getSongsOfPlaylist(plName);
 
                 final MusicListAdapter da = new MusicListAdapter(songs);
                 getActivity().runOnUiThread(new Runnable() {

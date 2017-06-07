@@ -71,8 +71,6 @@ public class PlaylistInstrumentedTest {
 
     @Test
     public void test_addition_isCorrect() throws Exception {
-        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
-        Activity activity = mainActivityActivityTestRule.getActivity();
         assertEquals(4, 2 + 2);
 
     }
@@ -126,7 +124,6 @@ public class PlaylistInstrumentedTest {
     @Test
     public void test_create_new_playlist() throws Exception {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
-        Activity activity = mainActivityActivityTestRule.getActivity();
 
         XmlPlaylists xml = new XmlPlaylists("Playlists", context);
         xml.deleteAllPlaylists();
@@ -155,7 +152,6 @@ public class PlaylistInstrumentedTest {
     @Test
     public void test_create_same_playlist_twice() throws Exception {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
-        Activity activity = mainActivityActivityTestRule.getActivity();
 
         XmlPlaylists xml = new XmlPlaylists("Playlists", context);
         xml.deleteAllPlaylists();
@@ -177,13 +173,11 @@ public class PlaylistInstrumentedTest {
 
         xml = new XmlPlaylists("Playlists", context);
         assertEquals(1, xml.getAllPlaylists().size());
-
     }
 
     @Test
     public void test_create_playlists_add_songs_remove_all_playlists() throws Exception {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
-        Activity activity = mainActivityActivityTestRule.getActivity();
 
         XmlPlaylists xml = new XmlPlaylists("Playlists", context);
         xml.deleteAllPlaylists();
@@ -212,7 +206,5 @@ public class PlaylistInstrumentedTest {
 
         xml = new XmlPlaylists("Playlists", context);
         assertEquals(0, xml.getAllPlaylists().size());
-
-
     }
 }

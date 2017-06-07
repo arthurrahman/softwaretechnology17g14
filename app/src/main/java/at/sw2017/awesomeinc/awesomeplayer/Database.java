@@ -9,7 +9,7 @@ import android.support.test.espresso.core.deps.guava.base.Function;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ListIterator;
 
@@ -20,13 +20,13 @@ import java.util.ListIterator;
 public class Database {
     private static Context context;
     private static ArrayList<Song> all_songs = new ArrayList<Song>();
+    private static HashMap<String, Song> all_songs_by_uri = new HashMap<>();
     private static ArrayList<Song> visible_songs = new ArrayList<Song>();
     private static XmlSongList xmlSongs;
     private static int currentIndex;
     private static boolean isPlaying = false;
     private static String prev_searchstring = new String("");
     private static ArrayList<Integer> randomList;
-    private static ArrayList<Integer> positionList;
 
     private static boolean initialized = false;
 
@@ -52,9 +52,10 @@ public class Database {
             return;
         }
 
-        HashSet<String> uris = new HashSet<String>();
+        HashSet<String> uris = new HashSet<>();
         for(Song song : all_songs) {
             uris.add(song.getURI());
+            all_songs_by_uri.put(song.getURI(), song);
         }
 
         // get Media Data --------------------------------------------------------------------------
@@ -77,8 +78,11 @@ public class Database {
             String u = cur.getString(id_Data);
             if (uris.contains(u))
                 uris.remove(u);
-            else
-                all_songs.add(new Song(cur));
+            else {
+                Song s = new Song(cur);
+                all_songs.add(s);
+                all_songs_by_uri.put(s.getURI(), s);
+            }
         }
 
         //at this point, all known uris got deleted, or unknown uris got created. All uris
@@ -88,6 +92,7 @@ public class Database {
             if (uris.contains(song.getURI())) {
                 all_songs.remove(i);
                 uris.remove(song.getURI());
+                all_songs_by_uri.remove(song.getURI());
             }
         }
 
@@ -109,6 +114,9 @@ public class Database {
         return visible_songs;
     }
 
+    public static Song getSongByURI(String uri) {
+        return all_songs_by_uri.get(uri);
+    }
 
     /***
      * Recreates the visble_songs to all_songs list and returns it
@@ -117,10 +125,8 @@ public class Database {
     public static ArrayList<Song> resetVisibleSongs() {
         //visible_songs = new ArrayList<>(all_songs);
         visible_songs.clear();
-        positionList = new ArrayList<>();
         for (int i = 0; i < all_songs.size(); i++) {
             visible_songs.add(all_songs.get(i));
-            positionList.add(i);
         }
         return visible_songs;
     }
@@ -140,8 +146,10 @@ public class Database {
      * @return the playlists song list
      */
     public static ArrayList<Song> getSongsOfPlaylist(String name) {
-        Log.d("Database", "Not implemented yet");
-        return all_songs;
+        XmlPlaylist xml = new XmlPlaylist(name, context);
+
+        visible_songs = xml.getAllSongs();
+        return visible_songs;
     }
 
 
@@ -303,7 +311,7 @@ public class Database {
      * @return the current pointed song
      */
     public static Song currentSong() {
-        return visible_songs.get(positionList.get(currentIndex));
+        return visible_songs.get(currentIndex);
     }
 
     /***
@@ -314,7 +322,7 @@ public class Database {
         currentIndex++;
         if(currentIndex >= visible_songs.size())
             currentIndex = 0;
-        return visible_songs.get(positionList.get(currentIndex));
+        return visible_songs.get(currentIndex);
     }
 
     public static Song nextSongInformation() {
@@ -337,7 +345,7 @@ public class Database {
         currentIndex--;
         if(currentIndex <= 0)
             currentIndex = visible_songs.size() - 1;
-        return visible_songs.get(positionList.get(currentIndex));
+        return visible_songs.get(currentIndex);
     }
 
     public static void setCurrentSong(Song song) {
@@ -373,18 +381,6 @@ public class Database {
     
     public static void saveDatabase() {
         xmlSongs.SaveAllSongs(all_songs);
-    }
-
-    public static void randomIndex(boolean shuffle){
-        if (shuffle){
-            randomList = new ArrayList<>(positionList);
-            Collections.shuffle(positionList);
-        } else {
-            if (!randomList.isEmpty()){
-                positionList = randomList;
-            }
-
-        }
     }
 
     public static ArrayList<String> getAllAlbumNames()

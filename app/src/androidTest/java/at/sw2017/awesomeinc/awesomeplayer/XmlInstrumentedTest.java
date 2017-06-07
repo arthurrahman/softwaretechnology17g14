@@ -27,8 +27,6 @@ public class XmlInstrumentedTest {
 
     @Test
     public void test_addition_isCorrect() throws Exception {
-        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
-        Activity activity = mainActivityActivityTestRule.getActivity();
         assertEquals(4, 2 + 2);
 
     }
