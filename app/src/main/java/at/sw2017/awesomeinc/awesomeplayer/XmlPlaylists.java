@@ -89,6 +89,11 @@ public class XmlPlaylists extends XmlHandler {
     }
 
     public void deleteAllPlaylists(){
+        for(String plName : playlists.keySet()) {
+            Playlist pl = playlists.get(plName);
+            pl.removePlaylist();
+        }
+
         playlists = new HashMap<>();
         saveAllPlaylists();
     }

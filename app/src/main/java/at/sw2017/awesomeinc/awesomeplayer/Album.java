@@ -3,7 +3,7 @@ package at.sw2017.awesomeinc.awesomeplayer;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -48,7 +48,7 @@ public class Album extends Fragment{
 
         vw_album = (RecyclerView) view.findViewById(R.id.lst_album);
         vw_album.setNestedScrollingEnabled(false);
-        vw_album.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        vw_album.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         final AlbumListAdapter adapter = new AlbumListAdapter(Album.this);
         vw_album.setAdapter(adapter);

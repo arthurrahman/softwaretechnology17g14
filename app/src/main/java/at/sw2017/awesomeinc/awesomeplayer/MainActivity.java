@@ -3,8 +3,8 @@ package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if(init_fragment != null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, init_fragment);
             if (id == R.id.nav_songs) {
                 ft.addToBackStack(null);

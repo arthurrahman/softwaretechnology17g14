@@ -179,4 +179,40 @@ public class PlaylistInstrumentedTest {
         assertEquals(1, xml.getAllPlaylists().size());
 
     }
+
+    @Test
+    public void test_create_playlists_add_songs_remove_all_playlists() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        Activity activity = mainActivityActivityTestRule.getActivity();
+
+        XmlPlaylists xml = new XmlPlaylists("Playlists", context);
+        xml.deleteAllPlaylists();
+
+        navigateToPlaylists();
+
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        onView(withText("Create new Playlist")).perform(click());
+        onView(withId(R.id.newPlaylistName)).perform(replaceText("Test Playlist"));
+        onView(withId(R.id.savePlaylist)).perform(click());
+
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        onView(withText("Create new Playlist")).perform(click());
+        onView(withId(R.id.newPlaylistName)).perform(replaceText("Test Playlist2"));
+        onView(withId(R.id.savePlaylist)).perform(click());
+
+        navigateToPlayer();
+
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        onView(withText("Test Playlist")).perform(click());
+
+        navigateToPlaylists();
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        onView(withText("Delete all Playlists")).perform(click());
+
+
+        xml = new XmlPlaylists("Playlists", context);
+        assertEquals(0, xml.getAllPlaylists().size());
+
+
+    }
 }

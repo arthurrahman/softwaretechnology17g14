@@ -81,5 +81,11 @@ public class Playlist implements Serializable{
 
         xmlPlaylist.saveAllSongs(songs);
     }
+
+    public void removePlaylist() {
+        xmlPlaylist.removeFile();
+        songs = new ArrayList<>();
+        this.title = null;
+    }
 }
 

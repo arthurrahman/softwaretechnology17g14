@@ -1,9 +1,10 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 
 /**
@@ -35,7 +37,7 @@ public class Playlists extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 1:
-                createPlaylist();
+                createPlaylist(this.getView());
                 return true;
             case 2:
                 deleteAllPlaylists();
@@ -49,10 +51,13 @@ public class Playlists extends Fragment {
         xmlPlaylists.deleteAllPlaylists();
         playlists.clear();
         vw_playlist.setAdapter(new PlaylistAdapter(new ArrayList<Playlist>()));
+        FragmentManager manager = this.getActivity().getFragmentManager();
+        Playlists p = new Playlists();
+        manager.beginTransaction().replace(R.id.content_main, p).commit();
     }
 
-    public void createPlaylist() {
-        final Dialog dialog = new Dialog(getContext());
+    public void createPlaylist(View view) {
+        final Dialog dialog = new Dialog(view.getContext());
         dialog.setContentView(R.layout.new_playlist_dialog);
         dialog.show();
 
@@ -126,7 +131,8 @@ public class Playlists extends Fragment {
 
         vw_playlist = (RecyclerView) view.findViewById(R.id.playlist);
         vw_playlist.setNestedScrollingEnabled(false);
-        vw_playlist.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        vw_playlist.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
 
         new Thread(new Runnable() {
             @Override

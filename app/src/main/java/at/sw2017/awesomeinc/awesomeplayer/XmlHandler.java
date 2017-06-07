@@ -236,5 +236,9 @@ public abstract class XmlHandler {
         xmlInFile = null;
     }
 
+    protected void removeFile() {
+        new File(context.getExternalFilesDir(null), this.filename).delete();
+    }
+
 
 }
