@@ -159,6 +159,8 @@ public class DatabaseInstrumentedTest {
     public void test_filteringCases() throws Exception {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
         Database.init(context);
+        Database.resetVisibleSongs();
+
 
         int initSize = Database.getVisibleSongs().size();
 
