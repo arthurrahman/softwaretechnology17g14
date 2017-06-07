@@ -112,11 +112,11 @@ public class ListViewInstrumentedTest {
 
     }
 
-    @Test
+    /*@Test
     public void test_SettingsButton() throws Exception {
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
         onView(withText("Settings")).perform(click());
-    }
+    }*/
 
     @Test
     public void test_MenuBackButton() throws Exception {

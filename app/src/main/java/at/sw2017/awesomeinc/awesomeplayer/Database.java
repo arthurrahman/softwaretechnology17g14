@@ -20,7 +20,7 @@ import java.util.ListIterator;
 public class Database {
     private static Context context;
     private static ArrayList<Song> all_songs = new ArrayList<Song>();
-    private static ArrayList<Song> visible_songs;
+    private static ArrayList<Song> visible_songs = new ArrayList<Song>();
     private static XmlSongList xmlSongs;
     private static int currentIndex;
     private static boolean isPlaying = false;
@@ -122,10 +122,13 @@ public class Database {
      * @return the full song list
      */
     public static ArrayList<Song> resetVisibleSongs() {
-        visible_songs = new ArrayList<>(all_songs);
+        //visible_songs = new ArrayList<>(all_songs);
+        visible_songs.clear();
         positionList = new ArrayList<>();
-        for (int i = 0; i < visible_songs.size(); i++)
+        for (int i = 0; i < all_songs.size(); i++) {
+            visible_songs.add(all_songs.get(i));
             positionList.add(i);
+        }
         return visible_songs;
     }
 
@@ -322,18 +325,14 @@ public class Database {
     }
 
     public static Song nextSongInformation() {
-        currentIndex++;
-        if(currentIndex != all_songs.size()) {
-            if(currentIndex >= visible_songs.size())
-                currentIndex = 0;
-
-            Song s = visible_songs.get(currentIndex);
-            if (currentIndex > 0) {
-                currentIndex--;
-            }
-            return s;
+        if (currentIndex != all_songs.size())
+        {
+            if (currentIndex + 1 >= visible_songs.size())
+                return visible_songs.get(0);
+            else
+                return visible_songs.get(currentIndex + 1);
         }
-        currentIndex--;
+
         return null;
     }
 

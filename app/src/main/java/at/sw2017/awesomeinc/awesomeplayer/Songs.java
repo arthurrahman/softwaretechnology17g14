@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 public class Songs extends Fragment {
     private RecyclerView lst_tracklist;
-    private String search_text = null;
+    //private String search_text = null;
     private final XmlSongList xmlSongs;
     private ArrayList<Song> songs;
-    private Activity activity;
+    //private Activity activity;
 
     public Songs() {
         songs = new ArrayList<Song>();
@@ -49,11 +49,24 @@ public class Songs extends Fragment {
         lst_tracklist.setLayoutManager(new LinearLayoutManager(this.getContext()));
         //search_text = this.getArguments().getString("search_item");
 
+        /*new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final MusicListAdapter adapter = new MusicListAdapter();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        lst_tracklist.setAdapter(adapter);
+                        lst_tracklist.setId(R.id.lst_album);
+                    }
+                });
+            }
+        }).start();*/
+
         final MusicListAdapter da = new MusicListAdapter();
 
         lst_tracklist.setAdapter(da);
         lst_tracklist.setId(R.id.lst_tracklist);
-
 
         getActivity().setTitle("Songs");
     }

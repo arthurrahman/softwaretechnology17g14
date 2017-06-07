@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        Database.resetVisibleSongs();
         getMenuInflater().inflate(R.menu.main, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -80,8 +81,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextChange(String query) {
-
-        // TODO: check if playlist view is selected and react accordingly
         search_query = query;
 
         NavigationView nav_view = (NavigationView) findViewById(R.id.nav_view);
@@ -189,7 +188,8 @@ public class MainActivity extends AppCompatActivity
                 search_view.setQuery("", true);
                 search_view.setIconified(true);
             }
-            Database.resetVisibleSongs();
+
+            //Database.resetVisibleSongs();
         } else {
             //search_view.onActionViewExpanded();
             if (search_view.isIconified()) {
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity
 
             search_view.clearFocus();
 
-            Database.resetVisibleSongs();
+            //Database.resetVisibleSongs();
             //init_fragment = song_fragment;
             if (init_fragment.getClass() == Songs.class) {
                 RecyclerView view = ((Songs) init_fragment).getRecyclerView();
