@@ -19,7 +19,7 @@ import java.util.ListIterator;
 
 public class Database {
     private static Context context;
-    private static ArrayList<Song> all_songs;
+    private static ArrayList<Song> all_songs = new ArrayList<Song>();
     private static ArrayList<Song> visible_songs;
     private static XmlSongList xmlSongs;
     private static int currentIndex;
@@ -328,7 +328,9 @@ public class Database {
                 currentIndex = 0;
 
             Song s = visible_songs.get(currentIndex);
-            currentIndex--;
+            if (currentIndex > 0) {
+                currentIndex--;
+            }
             return s;
         }
         currentIndex--;
@@ -398,6 +400,14 @@ public class Database {
        // currentIndex = Math.abs(random.nextInt() % visible_songs.size());
     }
 
-
-
+    public static ArrayList<String> getAllAlbumNames()
+    {
+        ArrayList<String> album_names = new ArrayList<String>();
+        for (int i = 0; i < all_songs.size(); i++)
+        {
+            if (!album_names.contains(all_songs.get(i).getAlbum()))
+                album_names.add(all_songs.get(i).getAlbum());
+        }
+        return album_names;
+    }
 }

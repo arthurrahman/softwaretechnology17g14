@@ -23,11 +23,6 @@
         android:orderInCategory="102"
         android:title="@string/search_by_artist"
         android:visible="true" />
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="104"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
 
     <item android:id="@+id/action_search"
         android:title="@string/action_search"

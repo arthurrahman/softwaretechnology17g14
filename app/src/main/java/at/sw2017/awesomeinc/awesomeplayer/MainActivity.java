@@ -16,15 +16,20 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
 
     Fragment init_fragment = null;
     Fragment song_fragment = null;
-    String search_query = null;
+    String search_query = "";
     String search_selection = "A";
 
     @Override
@@ -49,10 +54,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (init_fragment != null && init_fragment.isVisible()) {
+        /*if (init_fragment != null && init_fragment.isVisible()) {
             Intent start = new Intent(MainActivity.this, MainActivity.class);
             startActivity(start);
-        }
+        }*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START))
@@ -67,8 +72,9 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setQueryHint("Search for awesome artists...");
+        searchView.setQueryHint("Search for awesome songs ...");
         searchView.setOnQueryTextListener(this);
+        renewSearch();
         return true;
     }
 
@@ -78,15 +84,17 @@ public class MainActivity extends AppCompatActivity
         // TODO: check if playlist view is selected and react accordingly
         search_query = query;
 
+        NavigationView nav_view = (NavigationView) findViewById(R.id.nav_view);
+
         if(init_fragment == null)
         {
             displaySelectedScreen(R.id.nav_songs);
         }
-        else
+        else if (init_fragment.getClass() == Songs.class)
         {
             RecyclerView view = ((Songs)init_fragment).getRecyclerView();
-            MusicListAdapter test = (MusicListAdapter) view.getAdapter();
-            test.filterSongsByAttributes(query, search_selection);
+            MusicListAdapter adapter = (MusicListAdapter) view.getAdapter();
+            adapter.filterSongsByAttributes(query, search_selection);
         }
 
         return true;
@@ -106,9 +114,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.select_search_title) {
+        if (id == R.id.select_search_title) {
             if (item.isChecked()) {
                 item.setChecked(false);
                 search_selection = search_selection.replace("A", "");
@@ -140,27 +146,114 @@ public class MainActivity extends AppCompatActivity
         return search_selection;
     }
 
-    private void displaySelectedScreen(int id) {
+    public String getSearchQuery() { return search_query; }
+
+    public Fragment getSongFragment() { return song_fragment; }
+
+    public void renewSearch() {
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final MenuItem item_title = toolbar.getMenu().findItem(R.id.select_search_title);
+        if (search_selection.contains("A")) {
+            item_title.setChecked(true);
+        } else {
+            item_title.setChecked(false);
+        }
+
+        final MenuItem item_album = toolbar.getMenu().findItem(R.id.select_search_album);
+        if (search_selection.contains("B")) {
+            item_album.setChecked(true);
+        } else {
+            item_album.setChecked(false);
+        }
+
+        final MenuItem item_artist = toolbar.getMenu().findItem(R.id.select_search_artist);
+        if (search_selection.contains("C")) {
+            item_artist.setChecked(true);
+        } else {
+            item_artist.setChecked(false);
+        }
+
+        final MenuItem search_item = toolbar.getMenu().findItem(R.id.action_search);
+        final SearchView search_view = (SearchView) MenuItemCompat.getActionView(search_item);
+        //search_item.expandActionView();
+
+        if (search_query.equals("")) {
+            //search_view.setQuery("", false);
+
+            search_view.setInputType(InputType.TYPE_CLASS_TEXT);
+            ImageView close_button = (ImageView) search_view.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+            close_button.setEnabled(true);
+
+            if (!search_view.isIconified()) {
+                search_view.clearFocus();
+                search_view.setQuery("", true);
+                search_view.setIconified(true);
+            }
+            Database.resetVisibleSongs();
+        } else {
+            //search_view.onActionViewExpanded();
+            if (search_view.isIconified()) {
+                search_view.setIconified(false);
+                //search_item.expandActionView();
+            }
+
+            search_view.setQuery(search_query, false);
+            search_view.setInputType(InputType.TYPE_NULL);
+            ImageView close_button = (ImageView) search_view.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+            close_button.setEnabled(false);
+
+            search_view.clearFocus();
+
+            Database.resetVisibleSongs();
+            //init_fragment = song_fragment;
+            if (init_fragment.getClass() == Songs.class) {
+                RecyclerView view = ((Songs) init_fragment).getRecyclerView();
+                MusicListAdapter adapter = (MusicListAdapter) view.getAdapter();
+                adapter.filterSongsByAttributes(search_query, search_selection);
+            }
+        }
+    }
+
+    public void setSongSearch(String query, String selection) {
+        search_selection = selection;
+        search_query = query;
+    }
+
+    public void displaySelectedScreen(int id) {
         Boolean flag = true;
+
         switch (id) {
             case R.id.nav_songs:
-                if(init_fragment == song_fragment)
+                /*if(init_fragment == song_fragment)
                 {
                     flag = false;
                     break;
                 }
                 init_fragment = song_fragment;
-                Database.resetVisibleSongs();
+                Database.resetVisibleSongs();*/
+
+                init_fragment = new Songs();
+                setSongSearch("", "A");
+                invalidateOptionsMenu();
                 break;
             case R.id.nav_playlists:
                 init_fragment = new Playlists();
                 break;
+            case R.id.nav_album:
+                init_fragment = new Album();
+                //setSongSearch("", "B");
+                //invalidateOptionsMenu();
+                break;
         }
 
-        if(init_fragment != null && flag == true) {
+        if(init_fragment != null/* && flag == true*/) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, init_fragment);
+            if (id == R.id.nav_songs) {
+                ft.addToBackStack(null);
+            }
             ft.commit();
+            getSupportFragmentManager().executePendingTransactions();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if(drawer.isDrawerOpen(GravityCompat.START))

@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,6 +26,7 @@ public class Songs extends Fragment {
     private final XmlSongList xmlSongs;
     private ArrayList<Song> songs;
     private Activity activity;
+
     public Songs() {
         songs = new ArrayList<Song>();
         xmlSongs = new XmlSongList("Songs", null);
