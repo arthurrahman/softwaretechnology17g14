@@ -43,9 +43,6 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     public int getItemCount() {
         return this.playlist.size();
     }
-    public List<Playlist> getPlaylist(){
-        return this.playlist;
-    }
 
     class PlaylistItemViewHolder extends RecyclerView.ViewHolder {
         protected TextView txt_playlist;
