@@ -1,26 +1,15 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
-/**
- * Created by julian on 19.04.17.
- */
-
-import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.app.PendingIntent.getActivity;
-import static android.support.test.InstrumentationRegistry.getArguments;
 
 /**
  * Created by root on 08.03.17.
@@ -51,9 +40,6 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
 
     @Override
     public MusicListAdapter.MusicItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        //View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.musiclist_item, null);
-        //return new MusicItemViewHolder(v);
-
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view, null);
         return new MusicItemViewHolder(v);
     }
@@ -61,15 +47,11 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
     @Override
     public void onBindViewHolder(MusicItemViewHolder musicItemViewHolder, final int i) {
         final Song selectedSong = displayed_trackList.get(i);
-        // get title for cardView presentation
         musicItemViewHolder.txt_title.setText(selectedSong.getTitleForCardView());
         musicItemViewHolder.txt_artist.setText(selectedSong.getArtist());
         musicItemViewHolder.txt_duration.setText(selectedSong.getDuration());
 
-
         musicItemViewHolder.bind(i);
-
-
     }
 
 
@@ -81,18 +63,6 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
 
     public void filterSongsByAttributes(String searchstring, String selection) {
         Database.applyFilterToVisibleSongsByAttr(searchstring, selection);
-        notifyDataSetChanged();
-    }
-
-    public void filterSongsAllAttributes(String searchstring)
-    {
-        //Database.applyFilterToVisibleSongsAllAttr(searchstring);
-        notifyDataSetChanged();
-    }
-
-    public void displayAllSongs()
-    {
-        displayed_trackList = Database.resetVisibleSongs();
         notifyDataSetChanged();
     }
 
@@ -115,7 +85,6 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
                     Database.setCurrentSong(position);
                     Database.setIsNotPlaying();
                     context.startActivity(new Intent(context,Player.class));
-
                 }
             });
         }

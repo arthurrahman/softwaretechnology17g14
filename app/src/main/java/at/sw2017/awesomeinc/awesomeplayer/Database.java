@@ -64,16 +64,9 @@ public class Database {
         Cursor cur;
         String selection = null;
         String [] selection_args = null;
-//        if (search_text != null)
-//        {
-//            selection = MediaStore.Audio.Media.ARTIST + " LIKE ?";
-//            selection_args = new String[]{"%" + search_text + "%"};
-//
-//        }
-//        else {
-            selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " + MediaStore.Audio.Media.DURATION + "> 1000";
 
-//        }
+        selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0 AND " + MediaStore.Audio.Media.DURATION + "> 1000";
+
         cur = cr.query(uri, null, selection, selection_args, sortOrder);
         // -----------------------------------------------------------------------------------------
 
@@ -386,17 +379,12 @@ public class Database {
         if (shuffle){
             randomList = new ArrayList<>(positionList);
             Collections.shuffle(positionList);
-      //      currentIndex = 0;
         } else {
             if (!randomList.isEmpty()){
                 positionList = randomList;
-        //        currentIndex = 0;
             }
 
         }
-
-
-       // currentIndex = Math.abs(random.nextInt() % visible_songs.size());
     }
 
     public static ArrayList<String> getAllAlbumNames()

@@ -3,7 +3,6 @@ package at.sw2017.awesomeinc.awesomeplayer;
 import android.graphics.drawable.Drawable;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.TimedText;
@@ -12,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -20,21 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.EditText;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
-import static android.support.test.InstrumentationRegistry.getContext;
-
-import static android.R.attr.data;
 
 /**
  * Created by ramiro on 04.05.2017.
@@ -44,7 +35,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     static MediaPlayer media_player;
 
     SeekBar seekbar;
-    //Button bt_play, bt_fast_fw, bt_rew, bt_next, bt_prev;
     FloatingActionButton bt_play, bt_fast_fw, bt_rew, bt_next, bt_prev;
     ToggleButton bt_repeat, bt_shuffle;
     boolean isRepeat = false;
@@ -57,8 +47,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     Thread seekbar_thread;
 
     protected static boolean is_playing(){
-        /*if(media_player==null)
-            return false;*/
         return media_player.isPlaying();
     }
 
@@ -77,12 +65,10 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
 
         switch (item.getItemId()) {
             case 1:
-                //createPlaylist();
                 return true;
             default:
                 Playlist pl = new Playlist(item.getTitle().toString());
                 pl.loadPlaylist(this);
-                //pl.addSong(song_list.get(position));
                 pl.addSong(Database.currentSong());
                 pl.savePlaylist(this);
 
@@ -91,54 +77,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
 
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public void createPlaylist() {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.new_playlist_dialog);
-        dialog.show();
-
-        Button saveButton = (Button) dialog.findViewById(R.id.savePlaylist);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText plName = (EditText) dialog.findViewById(R.id.newPlaylistName);
-                XmlPlaylists xmlPlaylist = new XmlPlaylists("Playlists", view.getContext());
-                if(!plName.getText().toString().matches("")) {
-                    boolean exists = false;
-                    for(Playlist list : xmlPlaylist.getAllPlaylists())
-                    {
-                        if(list.getTitle().toString().matches(plName.getText().toString()))
-                        {
-                            exists = true;
-                        }
-                    }
-                    if(!exists)
-                        xmlPlaylist.newPlaylist(plName.getText().toString());
-                    else
-                    {
-                        Context context = getApplicationContext();
-                        CharSequence text = "Playlist already exists!";
-                        int duration = Toast.LENGTH_SHORT;
-
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
-                    }
-                }
-                else
-                {
-                    Context context = getApplicationContext();
-                    CharSequence text = "Invalid Playlist Name!";
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                }
-
-                dialog.dismiss();
-            }
-        });
-
     }
 
     @Override
@@ -195,7 +133,6 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         bt_shuffle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-              //  isShuffle = isChecked;
                 Database.randomIndex(isChecked);
                 if(isChecked)
                     bt_shuffle.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_shuffle_white_24px));
@@ -298,15 +235,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void play(){
         if(media_player.isPlaying()){
-
-            //bt_play.setBackgroundResource(android.R.drawable.ic_media_play);
             Drawable dr = getDrawable(android.R.drawable.ic_media_play);
             bt_play.setImageDrawable(dr);
             media_player.pause();
             Database.setIsNotPlaying();
         }
         else {
-            //bt_play.setBackgroundResource(android.R.drawable.ic_media_pause);
             Drawable dr = getDrawable(android.R.drawable.ic_media_pause);
             bt_play.setImageDrawable(dr);
             media_player.start();
@@ -387,16 +321,12 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
     }
 
     public void nextSong(){
-        /*if(isShuffle)
-            Database.randomIndex(isShuffle);*/
         Database.nextSong();
         reset_mediaplayer();
         play();
     }
 
     public void previousSong(){
-       /* if (isShuffle)
-            Database.randomIndex(isShuffle);*/
         Database.previousSong();
         reset_mediaplayer();
         play();

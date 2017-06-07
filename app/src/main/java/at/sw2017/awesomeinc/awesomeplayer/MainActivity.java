@@ -1,9 +1,7 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,10 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
@@ -54,11 +49,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        /*if (init_fragment != null && init_fragment.isVisible()) {
-            Intent start = new Intent(MainActivity.this, MainActivity.class);
-            startActivity(start);
-        }*/
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
@@ -82,8 +72,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onQueryTextChange(String query) {
         search_query = query;
-
-        NavigationView nav_view = (NavigationView) findViewById(R.id.nav_view);
 
         if(init_fragment == null)
         {
@@ -145,10 +133,6 @@ public class MainActivity extends AppCompatActivity
         return search_selection;
     }
 
-    public String getSearchQuery() { return search_query; }
-
-    public Fragment getSongFragment() { return song_fragment; }
-
     public void renewSearch() {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         final MenuItem item_title = toolbar.getMenu().findItem(R.id.select_search_title);
@@ -174,10 +158,8 @@ public class MainActivity extends AppCompatActivity
 
         final MenuItem search_item = toolbar.getMenu().findItem(R.id.action_search);
         final SearchView search_view = (SearchView) MenuItemCompat.getActionView(search_item);
-        //search_item.expandActionView();
 
         if (search_query.equals("")) {
-            //search_view.setQuery("", false);
 
             search_view.setInputType(InputType.TYPE_CLASS_TEXT);
             ImageView close_button = (ImageView) search_view.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
@@ -189,12 +171,9 @@ public class MainActivity extends AppCompatActivity
                 search_view.setIconified(true);
             }
 
-            //Database.resetVisibleSongs();
         } else {
-            //search_view.onActionViewExpanded();
             if (search_view.isIconified()) {
                 search_view.setIconified(false);
-                //search_item.expandActionView();
             }
 
             search_view.setQuery(search_query, false);
@@ -204,8 +183,6 @@ public class MainActivity extends AppCompatActivity
 
             search_view.clearFocus();
 
-            //Database.resetVisibleSongs();
-            //init_fragment = song_fragment;
             if (init_fragment.getClass() == Songs.class) {
                 RecyclerView view = ((Songs) init_fragment).getRecyclerView();
                 MusicListAdapter adapter = (MusicListAdapter) view.getAdapter();
@@ -224,14 +201,6 @@ public class MainActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_songs:
-                /*if(init_fragment == song_fragment)
-                {
-                    flag = false;
-                    break;
-                }
-                init_fragment = song_fragment;
-                Database.resetVisibleSongs();*/
-
                 init_fragment = new Songs();
                 setSongSearch("", "A");
                 invalidateOptionsMenu();
@@ -241,12 +210,10 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_album:
                 init_fragment = new Album();
-                //setSongSearch("", "B");
-                //invalidateOptionsMenu();
                 break;
         }
 
-        if(init_fragment != null/* && flag == true*/) {
+        if(init_fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, init_fragment);
             if (id == R.id.nav_songs) {

@@ -2,9 +2,7 @@ package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.Context;
 import android.util.Log;
-
 import org.xmlpull.v1.XmlPullParser;
-
 import java.util.ArrayList;
 
 /**

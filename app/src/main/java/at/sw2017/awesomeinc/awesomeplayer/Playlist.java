@@ -19,14 +19,6 @@ public class Playlist implements Serializable{
         this.title = title;
         xmlPlaylist = new XmlPlaylist(this.title, null);
         songs = new ArrayList<>();
-        //recalcDuration();
-    }
-
-    private void recalcDuration() {
-        this.duration = 0;
-        for(Song s : songs) {
-            this.duration += s.getDurationValue();
-        }
     }
 
     public String getTitle() {
@@ -60,22 +52,16 @@ public class Playlist implements Serializable{
 
     }
 
-    public Long getDurationValue() {
-        return this.duration;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
     public void addSong(Song song) {
         songs.add(song);
-        //recalcDuration();
     }
 
     public void removeSong(Song song) {
         songs.remove(song);
-        //recalcDuration();
     }
 
     public ArrayList<Song> getSongs() {
@@ -87,7 +73,6 @@ public class Playlist implements Serializable{
             xmlPlaylist.setContext(context);
 
         songs = xmlPlaylist.getAllSongs();
-        //recalcDuration();
     }
 
     public void savePlaylist(Context context) {

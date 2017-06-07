@@ -3,7 +3,6 @@ package at.sw2017.awesomeinc.awesomeplayer;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -56,33 +55,9 @@ public class PlaylistUnitTest {
 
     }
 
-
-
     @Test
     public void test_Playlist_Duration() throws Exception {
         Playlist playlist = new Playlist("test title");
         assertEquals("0:00", playlist.getDuration());
     }
-/*
-    @Test
-    public void test_Playlist_Duration_With_Songs() throws Exception {
-        Playlist playlist = new Playlist("test title");
-        Song s = new Song();
-        s.setDuration("1:40");//milliseconds
-        playlist.addSong(s);
-
-        //assertTrue( 100L == playlist.getDurationValue());
-        assertEquals("1:40", playlist.getDuration());
-
-        Song s2 = new Song();
-        s2.setDuration("2:05");
-        playlist.addSong(s2);
-
-        assertTrue( 225L == playlist.getDurationValue());
-        //assertEquals("2:05", playlist.getDuration());
-
-    }
-*/
-
-
 }

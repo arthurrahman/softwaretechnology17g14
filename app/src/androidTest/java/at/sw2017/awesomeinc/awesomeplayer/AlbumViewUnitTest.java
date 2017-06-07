@@ -2,8 +2,6 @@ package at.sw2017.awesomeinc.awesomeplayer;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static android.test.MoreAsserts.assertNotEqual;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;

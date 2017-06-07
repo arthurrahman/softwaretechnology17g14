@@ -101,6 +101,4 @@ public class SongUnitTest {
         Song s = new Song("testRatingEmpty");
         assertEquals(0, s.getRating());
     }
-
-
 }

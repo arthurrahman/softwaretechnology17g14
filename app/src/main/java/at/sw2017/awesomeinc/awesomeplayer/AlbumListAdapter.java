@@ -1,18 +1,11 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.app.Notification;
-import android.content.Context;
-import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,8 +57,6 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Albu
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Context context = v.getContext();
-                    //context.startActivity(new Intent(context, Songs.class));
                     parent.changeToSongView(album_list.get(position));
                 }
             });

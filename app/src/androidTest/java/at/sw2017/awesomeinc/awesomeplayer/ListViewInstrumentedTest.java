@@ -1,7 +1,6 @@
 package at.sw2017.awesomeinc.awesomeplayer;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.PerformException;
 import android.support.test.espresso.UiController;
@@ -19,7 +18,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 
 import org.hamcrest.Matcher;
 import org.junit.Assert;
@@ -31,25 +29,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.pressBack;
-import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.action.ViewActions.typeTextIntoFocusedView;
 
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -112,12 +104,6 @@ public class ListViewInstrumentedTest {
 
     }
 
-    /*@Test
-    public void test_SettingsButton() throws Exception {
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-        onView(withText("Settings")).perform(click());
-    }*/
-
     @Test
     public void test_MenuBackButton() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
@@ -138,15 +124,12 @@ public class ListViewInstrumentedTest {
         onView(withId(R.id.action_search)).perform(click());
     }
 
-
-
     @Test
     public void test_SearchBarTextSubmit() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
         Thread.sleep(100);
         onView(withId(R.id.action_search)).perform(click());
         onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
-        //onView(withId(R.id.action_search)).perform(click());
         onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!"));
         onView(withText("Test!")).check(matches(isDisplayed()));
         onView(withId(R.id.action_search)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
@@ -175,22 +158,6 @@ public class ListViewInstrumentedTest {
         onView(withText("Test!!!")).check(matches(isDisplayed()));
         onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
     }
-
-    /*@Test
-    public void test_openSongThenSong() throws Exception {
-
-        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
-        Thread.sleep(100);
-        onView(withText("Songs")).perform(click());
-
-        onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
-
-        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
-        Thread.sleep(100);
-        onView(withText("Songs")).perform(click());
-
-        onView(withId(R.id.content_main)).perform(waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
-    }*/
 
     @Test
     public void test_OpenSongThenSearch() throws Exception {
@@ -309,22 +276,6 @@ public class ListViewInstrumentedTest {
         Assert.assertTrue(mainActivityActivityTestRule.getActivity().getSearchSelection().equals("A"));
     }
 
-    /*
-        @Test
-        public void test_BesideSettingsButton() throws Exception {
-            openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-            onView(withText("AwesomePlayer")).perform(click());
-
-        }
-
-
-
-        @Test
-        public void test_SimpleBackButton() throws Exception {
-            openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-            onView(withText("AwesomePlayer")).perform(pressBack());
-        }
-    */
     public static ViewAction waitId(final Matcher<View> viewMatcher, final long millis) {
         return new ViewAction() {
             @Override
