@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/player"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="290dp"
+        android:background="@drawable/album_cover"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="130dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp">
+
+            <ToggleButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/shuffle"
+                android:textOn=""
+                android:textOff=""
+                android:background="@drawable/ic_shuffle_black_24px"/>
+            <ToggleButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:textOn=""
+                android:textOff=""
+                android:id="@+id/repeat"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_replay_black_24px"/>
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/black"
+            android:orientation="vertical">
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="344dp"
+                android:layout_height="wrap_content"
+                android:maxHeight="5dp"
+                android:minHeight="5dp" />
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/bt_prev"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:src="@android:drawable/ic_media_previous"
+                    app:backgroundTint="@color/darkgrey" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/bt_rew"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="20dp"
+                    android:src="@android:drawable/ic_media_rew"
+                    app:backgroundTint="@color/darkgrey" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/bt_play"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="20dp"
+                    android:src="@android:drawable/ic_media_play"
+                    app:borderWidth="0dp"
+                    app:elevation="10dp" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/bt_fast_fw"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@android:color/holo_blue_light"
+                    android:src="@android:drawable/ic_media_ff"
+                    app:backgroundTint="@color/darkgrey" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/bt_next"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@android:drawable/ic_media_next"
+                    app:backgroundTint="@color/darkgrey" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@color/lightgrey"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_songname"
+            android:layout_marginTop="13dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="Shake it Off"
+            android:layout_gravity="center"
+            android:textSize="35dp" />
+
+        <TextView
+            android:id="@+id/txt_Artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Taylor Swift"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-light" />
+
+        <android.widget.RatingBar
+            android:id="@+id/rating"
+            android:layout_marginTop="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:isIndicator="false"
+            android:layout_gravity="center"
+            android:stepSize="1"
+            android:numStars="5" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Up next"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+
+                android:src="@drawable/defaultcover" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Light It Up (feat. Nyla)"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:id="@+id/txt_nextSong" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Major Lazor, Nyla"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/txt_nextArtist" />
+            </LinearLayout>
+
+        </LinearLayout>
+        android:layout_weight="1"
+        android:background="@android:drawable/ic_media_next" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
