@@ -201,7 +201,7 @@ public class PlayerInstrumentedTest {
         Thread.sleep(1000);
         onView(withId(R.id.rating)).perform(click());
         Thread.sleep(1000);
-        Assert.assertEquals(3, Database.currentSong().getRating());
+        Assert.assertEquals(4, Database.currentSong().getRating());
 
     }
 

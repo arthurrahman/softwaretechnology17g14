@@ -50,18 +50,6 @@ public class XmlInstrumentedTest {
     }
 
     @Test
-    public void test_read_one_song() throws Exception {
-        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
-        Activity activity = mainActivityActivityTestRule.getActivity();
-        test_write_one_song();
-
-        XmlSongList xml = new XmlSongList("Test_read_write", context);
-        ArrayList<Song> al = xml.getAllSongs();
-        assertEquals(1, al.size());
-        assertEquals("myCoolTestUri",al.get(0).getURI());
-    }
-
-    @Test
     public void test_instantiate_without_context() throws Exception {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
         Activity activity = mainActivityActivityTestRule.getActivity();
@@ -119,23 +107,23 @@ public class XmlInstrumentedTest {
     @Test
     public void test_read_start_twice() throws Exception {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
-        Activity activity = mainActivityActivityTestRule.getActivity();
 
         String name = "test_non_existend";
-        File f = new File(context.getExternalFilesDir(null), name.concat(".xml"));
+        XmlSongList xml = new XmlSongList(name, context);
+        File f = new File(context.getExternalFilesDir(null), xml.getFilename());
 
         if(f.exists())
             f.delete();
 
+        xml = new XmlSongList(name, context);
         assertEquals(false, f.exists());
 
-        XmlSongList xml = new XmlSongList(name, context);
         xml.readStart();
         xml.readStart();
 
 
         ArrayList<Song> list = xml.getAllSongs();
-        f = new File(context.getExternalFilesDir(null), name.concat(".xml"));
+        f = new File(context.getExternalFilesDir(null), xml.getFilename());
         assertEquals(true, f.exists());
         assertEquals(0, list.size());
     }

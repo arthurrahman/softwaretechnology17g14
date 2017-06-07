@@ -143,7 +143,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
         bt_repeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isRepeat = isChecked;   
+                isRepeat = isChecked;
                 media_player.setLooping(isChecked);
                 if(isChecked)
                     bt_repeat.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_replay_white_24px));
@@ -191,7 +191,7 @@ public class Player extends AppCompatActivity implements View.OnClickListener{
                 public void run() {
 
                     while(true) {
-                        if(Database.isPlaying()) {
+                        if(Database.isPlaying() && Database.currentSong() != null) {
                             seekbar.setMax((int)Database.currentSong().getDurationValue());
                             seekbar.setProgress(media_player.getCurrentPosition());
                         }

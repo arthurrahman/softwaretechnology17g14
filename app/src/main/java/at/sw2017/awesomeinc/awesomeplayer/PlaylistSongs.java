@@ -56,12 +56,12 @@ public class PlaylistSongs extends Fragment {
                     public void run() {
                         lst_tracklist.setAdapter(da);
                         lst_tracklist.setId(R.id.lst_tracklist);
+                        getActivity().setTitle("Songs");
                     }
                 });
 
             }
         }).start();
 
-        getActivity().setTitle("Songs");
     }
 }

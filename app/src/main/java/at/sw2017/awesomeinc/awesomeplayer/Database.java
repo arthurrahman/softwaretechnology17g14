@@ -40,6 +40,7 @@ public class Database {
         resetVisibleSongs();
         currentIndex = 0;
 
+        isPlaying = false;
         initialized = true;
     }
 
@@ -124,6 +125,8 @@ public class Database {
      */
     public static ArrayList<Song> resetVisibleSongs() {
         //visible_songs = new ArrayList<>(all_songs);
+        Log.d("Database", "Reset visible songs called");
+
         visible_songs.clear();
         for (int i = 0; i < all_songs.size(); i++) {
             visible_songs.add(all_songs.get(i));
@@ -147,8 +150,10 @@ public class Database {
      */
     public static ArrayList<Song> getSongsOfPlaylist(String name) {
         XmlPlaylist xml = new XmlPlaylist(name, context);
+        Log.d("Database", "Size of visible_songs: " + visible_songs.size());
 
         visible_songs = xml.getAllSongs();
+        Log.d("Database", "Size of visible_songs now: " + visible_songs.size());
         return visible_songs;
     }
 
@@ -311,6 +316,12 @@ public class Database {
      * @return the current pointed song
      */
     public static Song currentSong() {
+        if(currentIndex >= visible_songs.size())
+            currentIndex = 0;
+
+        if(currentIndex >= visible_songs.size())
+            return null;
+
         return visible_songs.get(currentIndex);
     }
 

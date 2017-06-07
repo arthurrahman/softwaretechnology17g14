@@ -39,7 +39,7 @@ public class Songs extends Fragment {
         lst_tracklist = (RecyclerView) view.findViewById(R.id.lst_tracklist);
         lst_tracklist.setNestedScrollingEnabled(false);
         lst_tracklist.setLayoutManager(new LinearLayoutManager(this.getContext()));
-
+        Database.resetVisibleSongs();
         final MusicListAdapter da = new MusicListAdapter();
 
         lst_tracklist.setAdapter(da);

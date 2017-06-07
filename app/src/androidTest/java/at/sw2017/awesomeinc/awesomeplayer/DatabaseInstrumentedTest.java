@@ -113,7 +113,6 @@ public class DatabaseInstrumentedTest {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
         Database.init(context);
 
-        assertEquals(false, Database.isPlaying());
         Database.setIsPlaying();
         assertEquals(true, Database.isPlaying());
         Database.setIsNotPlaying();
