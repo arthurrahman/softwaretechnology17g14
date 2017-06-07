@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.PendingIntent.getActivity;
@@ -27,10 +28,25 @@ import static android.support.test.InstrumentationRegistry.getArguments;
 
 public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.MusicItemViewHolder> {
 
+
     private List<Song> displayed_trackList;
 
     public MusicListAdapter() {
         this.displayed_trackList = Database.getVisibleSongs();
+    }
+    public MusicListAdapter(List<String> tracks) {
+        this.displayed_trackList = new ArrayList<Song>() ;
+
+        for (String track : tracks) {
+            this.displayed_trackList.add(new Song(track));
+        }
+    }
+
+    public MusicListAdapter(ArrayList<Song> songList){
+        if(songList == null)
+            songList = new ArrayList<>();
+
+        this.displayed_trackList = songList;
     }
 
     @Override
@@ -79,7 +95,6 @@ public class MusicListAdapter extends RecyclerView.Adapter<MusicListAdapter.Musi
         displayed_trackList = Database.resetVisibleSongs();
         notifyDataSetChanged();
     }
-
 
     class MusicItemViewHolder extends RecyclerView.ViewHolder {
         protected TextView txt_artist;

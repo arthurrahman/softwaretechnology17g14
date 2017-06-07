@@ -33,15 +33,19 @@ public abstract class XmlHandler {
 
     protected Context context;
 
+    public final String filenamePrefix = "moaIS17_";
+
     public XmlHandler(String name, Context context) {
-        this.filename = name.concat(".xml");
-        this.name = name;
+        this.filename = filenamePrefix + name.concat(".xml").replaceAll("[^A-Za-z0-9.]", "");
+        this.name = name.replaceAll("[^A-Za-z0-9]", "");
         this.context = context;
     }
 
     public Context getContext() {
         return this.context;
     }
+
+    public String getFilename() { return this.filename; }
 
     public void setContext(Context context) {
         this.context = context;
@@ -93,26 +97,29 @@ public abstract class XmlHandler {
 
             f.setAccessible(true);
 
-            xmlWriter.startTag("", f.getName());
 
             try {
                 temp2 = f;
                 String val = "";
                 if(f.get(obj) != null)
-                    val = f.get(obj).toString();
+                    writeTag(f.getName(), f.get(obj).toString());
 
-                xmlWriter.text(val);
             } catch (IllegalAccessException e) {
                 Log.d("XmlHandler", e.getMessage());
                 e.printStackTrace();
             }
-            xmlWriter.endTag("", f.getName());
 
             f.setAccessible(accessible);
         }
         xmlWriter.endTag(null, tagName);
 
 
+    }
+
+    protected void writeTag(String tagName, String value) throws IOException {
+        xmlWriter.startTag("", tagName);
+        xmlWriter.text(value);
+        xmlWriter.endTag("", tagName);
     }
 
     /***
@@ -206,7 +213,7 @@ public abstract class XmlHandler {
         }
     }
 
-    private String readTag() throws IOException, XmlPullParserException {
+    protected String readTag() throws IOException, XmlPullParserException {
         String ret = "";
         xmlReader.require(XmlPullParser.START_TAG, null, xmlReader.getName());
         if (xmlReader.next() == XmlPullParser.TEXT) {

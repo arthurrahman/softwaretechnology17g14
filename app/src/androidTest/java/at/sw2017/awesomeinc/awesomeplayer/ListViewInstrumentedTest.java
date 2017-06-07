@@ -98,8 +98,6 @@ public class ListViewInstrumentedTest {
     public void test_MenuPlaylist() throws Exception {
         onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
         onView(withText("Playlists")).perform(click());
-
-
     }
 
     @Test
@@ -145,6 +143,8 @@ public class ListViewInstrumentedTest {
     @Test
     public void test_SearchBarTextSubmit() throws Exception {
         onView(withId(R.id.action_search)).perform(click());
+        onView(withId(android.support.design.R.id.search_src_text)).perform(clearText());
+        //onView(withId(R.id.action_search)).perform(click());
         onView(withId(android.support.design.R.id.search_src_text)).perform(typeText("Test!"));
         onView(withText("Test!")).check(matches(isDisplayed()));
         onView(withId(R.id.action_search)).perform(pressKey(KeyEvent.KEYCODE_ENTER));

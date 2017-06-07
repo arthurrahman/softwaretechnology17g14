@@ -4,6 +4,9 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by julian on 19.04.17.
@@ -126,8 +129,22 @@ public class Song implements Serializable{
 
     }
 
+    public String getDurationStringValue()
+    {
+        return this.duration;
+    }
+
     public long getDurationValue() {
-        return Long.valueOf(duration);
+        if (this.duration.equals("0:00"))
+            return 0L;
+        return Long.valueOf(this.duration);
+        /*
+        String minutes = this.duration.split(":")[0];
+        String seconds = this.duration.split(":")[1];
+
+        long final_duration = Long.valueOf(minutes) * 60 + Long.valueOf(seconds);
+        return final_duration;
+        */
     }
 
     public void setPlayable(boolean playable) {

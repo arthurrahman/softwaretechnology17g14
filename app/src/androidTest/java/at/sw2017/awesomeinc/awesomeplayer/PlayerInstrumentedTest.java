@@ -220,4 +220,38 @@ public class PlayerInstrumentedTest {
     }
 
 
+    @Test
+    public void test_player_auto_next_on_end_of_first() throws Exception {
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        onView(withText("Songs")).perform(click());
+
+        onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
+
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(0,  click()));
+
+
+        onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER_RIGHT, Press.FINGER));
+
+        Thread.sleep(1000);
+        Assert.assertTrue(Player.is_playing());
+    }
+
+    @Test
+    public void test_player_auto_next_on_end_of_last() throws Exception {
+        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
+        onView(withId(R.id.content_main)).perform(new GeneralSwipeAction(Swipe.FAST, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER, Press.FINGER));
+        onView(withText("Songs")).perform(click());
+
+        onView(withId(R.id.content_main)).perform(HelperFunction.waitId(withId(R.id.album_pic), TimeUnit.MINUTES.toMillis(5)));
+
+        XmlSongList xml = new XmlSongList("Songs", context);
+
+        onView(withId(R.id.lst_tracklist)).perform(actionOnItemAtPosition(xml.getAllSongs().size() - 1,  click()));
+
+
+        onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER_RIGHT, Press.FINGER));
+
+        Thread.sleep(1000);
+        Assert.assertTrue(Player.is_playing());
+    }
 }

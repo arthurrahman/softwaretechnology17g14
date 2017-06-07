@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity
                 Database.resetVisibleSongs();
                 break;
             case R.id.nav_playlists:
+                init_fragment = new Playlists();
                 break;
         }
 

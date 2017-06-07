@@ -12,4 +12,7 @@
     <string name="search_by_title">Search by title</string>
     <string name="search_by_album">Search by album</string>
     <string name="search_by_artist">Search by artist</string>
+    <string name="action_addToPlaylist">Create new Playlist</string>
+    <string name="action_deleteAllPlaylists">Delete all Playlists</string>
+    <string name="action_playlist">Add to Playlist:</string>
 </resources>
