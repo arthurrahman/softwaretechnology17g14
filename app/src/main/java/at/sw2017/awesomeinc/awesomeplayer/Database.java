@@ -9,9 +9,11 @@ import android.support.test.espresso.core.deps.guava.base.Function;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ListIterator;
+import java.util.Random;
 
 /**
  * Created by julian on 01.06.17.
@@ -26,8 +28,6 @@ public class Database {
     private static int currentIndex;
     private static boolean isPlaying = false;
     private static String prev_searchstring = new String("");
-    private static ArrayList<Integer> randomList;
-
     private static boolean initialized = false;
 
     public static void init(Context context) {
@@ -53,7 +53,7 @@ public class Database {
             return;
         }
 
-        HashSet<String> uris = new HashSet<>();
+        HashSet<String> uris = new HashSet<String>();
         for(Song song : all_songs) {
             uris.add(song.getURI());
             all_songs_by_uri.put(song.getURI(), song);
@@ -356,6 +356,12 @@ public class Database {
         currentIndex--;
         if(currentIndex <= 0)
             currentIndex = visible_songs.size() - 1;
+        return visible_songs.get(currentIndex);
+    }
+
+    public static Song randomSong(){
+        Random random = new Random();
+        currentIndex = random.nextInt(visible_songs.size());
         return visible_songs.get(currentIndex);
     }
 
