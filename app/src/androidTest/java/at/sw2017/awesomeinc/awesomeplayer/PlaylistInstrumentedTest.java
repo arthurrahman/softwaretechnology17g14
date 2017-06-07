@@ -102,24 +102,6 @@ public class PlaylistInstrumentedTest {
         assertTrue(f.exists());
     }
 
-    @Test
-    public void test_Playlist_loadPlaylist() throws Exception {
-        Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
-        Activity activity = mainActivityActivityTestRule.getActivity();
-
-        test_Playlist_savePlaylist();
-        XmlPlaylist xml = new XmlPlaylist("test title", context);
-        File f = new File(activity.getExternalFilesDir(null), xml.getFilename());
-        assertTrue(f.exists());
-
-        Playlist p = new Playlist("test title");
-        f = new File(activity.getExternalFilesDir(null), xml.getFilename());
-        assertTrue(f.exists());
-
-        p.loadPlaylist(context);
-
-        assertEquals(2, p.getSongs().size());
-    }
 
     @Test
     public void test_create_new_playlist() throws Exception {

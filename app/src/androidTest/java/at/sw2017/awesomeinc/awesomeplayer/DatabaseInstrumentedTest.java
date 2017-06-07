@@ -68,6 +68,7 @@ public class DatabaseInstrumentedTest {
     public void test_get_previous_song() throws Exception {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
         Database.init(context);
+        Database.resetVisibleSongs();
 
         Song s1 = Database.currentSong();
         Song s2 =  Database.previousSong();
@@ -82,6 +83,7 @@ public class DatabaseInstrumentedTest {
     public void test_rating() throws Exception {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
         Database.init(context);
+        Database.resetVisibleSongs();
 
         ArrayList<Song> list = new ArrayList<>();
 
@@ -112,6 +114,7 @@ public class DatabaseInstrumentedTest {
     public void test_toggle_play() throws Exception {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
         Database.init(context);
+        Database.resetVisibleSongs();
 
         Database.setIsPlaying();
         assertEquals(true, Database.isPlaying());
@@ -132,6 +135,7 @@ public class DatabaseInstrumentedTest {
     public void test_filtering() throws Exception {
         Context context = mainActivityActivityTestRule.getActivity().getApplicationContext();
         Database.init(context);
+        Database.resetVisibleSongs();
 
         int initSize = Database.getVisibleSongs().size();
 
